@@ -9,7 +9,7 @@ Build a pnpm/Turborepo monorepo with a statically rendered Next.js App Router si
 
 ## Visual direction
 
-Use warm paper, deep forest green, pale mint, and a restrained coral accent. The page should feel editorial and calm, with clear whitespace and readable line lengths. Remedy Legal informed the problem-to-process storytelling pattern only; MatterZero uses its own layout, color palette, wording, and case-review visual.
+Use warm paper, deep forest green, pale mint, and a restrained coral accent. The page should feel editorial and calm, with clear whitespace and readable line lengths. Remedy Legal informed the problem-to-process storytelling pattern only; MatterZero uses its own layout, color palette, wording, and case-review visual. Use self-hosted Fraunces for display headings and DM Sans for body and interface text.
 
 ## Scope
 
@@ -20,7 +20,7 @@ Use warm paper, deep forest green, pale mint, and a restrained coral accent. The
 
 ## Performance target
 
-Aim for sub-two-second Largest Contentful Paint under a documented Lighthouse production test. Keep the initial bundle small, avoid third-party fonts and analytics, and reserve layout space for all visual elements. The CI Lighthouse job enforces a 2,000 ms LCP budget on its runner; field performance can vary by network and device.
+Aim for a fast mobile experience with no layout shift. Keep fonts self-hosted, avoid analytics and unnecessary client JavaScript, and reserve layout space for visual elements. CI Lighthouse enforces a 2,500 ms LCP maximum, 0.1 CLS maximum, 90 performance score, 95 SEO score, and 95 accessibility score; field performance varies by network and device.
 
 ## Open deployment item
 

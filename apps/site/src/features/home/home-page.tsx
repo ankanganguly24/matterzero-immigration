@@ -75,32 +75,42 @@ export function HomePage({ ButtonLink, Container, SectionHeading }: HomePageProp
       <section className="section section--intro" id="how-it-works">
         <Container>
           <SectionHeading
-            eyebrow="A better handoff"
-            title="The work between intake and review is where files get stuck."
+            eyebrow="How teams use MatterZero"
+            title="Four clear steps from first conversation to human review."
           >
-            Applicants share details across calls, chats, and attachments. MatterZero brings the
-            pieces together and makes the next step easier to see.
+            Bring intake, document collection, and evidence review into one guided flow that fits
+            around the process your team already uses.
           </SectionHeading>
-          <div className="workflow-grid">
+          <ol className="workflow-grid" aria-label="How to use MatterZero">
             <WorkflowCard
               number="01"
-              title="Listen once"
-              body="Gather the applicant’s story in a natural conversation. Keep the facts structured, the language human, and the questions focused on what is still missing."
+              title="Open a matter"
+              body="Start with an enquiry, select the team’s workflow, and note the applicant’s preferred language and contact channel."
+              detail="Set the context before the first question."
               tone="mint"
             />
             <WorkflowCard
               number="02"
-              title="Collect with context"
-              body="Build a checklist from the case workflow. Each request says what is needed and why, then updates when a file arrives."
+              title="Gather the story"
+              body="Use a guided voice or written intake to collect key details. Keep answers structured and leave uncertain points visible for confirmation."
+              detail="Keep the applicant’s own words in view."
               tone="peach"
             />
             <WorkflowCard
               number="03"
-              title="Review with sources"
-              body="See what came from the conversation, what came from a document, and where details do not line up—before the handoff."
+              title="Complete the checklist"
+              body="Request each document with a plain explanation of what the team needs. Track what is missing, received, or needs a clearer copy."
+              detail="Make the next request easy to act on."
+              tone="mint"
+            />
+            <WorkflowCard
+              number="04"
+              title="Review and hand off"
+              body="Compare details across answers and documents. Follow each source, resolve open questions, and let an authorized person approve the handoff."
+              detail="A human stays responsible for the decision."
               tone="blue"
             />
-          </div>
+          </ol>
         </Container>
       </section>
 
@@ -423,23 +433,26 @@ function WorkflowCard({
   number,
   title,
   body,
+  detail,
   tone,
 }: {
   number: string;
   title: string;
   body: string;
+  detail: string;
   tone: string;
 }) {
   return (
-    <article className={`workflow-card workflow-card--${tone}`}>
+    <li className={`workflow-card workflow-card--${tone}`}>
       <div className="workflow-card__top">
         <span>{number}</span>
         <span className="workflow-icon" aria-hidden="true">
-          {number === "01" ? "◌" : number === "02" ? "＋" : "⌁"}
+          {number === "01" ? "↗" : number === "02" ? "◌" : number === "03" ? "＋" : "✓"}
         </span>
       </div>
       <h3>{title}</h3>
       <p>{body}</p>
-    </article>
+      <small>{detail}</small>
+    </li>
   );
 }

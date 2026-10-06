@@ -10,7 +10,7 @@ body {
   background: var(--color-paper);
   color: var(--color-ink);
   font-family:
-    Inter,
+    var(--font-sans),
     ui-sans-serif,
     system-ui,
     -apple-system,
@@ -20,6 +20,10 @@ body {
   font-size: 16px;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+}
+h1,
+h2 {
+  font-family: var(--font-display), Georgia, serif;
 }
 a {
   color: inherit;
@@ -226,9 +230,9 @@ a {
   margin: 0;
   color: white;
   font-size: clamp(3.3rem, 6.2vw, 5.9rem);
-  font-weight: 550;
-  letter-spacing: -0.075em;
-  line-height: 0.99;
+  font-weight: 600;
+  letter-spacing: -0.045em;
+  line-height: 0.98;
 }
 .hero h1 em,
 .section--deep h2 em,
@@ -541,8 +545,8 @@ a {
   max-width: 680px;
   margin: 0;
   font-size: clamp(2.25rem, 4.1vw, 3.65rem);
-  font-weight: 570;
-  letter-spacing: -0.065em;
+  font-weight: 600;
+  letter-spacing: -0.035em;
   line-height: 1.08;
 }
 .section-heading__copy {
@@ -557,11 +561,16 @@ a {
 }
 .workflow-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 .workflow-card {
-  min-height: 268px;
+  display: flex;
+  min-height: 292px;
+  flex-direction: column;
   padding: 1.35rem 1.45rem 1.55rem;
   border: 1px solid rgba(28, 41, 37, 0.07);
   border-radius: var(--radius-card);
@@ -605,6 +614,14 @@ a {
   color: #59655e;
   font-size: 0.9rem;
   line-height: 1.65;
+}
+.workflow-card small {
+  display: block;
+  margin-top: auto;
+  padding-top: 1.15rem;
+  color: #52655a;
+  font-size: 0.74rem;
+  font-weight: 700;
 }
 .section--deep {
   overflow: hidden;
@@ -1362,6 +1379,9 @@ a {
     grid-template-columns: minmax(0, 1fr) 200px;
     gap: 2rem;
   }
+  .workflow-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 @media (max-width: 740px) {
   .container {
@@ -1441,12 +1461,30 @@ a {
   }
   .workflow-grid {
     grid-template-columns: 1fr;
+    gap: 0.7rem;
   }
   .workflow-card {
-    min-height: unset;
+    position: relative;
+    min-height: 0;
+    padding: 1.1rem 1.15rem 1.15rem 1.25rem;
+    border-radius: 1rem;
+  }
+  .workflow-card:not(:last-child)::after {
+    position: absolute;
+    top: calc(100% + 0.15rem);
+    left: 1.4rem;
+    z-index: 1;
+    width: 1px;
+    height: 0.4rem;
+    background: #b9c5b9;
+    content: "";
   }
   .workflow-card h3 {
-    margin-top: 1.1rem;
+    margin: 0.75rem 0 0.35rem;
+    font-size: 1.22rem;
+  }
+  .workflow-card small {
+    padding-top: 0.7rem;
   }
   .split-section {
     grid-template-columns: 1fr;

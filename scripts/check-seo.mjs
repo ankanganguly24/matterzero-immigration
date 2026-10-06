@@ -62,6 +62,36 @@ for (const route of routes) {
 
 const home = pages.get("/") ?? "";
 const resourceIndex = pages.get("/resources") ?? "";
+for (const metadata of [
+  '<meta property="og:image" content=',
+  '<meta name="twitter:image" content=',
+  '<link rel="icon" href="/icon"',
+  '<link rel="apple-touch-icon" href="/apple-icon"',
+])
+  assert(home.includes(metadata), `Home page is missing ${metadata}`);
+for (const asset of [
+  { path: "/og.png", type: "image/png" },
+  { path: "/icon", type: "image/png" },
+  { path: "/apple-icon", type: "image/png" },
+]) {
+  const response = await fetch(new URL(asset.path, base), { redirect: "manual" });
+  assert(response.status === 200, `${asset.path}: expected HTTP 200`);
+  assert(
+    response.headers.get("content-type")?.includes(asset.type),
+    `${asset.path}: expected ${asset.type} content type`,
+  );
+}
+assert(
+  home.includes("Four clear steps from first conversation to human review"),
+  "Home page is missing the How it works section",
+);
+for (const step of [
+  "Open a matter",
+  "Gather the story",
+  "Complete the checklist",
+  "Review and hand off",
+])
+  assert(home.includes(step), `How it works section is missing “${step}”`);
 for (const slug of slugs) {
   assert(home.includes(`/resources/${slug}`), `Home page does not link to article ${slug}`);
   assert(
@@ -89,5 +119,7 @@ if (failures.length) {
   for (const failure of failures) console.error(`- ${failure}`);
   process.exitCode = 1;
 } else {
-  console.log(`SEO smoke check passed for ${routes.length} routes, sitemap.xml, and robots.txt.`);
+  console.log(
+    `SEO smoke check passed for ${routes.length} routes, metadata, brand assets, sitemap.xml, and robots.txt.`,
+  );
 }
