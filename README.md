@@ -45,6 +45,10 @@ pnpm build
 
 GitHub Actions runs these checks on pull requests and pushes to `main`.
 
+## Staff authentication
+
+The first private-app slice is invite-only email sign-in. Follow [the Supabase authentication setup](docs/auth-setup.md) to configure a project, email templates, and local environment variables. No dashboard or applicant records are included yet.
+
 ## Content and authorship
 
 Resources are attributed to Ankan Ganguly, with a factual product-builder bio and a link to his LinkedIn profile. Articles describe operational preparation and point readers to primary official sources for immigration rules. They are general information, not legal advice.

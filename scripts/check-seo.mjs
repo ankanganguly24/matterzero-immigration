@@ -62,6 +62,15 @@ for (const route of routes) {
 
 const home = pages.get("/") ?? "";
 const resourceIndex = pages.get("/resources") ?? "";
+const loginResponse = await fetch(new URL("/login", base), { redirect: "manual" });
+const loginHtml = await loginResponse.text();
+assert(loginResponse.status === 200, "/login: expected HTTP 200");
+assert(loginHtml.includes('type="email"'), "/login: missing email sign-in field");
+assert(loginHtml.includes("Email me a sign-in link"), "/login: missing sign-in action");
+assert(
+  /<meta\s+name="robots"\s+content="[^\"]*noindex/i.test(loginHtml),
+  "/login: expected noindex metadata",
+);
 for (const metadata of [
   '<meta property="og:image" content=',
   '<meta name="twitter:image" content=',
