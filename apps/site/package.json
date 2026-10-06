@@ -1,0 +1,27 @@
+{
+  "name": "@matterzero/site",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@matterzero/design-tokens": "workspace:*",
+    "@matterzero/ui": "workspace:*",
+    "next": "16.3.8",
+    "react": "19.2.0",
+    "react-dom": "19.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.30",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.7",
+    "eslint": "^9.35.0",
+    "eslint-config-next": "16.3.8",
+    "typescript": "^5.9.3"
+  }
+}

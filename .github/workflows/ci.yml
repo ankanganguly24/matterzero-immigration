@@ -1,0 +1,64 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    name: Type, lint, and build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.19.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm typecheck
+      - run: pnpm build
+        env:
+          NEXT_PUBLIC_SITE_URL: https://matterzero.invalid
+      - name: Check rendered SEO routes
+        env:
+          NEXT_PUBLIC_SITE_URL: https://matterzero.invalid
+        run: |
+          pnpm --filter @matterzero/site start > /tmp/matterzero-next.log 2>&1 &
+          echo $! > /tmp/matterzero-next.pid
+          for i in $(seq 1 40); do
+            if curl --silent --fail http://localhost:3000/ > /dev/null; then break; fi
+            sleep 1
+          done
+          pnpm seo:check
+          kill "$(cat /tmp/matterzero-next.pid)"
+
+  lighthouse:
+    name: Mobile performance and SEO smoke check
+    runs-on: ubuntu-latest
+    needs: quality
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.19.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @matterzero/site build
+        env:
+          NEXT_PUBLIC_SITE_URL: https://matterzero.invalid
+      - uses: treosh/lighthouse-ci-action@v12
+        with:
+          configPath: .lighthouserc.json
+          uploadArtifacts: false
+          temporaryPublicStorage: false
