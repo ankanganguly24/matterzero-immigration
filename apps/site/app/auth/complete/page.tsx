@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import styles from "@/features/auth/auth.module.css";
 
 export const dynamic = "force-dynamic";
 
@@ -15,18 +16,18 @@ export default async function AuthCompletePage() {
   if (error || !data?.claims) redirect("/login");
 
   return (
-    <main id="main-content" className="auth-page">
-      <section className="auth-card auth-card--complete" aria-labelledby="auth-heading">
-        <span className="auth-success__icon" aria-hidden="true">
+    <main id="main-content" className={styles.page}>
+      <section className={`${styles.card} ${styles.complete}`} aria-labelledby="auth-heading">
+        <span className={styles.successIcon} aria-hidden="true">
           ✓
         </span>
-        <p className="auth-eyebrow">ACCESS VERIFIED</p>
+        <p className={styles.eyebrow}>ACCESS VERIFIED</p>
         <h1 id="auth-heading">You’re signed in.</h1>
-        <p className="auth-intro">
+        <p className={styles.intro}>
           Authentication is working. The team workspace will be added in a later step.
         </p>
         <form action="/auth/signout" method="post">
-          <button className="button button--secondary auth-submit" type="submit">
+          <button className="button button--secondary" type="submit">
             Sign out
           </button>
         </form>

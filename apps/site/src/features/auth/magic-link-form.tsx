@@ -3,6 +3,7 @@
 import { useState, type FormEvent } from "react";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
 import { createClient } from "@/lib/supabase/client";
+import styles from "./auth.module.css";
 
 export function MagicLinkForm() {
   const [email, setEmail] = useState("");
@@ -44,13 +45,13 @@ export function MagicLinkForm() {
 
   if (sent) {
     return (
-      <div className="auth-success" role="status" aria-live="polite">
-        <span className="auth-success__icon" aria-hidden="true">
+      <div className={styles.success} role="status" aria-live="polite">
+        <span className={styles.successIcon} aria-hidden="true">
           ✓
         </span>
         <h2>Check your inbox</h2>
         <p>If that email belongs to an invited team member, a secure sign-in link is on its way.</p>
-        <button className="auth-text-button" type="button" onClick={() => setSent(false)}>
+        <button className={styles.textButton} type="button" onClick={() => setSent(false)}>
           Use a different email
         </button>
       </div>
@@ -58,7 +59,7 @@ export function MagicLinkForm() {
   }
 
   return (
-    <form className="auth-form" onSubmit={requestLink}>
+    <form className={styles.form} onSubmit={requestLink}>
       <label htmlFor="staff-email">Work email</label>
       <input
         id="staff-email"
@@ -73,15 +74,15 @@ export function MagicLinkForm() {
         required
       />
       {error ? (
-        <p className="auth-alert" role="alert">
+        <p className={styles.alert} role="alert">
           {error}
         </p>
       ) : null}
-      <button className="button button--primary auth-submit" type="submit" disabled={pending}>
+      <button className="button button--primary" type="submit" disabled={pending}>
         {pending ? "Sending link…" : "Email me a sign-in link"}
         <span aria-hidden="true">↗</span>
       </button>
-      <p className="auth-privacy">We’ll only use this email to verify your team access.</p>
+      <p className={styles.privacy}>We’ll only use this email to verify your team access.</p>
     </form>
   );
 }
