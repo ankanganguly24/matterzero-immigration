@@ -5,9 +5,9 @@ import { homeFaqs } from "@/features/home/home-content";
 import { JsonLd } from "@/features/seo/json-ld";
 
 export const metadata: Metadata = {
-  title: "Applicant readiness for immigration teams",
+  title: "One clear case record for immigration teams",
   description:
-    "Move immigration files from first conversation to human review with multilingual intake, document follow-up, and source-linked case context.",
+    "Keep immigration case details traceable across intake and documents. Surface gaps and conflicts for staff review with a focused, one-workflow pilot.",
   alternates: { canonical: "/" },
 };
 
