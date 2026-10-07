@@ -1,4 +1,4 @@
-/* eslint-disable @next/next/no-html-link-for-pages -- Static marketing navigation uses browser links instead of client-side route code. */
+import Link from "next/link";
 import { Container } from "@matterzero/ui";
 
 export function SiteFooter() {
@@ -7,29 +7,29 @@ export function SiteFooter() {
       <Container>
         <div className="site-footer__top">
           <div>
-            <a href="/" className="brand brand--footer">
+            <Link href="/" className="brand brand--footer">
               <span className="brand-mark" aria-hidden="true">
                 <span />
               </span>
               <span className="brand-word">
                 matter<span>zero</span>
               </span>
-            </a>
+            </Link>
             <p>Clearer files. Calmer handoffs.</p>
           </div>
           <div className="footer-links">
             <div>
               <span className="footer-label">Explore</span>
-              <a href="/#how-it-works">How it works</a>
-              <a href="/#teams">For immigration teams</a>
-              <a href="/resources">Field notes</a>
+              <Link href="/#how-it-works">How it works</Link>
+              <Link href="/#teams">For immigration teams</Link>
+              <Link href="/resources">Field notes</Link>
             </div>
             <div>
               <span className="footer-label">Connect</span>
               <a href="https://www.linkedin.com/in/ankanganguly/" target="_blank" rel="noreferrer">
                 Ankan on LinkedIn ↗
               </a>
-              <a href="/#faq">FAQs</a>
+              <Link href="/#faq">FAQs</Link>
             </div>
           </div>
         </div>
