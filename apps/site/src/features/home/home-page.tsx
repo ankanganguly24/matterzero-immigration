@@ -31,13 +31,11 @@ export function HomePage({ ButtonLink, Container, SectionHeading }: HomePageProp
               <span className="eyebrow-dot" /> For Indian immigration consultancies
             </p>
             <h1>
-              One clear case record.
-              <br />
-              <em>Every detail, tied to its source.</em>
+              Know what’s missing from every applicant file.
             </h1>
             <p className="hero__lede">
-              Keep applicant details traceable and current. MatterZero organizes intake answers and
-              documents, then flags missing or conflicting information for your team to review.
+              MatterZero helps your team keep applicant details and documents together, spot gaps or
+              mismatches, and see what needs follow-up.
             </p>
             <div className="button-row">
               <ButtonLink
