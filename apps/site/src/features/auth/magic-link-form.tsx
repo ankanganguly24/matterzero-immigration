@@ -32,7 +32,11 @@ export function MagicLinkForm() {
       });
 
       if (requestError) {
-        setError("We couldn’t send a sign-in link. Check the email and try again.");
+        setError(
+          requestError.code === "over_email_send_rate_limit"
+            ? "Supabase’s test email limit has been reached. Wait up to an hour before requesting another link, then open the newest link once on the device running MatterZero."
+            : "We couldn’t send a sign-in link. Check the email and try again.",
+        );
       } else {
         setSent(true);
       }

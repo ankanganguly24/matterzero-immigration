@@ -2,6 +2,7 @@
   display: grid;
   min-height: min(760px, calc(100svh - 82px));
   place-content: center;
+  justify-items: center;
   gap: 1.5rem;
   padding: clamp(2.5rem, 7vw, 5rem) 1.25rem;
   background:
