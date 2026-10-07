@@ -1,4 +1,4 @@
-import Link from "next/link";
+/* eslint-disable @next/next/no-html-link-for-pages -- The static marketing site uses browser navigation to avoid loading client-side route code. */
 import type { ComponentType, HTMLAttributes, ReactNode } from "react";
 import { articles } from "@/features/resources/articles";
 import { homeFaqs } from "./home-content";
@@ -330,9 +330,9 @@ export function HomePage({ ButtonLink, Container, SectionHeading }: HomePageProp
               Practical guides for collecting information, organizing evidence, and making the
               handoff clearer.
             </SectionHeading>
-            <Link className="text-link" href="/resources">
+            <a className="text-link" href="/resources">
               All resources <span aria-hidden="true">→</span>
-            </Link>
+            </a>
           </div>
           <div className="article-grid article-grid--home">
             {articles.map((article) => (
@@ -341,12 +341,12 @@ export function HomePage({ ButtonLink, Container, SectionHeading }: HomePageProp
                   {article.category} <span aria-hidden="true">·</span> {article.readTime}
                 </p>
                 <h3>
-                  <Link href={`/resources/${article.slug}`}>{article.title}</Link>
+                  <a href={`/resources/${article.slug}`}>{article.title}</a>
                 </h3>
                 <p>{article.description}</p>
-                <Link className="text-link" href={`/resources/${article.slug}`}>
+                <a className="text-link" href={`/resources/${article.slug}`}>
                   Read the guide <span aria-hidden="true">→</span>
-                </Link>
+                </a>
               </article>
             ))}
           </div>
