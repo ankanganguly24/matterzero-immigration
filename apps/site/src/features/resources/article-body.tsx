@@ -4,6 +4,10 @@ export function ArticleBody({ slug }: { slug: string }) {
   if (slug === "organize-before-o1a-consultation") return <O1AArticle />;
   if (slug === "document-requests-applicants-can-follow") return <DocumentRequestsArticle />;
   if (slug === "build-a-clear-employment-timeline") return <TimelineArticle />;
+  if (slug === "immigration-document-checklist-follow-up-system") return <DocumentChasingArticle />;
+  if (slug === "one-case-record-whatsapp-email-crm") return <CaseLedgerArticle />;
+  if (slug === "immigration-case-file-readiness-review-checklist")
+    return <ReadinessReviewArticle />;
   return null;
 }
 
@@ -224,11 +228,483 @@ function TimelineArticle() {
   );
 }
 
+function DocumentChasingArticle() {
+  return (
+    <>
+      <p className="article-callout">
+        <strong>Quick answer:</strong> A useful immigration document checklist names one item per
+        row, explains what a usable copy means, gives it an owner and next date, and tracks it
+        through review. Build it for the applicant’s case type and stage; no universal list fits
+        every matter.
+      </p>
+      <p>
+        “We are still waiting on documents” is not a workable status. A counselor needs to know
+        which item is missing, who asked for it, what the applicant was told, and what should happen
+        next. Without that context, a reminder can go out after the file has arrived—or a critical
+        request can sit unnoticed in someone’s inbox.
+      </p>
+
+      <h2>Write each request so the applicant can act</h2>
+      <p>
+        A request should answer four questions: what do you need, what makes the copy usable, how
+        should the applicant send it, and who can they contact if they cannot provide it? “Send your
+        passport” leaves too much room for guesswork. A case-specific request might say which pages
+        the team needs and where to upload them. The responsible professional should set the actual
+        requirement.
+      </p>
+      <div className="example-request">
+        <span className="example-request__label">A reusable request pattern</span>
+        <p>
+          <strong>[Document or information]</strong>
+          <br />
+          Please send [specific version, pages, date range, or format] through [approved secure
+          channel] by [date]. We need it for [plain-language purpose]. If you do not have it or are
+          unsure what to send, reply to [team contact] and we will record the next step.
+        </p>
+      </div>
+      <p>
+        Keep this as a writing pattern, not a legal checklist. For example, the U.S. Department of
+        State’s immigrant visa interview instructions say applicants should bring original or
+        certified copies of certain civil documents they uploaded to CEAC. That instruction is tied
+        to that process and stage; it should not be copied as a rule for every immigration matter.
+        See the current{" "}
+        <a
+          href="https://travel.state.gov/content/travel/en/us-visas/immigrate/the-immigrant-visa-process/step-10-prepare-for-the-interview/step-11-applicant-interview.html"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Department of State interview guidance
+        </a>
+        .
+      </p>
+
+      <h2>Track the item, not just the message</h2>
+      <p>
+        Give every checklist item one current state, one owner, and a next action. Keep the request
+        and response linked to it so a colleague can take over without reconstructing the
+        conversation.
+      </p>
+      <ul>
+        <li>
+          <strong>Not requested:</strong> the case owner has not asked for it yet.
+        </li>
+        <li>
+          <strong>Requested:</strong> the request was sent; save the channel and timestamp.
+        </li>
+        <li>
+          <strong>Applicant needs help:</strong> someone must clarify the request or find another
+          path.
+        </li>
+        <li>
+          <strong>Received:</strong> a file or answer arrived; this does not mean it has been
+          reviewed.
+        </li>
+        <li>
+          <strong>Review in progress:</strong> the assigned reviewer is checking completeness and
+          context.
+        </li>
+        <li>
+          <strong>Follow-up needed:</strong> record the exact gap and the next request.
+        </li>
+        <li>
+          <strong>Accepted for this checklist item:</strong> a team member confirmed it meets the
+          firm’s operational request.
+        </li>
+      </ul>
+      <p>
+        Avoid a single “complete” checkbox. It hides whether the team received the file, checked the
+        right pages, or decided no further action is needed. If a field is unresolved or
+        conflicting, route it to a person for review using{" "}
+        <Link href="/resources/immigration-case-file-readiness-review-checklist">
+          this case-file readiness checklist
+        </Link>
+        .
+      </p>
+
+      <h2>Use a follow-up rhythm with a stop rule</h2>
+      <p>
+        Agree the reminder cadence with the applicant and the team. A simple operating pattern is:
+        send the request, check that it reached the intended channel, send a polite reminder on the
+        agreed date, then assign an owner if it remains outstanding. The right interval depends on
+        the case timeline, urgency, channel preference, and firm policy; do not invent a deadline or
+        imply that a missed internal date changes legal rights.
+      </p>
+      <ul>
+        <li>Cancel or revise reminders as soon as the item arrives or the request changes.</li>
+        <li>
+          Pause automated chasing when the applicant says they need help, a translation, or more
+          time.
+        </li>
+        <li>
+          Record when a document arrives through a different channel and attach it to the same item.
+        </li>
+        <li>
+          Escalate deadline-sensitive questions to the responsible professional instead of sending
+          another generic nudge.
+        </li>
+      </ul>
+
+      <h2>Keep the checklist case-specific</h2>
+      <p>
+        Start from the firm’s approved workflow and the current official instructions for the
+        relevant process. USCIS form pages and individual form instructions can change and apply to
+        particular filings. They are references for the responsible professional, not a substitute
+        for their review. See{" "}
+        <a
+          href="https://www.uscis.gov/forms/filing-guidance/tips-for-filing-forms-by-mail"
+          target="_blank"
+          rel="noreferrer"
+        >
+          USCIS tips for filing forms by mail
+        </a>
+        .
+      </p>
+      <p>
+        For a wider operational pattern, read{" "}
+        <Link href="/resources/document-requests-applicants-can-follow">
+          how to write document requests applicants can follow
+        </Link>{" "}
+        and{" "}
+        <Link href="/resources/one-case-record-whatsapp-email-crm">
+          how to keep WhatsApp, email, and CRM updates in one case record
+        </Link>
+        . MatterZero is being shaped around this kind of workflow;{" "}
+        <Link href="/#pilot">discuss a one-workflow pilot</Link> to compare it with your team’s
+        process.
+      </p>
+      <p className="article-source">
+        <strong>Official references:</strong>{" "}
+        <a
+          href="https://travel.state.gov/content/travel/en/us-visas/immigrate/the-immigrant-visa-process/step-10-prepare-for-the-interview/step-11-applicant-interview.html"
+          target="_blank"
+          rel="noreferrer"
+        >
+          U.S. Department of State: applicant interview
+        </a>
+        {" · "}
+        <a
+          href="https://www.uscis.gov/forms/filing-guidance/tips-for-filing-forms-by-mail"
+          target="_blank"
+          rel="noreferrer"
+        >
+          USCIS: tips for filing forms by mail
+        </a>
+        . Requirements depend on the specific process and can change. This is operations guidance,
+        not legal advice.
+      </p>
+      <RelatedArticles current="immigration-document-checklist-follow-up-system" />
+    </>
+  );
+}
+
+function CaseLedgerArticle() {
+  return (
+    <>
+      <p className="article-callout">
+        <strong>Quick answer:</strong> Pick the firm’s system of record, then capture each
+        meaningful update there the same day with its source, timestamp, owner, and next action. If
+        a new tool creates a second record that staff must reconcile later, the workflow has not
+        solved the problem.
+      </p>
+      <p>
+        An applicant sends a new employment date on WhatsApp. The CRM still has the old date. A
+        teammate sees the email attachment but not the chat. The next person opens the case and has
+        to decide which version to trust. The underlying problem is not the number of messages: it
+        is that the case state was never updated where the team works.
+      </p>
+
+      <h2>Decide what “the case record” means</h2>
+      <p>
+        A case record is the place the team agrees to rely on for current status and next action. It
+        may be the CRM, a case-management system, or—during an explicitly scoped pilot—a shared
+        ledger connected to the firm’s existing process. Name it before automating anything. Also
+        name which system remains authoritative for client identity, legal deadlines, and official
+        agency notices.
+      </p>
+      <p>
+        The agency record has its own authority. For example, USCIS explains that an online account
+        can show case status, notices, and uploaded evidence for supported cases. A firm’s internal
+        ledger should help staff organize their work; it should never be presented as an official
+        government status source. See{" "}
+        <a href="https://www.uscis.gov/file-online" target="_blank" rel="noreferrer">
+          USCIS online filing and account guidance
+        </a>
+        .
+      </p>
+
+      <h2>Capture a small event when something changes</h2>
+      <p>
+        Treat updates as dated events rather than silently replacing a field. A useful entry can be
+        short, but it should answer: what changed, who reported it, where it came from, when it was
+        received, who recorded it, and what the team should do next.
+      </p>
+      <ul>
+        <li>
+          <strong>Case and item:</strong> identify the matter and the field or checklist item
+          affected.
+        </li>
+        <li>
+          <strong>Reported value:</strong> preserve the wording as received before normalizing it.
+        </li>
+        <li>
+          <strong>Source:</strong> applicant, document, staff note, or official notice; include a
+          secure link or page reference where appropriate.
+        </li>
+        <li>
+          <strong>Received and recorded times:</strong> keep both if a later handoff caused a delay.
+        </li>
+        <li>
+          <strong>Actor and action:</strong> who logged it, what they changed, and who owns the next
+          step.
+        </li>
+        <li>
+          <strong>Review state:</strong> unverified, confirmed, superseded, or needs clarification.
+        </li>
+      </ul>
+      <p>
+        A conversation transcript can help explain how an update arose, but it is not a case ledger.
+        Save only the excerpt or document reference needed for the work, under the firm’s approved
+        access and retention rules.{" "}
+        <Link href="/resources/build-a-clear-employment-timeline">
+          The same source-preserving approach works for dates that disagree across records.
+        </Link>
+      </p>
+
+      <h2>Make “same day” a team habit</h2>
+      <p>
+        Set a service rule for the team: when an update changes a field, document state, or next
+        action, the person who receives it records it before closing that task or hands it to a
+        named owner. At the end of each workday, review the exceptions queue: updates received but
+        not attached, documents without an owner, and conflicts awaiting clarification.
+      </p>
+      <div className="example-request">
+        <span className="example-request__label">Example ledger entry</span>
+        <p>
+          <strong>Employment start date · Needs confirmation</strong>
+          <br />
+          Applicant reported “March 2023” in WhatsApp on 8 October. CV lists April 2023. Both source
+          references saved. Owner: Priya. Next action: ask which date convention the employer letter
+          uses; review due 10 October.
+        </p>
+      </div>
+      <p>
+        This entry keeps the conflict visible. It does not pick a legal answer, and it does not
+        require staff to copy a whole chat into a second system. For a detailed comparison method,
+        use{" "}
+        <Link href="/resources/build-a-clear-employment-timeline">
+          the source-linked timeline guide
+        </Link>{" "}
+        and the{" "}
+        <Link href="/resources/immigration-case-file-readiness-review-checklist">
+          case-file readiness checklist
+        </Link>
+        .
+      </p>
+
+      <h2>Connect different CRMs without promising magic</h2>
+      <p>
+        Firms use different systems, permissions, and data conventions. Start with the smallest
+        reliable handoff the current stack supports: a documented manual entry, a reviewed CSV
+        import/export, or an API connection after mapping and testing the fields. Keep a human owner
+        for failed or ambiguous writes. Do not let a “sync succeeded” message hide an unmapped field
+        or a duplicate case.
+      </p>
+      <p>
+        Before a pilot, write down the case identifier, fields being exchanged, update direction,
+        conflict rule, retry owner, and source of truth. MatterZero’s early pilot is intended to
+        scope one repeatable workflow and its handoff with a team;{" "}
+        <Link href="/#pilot">talk through a one-workflow pilot</Link> before expecting a connection
+        to a particular CRM.
+      </p>
+      <p className="article-source">
+        <strong>Official reference:</strong>{" "}
+        <a href="https://www.uscis.gov/file-online" target="_blank" rel="noreferrer">
+          USCIS: file online and manage supported cases
+        </a>
+        . Use the official source for government case information; this article describes internal
+        team operations and does not give legal advice.
+      </p>
+      <RelatedArticles current="one-case-record-whatsapp-email-crm" />
+    </>
+  );
+}
+
+function ReadinessReviewArticle() {
+  return (
+    <>
+      <p className="article-callout">
+        <strong>Quick answer:</strong> Before professional review, show each requested item’s
+        status, the source behind important facts, any conflicts or uncertainty, and the person who
+        resolved them. “Ready” should mean operationally organized for review—not legally eligible
+        or guaranteed to succeed.
+      </p>
+      <p>
+        A folder can look full and still be hard to review. A document may be missing pages, a date
+        may differ from the applicant’s account, or a translation may not be linked to its original.
+        A readiness review makes those conditions visible before the handoff, so counsel can focus
+        attention where judgment is needed.
+      </p>
+
+      <h2>Use separate states for receipt and review</h2>
+      <p>
+        Avoid treating “uploaded” as “complete.” Track the operational state of each request
+        separately from the legal meaning of the evidence. A compact workflow might use:
+      </p>
+      <ul>
+        <li>
+          <strong>Not requested</strong> — the case owner has not initiated the request.
+        </li>
+        <li>
+          <strong>Requested</strong> — instructions and an owner are recorded.
+        </li>
+        <li>
+          <strong>Received</strong> — a file or answer is linked to the request.
+        </li>
+        <li>
+          <strong>Review needed</strong> — a person must check completeness, legibility, or context.
+        </li>
+        <li>
+          <strong>Follow-up needed</strong> — the reviewer recorded a specific gap and a new action.
+        </li>
+        <li>
+          <strong>Organized for professional review</strong> — the assigned team member completed
+          the agreed operational checks.
+        </li>
+      </ul>
+      <p>
+        The status describes work completed by the team. It does not say an item satisfies a
+        statutory requirement. Requirements vary by form, category, and individual facts; use the
+        current instructions for the relevant process. USCIS publishes checklists inside particular
+        form instructions, such as{" "}
+        <a
+          href="https://www.uscis.gov/sites/default/files/document/forms/i-821instr.pdf"
+          target="_blank"
+          rel="noreferrer"
+        >
+          the Form I-821 instructions
+        </a>
+        . That checklist is specific to that form and edition.
+      </p>
+
+      <h2>Link every important field to its evidence</h2>
+      <p>
+        For fields such as names, dates, employers, addresses, and document validity dates, keep a
+        source reference beside the current value. A reviewer should be able to see the exact file,
+        page, message, or staff record that supports it. Preserve the original wording and precision
+        when it differs from a normalized value.
+      </p>
+      <ul>
+        <li>Field name and current value, with precision where relevant.</li>
+        <li>Source type, file version, page or message timestamp, and date received.</li>
+        <li>Confidence or review status with a plain explanation of why it is uncertain.</li>
+        <li>Earlier values and the event that changed the current value.</li>
+        <li>Reviewer, decision, date, and any follow-up still open.</li>
+      </ul>
+      <p>
+        A confidence score is a triage signal, not proof. Do not let an extraction model silently
+        replace a value or make legal conclusions. Route low-confidence extraction, conflicting
+        sources, and consequential changes to the responsible reviewer. See{" "}
+        <Link href="/resources/build-a-clear-employment-timeline">
+          how to compare mixed date records without erasing their sources
+        </Link>
+        .
+      </p>
+
+      <h2>Make the conflict list the handoff’s first stop</h2>
+      <p>
+        Put unresolved questions in a short queue with the exact difference and the next owner.
+        “Employment date mismatch” is more useful than “data issue”; “CV says April, applicant
+        message says March, employer letter not received” is better still. The reviewer can then
+        decide whether to ask a question, wait for a record, or interpret the discrepancy.
+      </p>
+      <div className="example-request">
+        <span className="example-request__label">Example review note</span>
+        <p>
+          <strong>Needs human clarification · No value selected</strong>
+          <br />
+          Applicant message: March 2023. CV: April 2023. Employer letter: requested, not received.
+          Next owner: case manager. Next action: ask for the employer’s recorded start date and
+          attach the reply to this field.
+        </p>
+      </div>
+
+      <h2>Finish with a bounded handoff</h2>
+      <p>
+        The reviewer should receive a compact summary: items still missing, items received but not
+        checked, fields that disagree, decisions already recorded, and tasks that remain open. Link
+        to source documents instead of sending unexplained copies. Confirm who owns each open item
+        and what the next update should be.
+      </p>
+      <p>
+        The U.S. Department of State explains that immigrant visa applicants must bring certain
+        original or certified civil documents to interview even when copies were uploaded earlier.
+        That example shows why “received” and “ready for this stage” need to remain distinct. Read
+        the current{" "}
+        <a
+          href="https://travel.state.gov/content/travel/en/us-visas/immigrate/the-immigrant-visa-process/step-10-prepare-for-the-interview/step-11-applicant-interview.html"
+          target="_blank"
+          rel="noreferrer"
+        >
+          official interview instructions
+        </a>{" "}
+        for that process, and have a qualified professional decide what applies to a specific
+        matter.
+      </p>
+      <p>
+        If the recurring gap is that updates disappear across channels, start with{" "}
+        <Link href="/resources/one-case-record-whatsapp-email-crm">
+          the one-case-record workflow
+        </Link>
+        . If the team spends its day sending the same request again, use{" "}
+        <Link href="/resources/immigration-document-checklist-follow-up-system">
+          the document follow-up system
+        </Link>
+        . MatterZero is exploring these operational handoffs with early teams;{" "}
+        <Link href="/#pilot">scope a one-workflow pilot</Link> around the process you want to
+        improve.
+      </p>
+      <p className="article-source">
+        <strong>Official references:</strong>{" "}
+        <a
+          href="https://www.uscis.gov/sites/default/files/document/forms/i-821instr.pdf"
+          target="_blank"
+          rel="noreferrer"
+        >
+          USCIS Form I-821 instructions (form-specific example)
+        </a>
+        {" · "}
+        <a
+          href="https://travel.state.gov/content/travel/en/us-visas/immigrate/the-immigrant-visa-process/step-10-prepare-for-the-interview/step-11-applicant-interview.html"
+          target="_blank"
+          rel="noreferrer"
+        >
+          U.S. Department of State: applicant interview
+        </a>
+        . These are examples for specific processes, not a universal checklist. This article is
+        operational guidance, not legal advice.
+      </p>
+      <RelatedArticles current="immigration-case-file-readiness-review-checklist" />
+    </>
+  );
+}
+
 function RelatedArticles({ current }: { current: string }) {
   const related = [
     { slug: "organize-before-o1a-consultation", title: "Organize before an O-1A consultation" },
     { slug: "document-requests-applicants-can-follow", title: "Write clearer document requests" },
     { slug: "build-a-clear-employment-timeline", title: "Build a source-linked timeline" },
+    {
+      slug: "immigration-document-checklist-follow-up-system",
+      title: "Build an immigration document follow-up system",
+    },
+    {
+      slug: "one-case-record-whatsapp-email-crm",
+      title: "Keep WhatsApp, email, and CRM updates in one case record",
+    },
+    {
+      slug: "immigration-case-file-readiness-review-checklist",
+      title: "Review a case file for missing and conflicting evidence",
+    },
   ].filter((item) => item.slug !== current);
   return (
     <aside className="related-articles">
