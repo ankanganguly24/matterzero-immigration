@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import styles from "@/features/auth/auth.module.css";
+import { AuthCallback } from "@/features/auth/auth-callback";
 
 export const metadata: Metadata = {
   title: "Confirm sign in",
@@ -14,10 +15,19 @@ const allowedTypes = new Set(["email", "magiclink", "invite"]);
 export default async function ConfirmSignInPage({
   searchParams,
 }: {
-  searchParams: Promise<{ token_hash?: string; type?: string }>;
+  searchParams: Promise<{ code?: string; token_hash?: string; type?: string }>;
 }) {
-  const { token_hash: tokenHash, type } = await searchParams;
-  if (!tokenHash || !type || !allowedTypes.has(type)) {
+  const { code, token_hash: tokenHash, type } = await searchParams;
+
+  if (code) {
+    return <AuthCallback code={code} />;
+  }
+
+  if (!tokenHash) {
+    return <AuthCallback />;
+  }
+
+  if (!type || !allowedTypes.has(type)) {
     redirect("/login?error=link");
   }
 
