@@ -531,6 +531,8 @@ a {
 }
 .section {
   padding: clamp(4.25rem, 8vw, 7.3rem) 0;
+  content-visibility: auto;
+  contain-intrinsic-size: auto 800px;
 }
 .section-heading {
   max-width: 690px;
