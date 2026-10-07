@@ -27,7 +27,7 @@ export function MagicLinkForm() {
         email: email.trim(),
         options: {
           shouldCreateUser: false,
-          emailRedirectTo: `${window.location.origin}/auth/confirm?next=%2Fauth%2Fcomplete`,
+          emailRedirectTo: `${window.location.origin}/auth/confirm`,
         },
       });
 
