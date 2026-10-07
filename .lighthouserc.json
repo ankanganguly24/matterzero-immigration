@@ -8,7 +8,7 @@
       ],
       "startServerCommand": "pnpm --filter @matterzero/site start",
       "startServerReadyPattern": "Ready",
-      "numberOfRuns": 1
+      "numberOfRuns": 3
     },
     "assert": {
       "assertions": {
