@@ -13,11 +13,11 @@ const sans = localFont({
   variable: "--font-sans",
   weight: "100 1000",
 });
-const display = localFont({
-  src: "../node_modules/@fontsource-variable/fraunces/files/fraunces-latin-wght-normal.woff2",
-  display: "optional",
-  variable: "--font-display",
-  weight: "100 900",
+const heading = localFont({
+  src: "../node_modules/@fontsource-variable/manrope/files/manrope-latin-wght-normal.woff2",
+  display: "swap",
+  variable: "--font-heading",
+  weight: "200 800",
 });
 
 export const metadata: Metadata = {
@@ -80,7 +80,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
 
   return (
     <html lang="en">
-      <body className={`${sans.variable} ${display.variable}`}>
+      <body className={`${sans.variable} ${heading.variable}`}>
         <JsonLd data={organization} />
         <a href="#main-content" className="skip-link">
           Skip to content
