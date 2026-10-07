@@ -15,7 +15,7 @@ const sans = localFont({
 });
 const display = localFont({
   src: "../node_modules/@fontsource-variable/fraunces/files/fraunces-latin-wght-normal.woff2",
-  display: "swap",
+  display: "optional",
   variable: "--font-display",
   weight: "100 900",
 });
