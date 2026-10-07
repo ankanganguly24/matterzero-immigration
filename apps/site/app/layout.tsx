@@ -15,7 +15,7 @@ const sans = localFont({
 });
 const display = localFont({
   src: "../node_modules/@fontsource-variable/fraunces/files/fraunces-latin-wght-normal.woff2",
-  display: "swap",
+  display: "optional",
   variable: "--font-display",
   weight: "100 900",
 });
@@ -23,11 +23,11 @@ const display = localFont({
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "MatterZero | Applicant readiness for immigration teams",
+    default: "MatterZero | One clear case record for immigration teams",
     template: "%s | MatterZero",
   },
   description:
-    "Move immigration files from first conversation to human review with multilingual intake, document follow-up, and source-linked case context.",
+    "Keep immigration case details traceable across intake and documents. Surface gaps and conflicts for staff review.",
   applicationName: "MatterZero",
   icons: {
     icon: [{ url: "/icon", type: "image/png", sizes: "64x64" }],
@@ -36,8 +36,9 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     siteName: "MatterZero",
-    title: "MatterZero | Applicant readiness for immigration teams",
-    description: "A clearer path from applicant intake to a case your team can review.",
+    title: "One clear case record for immigration teams | MatterZero",
+    description:
+      "Keep applicant details traceable across intake and documents, with gaps and conflicts surfaced for staff review.",
     url: "/",
     images: [
       {
@@ -50,8 +51,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "MatterZero",
-    description: "Applicant readiness for immigration teams.",
+    title: "One clear case record | MatterZero",
+    description: "Source-linked case details and clear review steps for immigration teams.",
     images: ["/og.png"],
   },
   robots: {

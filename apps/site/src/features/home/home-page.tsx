@@ -28,32 +28,27 @@ export function HomePage({ ButtonLink, Container, SectionHeading }: HomePageProp
         <Container className="hero__grid">
           <div className="hero__copy">
             <p className="eyebrow eyebrow--light">
-              <span className="eyebrow-dot" /> Applicant readiness for immigration teams
+              <span className="eyebrow-dot" /> For Indian immigration consultancies
             </p>
             <h1>
-              Less chasing.
-              <br />
-              <em>Clearer case files.</em>
+              Know what’s missing from every applicant file.
             </h1>
             <p className="hero__lede">
-              Turn applicant conversations and incoming documents into a structured file your team
-              can review with confidence.
+              MatterZero helps your team keep applicant details and documents together, spot gaps or
+              mismatches, and see what needs follow-up.
             </p>
             <div className="button-row">
-              <ButtonLink href="#how-it-works" variant="light">
-                See how it works
-              </ButtonLink>
-              <a
-                className="hero__text-link"
+              <ButtonLink
                 href="https://www.linkedin.com/in/ankanganguly/"
+                variant="light"
                 target="_blank"
                 rel="noreferrer"
               >
-                Talk about an early pilot <span aria-hidden="true">↗</span>
-              </a>
+                Discuss a one-workflow pilot
+              </ButtonLink>
             </div>
             <p className="hero__note">
-              Designed for Indian immigration consultancies and U.S. immigration law teams.
+              Start with one workflow. Keep your current process. Staff make the decisions.
             </p>
           </div>
           <ReadinessPreview />
@@ -173,20 +168,63 @@ export function HomePage({ ButtonLink, Container, SectionHeading }: HomePageProp
         </Container>
       </section>
 
+      <section className="section section--pilot-safeguards" id="pilot">
+        <Container>
+          <SectionHeading
+            eyebrow="A lower-risk first step"
+            title="See whether it helps before changing the way your whole team works."
+          >
+            A MatterZero pilot starts with one repeatable workflow and a clear boundary around what
+            the product does. You can judge the fit before discussing a wider rollout.
+          </SectionHeading>
+          <div className="pilot-safeguards-grid">
+            <article className="pilot-safeguard">
+              <span>01</span>
+              <h3>One workflow first</h3>
+              <p>Choose a familiar intake or document-follow-up process with your team.</p>
+            </article>
+            <article className="pilot-safeguard">
+              <span>02</span>
+              <h3>Agree the scope up front</h3>
+              <p>
+                Set the case volume, handoff, measures of value, and pilot price before starting.
+              </p>
+            </article>
+            <article className="pilot-safeguard">
+              <span>03</span>
+              <h3>Keep people in control</h3>
+              <p>Staff review uncertain or conflicting details and own every case decision.</p>
+            </article>
+            <article className="pilot-safeguard">
+              <span>04</span>
+              <h3>Check system fit together</h3>
+              <p>
+                Confirm how information will move before the pilot. No universal CRM connection is
+                assumed.
+              </p>
+            </article>
+          </div>
+          <p className="pilot-safeguards-note">
+            MatterZero is in early access development. Pilot capabilities and data handling are
+            confirmed with each team before real applicant records are used.
+          </p>
+        </Container>
+      </section>
+
       <section className="section section--audience" id="teams">
         <Container>
           <SectionHeading
-            eyebrow="Built around real team workflows"
+            eyebrow="Starting with Indian consultancies"
             title="Give the people doing the follow-up a better starting point."
             align="center"
           >
-            One readiness layer for teams that already have a process, a case system, and too many
-            open loops.
+            Built for teams managing recurring applicant intake, document collection, and too many
+            open loops. U.S. immigration law teams are a secondary audience we are exploring.
           </SectionHeading>
           <div className="audience-grid">
             <article className="audience-card">
-              <span className="audience-number">01 / CONSULTANCIES</span>
-              <h3>For immigration consultancies</h3>
+              <span className="audience-number">PRIMARY / INDIA</span>
+              <h3>For Indian immigration consultancies</h3>
               <p>
                 Keep multilingual intake, document requests, and counsellor handoffs moving without
                 asking staff to reconstruct every file from scattered messages.
@@ -198,7 +236,7 @@ export function HomePage({ ButtonLink, Container, SectionHeading }: HomePageProp
               </ul>
             </article>
             <article className="audience-card audience-card--dark">
-              <span className="audience-number">02 / LAW FIRMS</span>
+              <span className="audience-number">ALSO EXPLORING / U.S.</span>
               <h3>For immigration law teams</h3>
               <p>
                 Prepare a better-organized pre-matter file while keeping legal interpretation and
@@ -317,9 +355,9 @@ export function HomePage({ ButtonLink, Container, SectionHeading }: HomePageProp
         <Container className="faq-layout">
           <div>
             <p className="eyebrow">Good to know</p>
-            <h2>Questions teams ask early.</h2>
+            <h2>Clear answers before you try it.</h2>
             <p className="section-copy">
-              Still figuring out how MatterZero fits your workflow? Start with a conversation.
+              Know what the pilot covers, what it does not, and what your team decides.
             </p>
             <a
               className="text-link"
@@ -369,7 +407,7 @@ function ReadinessPreview() {
         <div className="preview-content">
           <div className="preview-title-row">
             <div>
-              <span className="preview-kicker">O-1A PRE-MATTER · MZ-2048</span>
+              <span className="preview-kicker">APPLICANT INTAKE · MZ-2048</span>
               <h2>Applicant overview</h2>
             </div>
             <span className="preview-avatar">AS</span>

@@ -24,7 +24,7 @@ export function SiteHeader() {
           rel="noreferrer"
           className="header-cta"
         >
-          Talk about a pilot
+          Discuss a pilot
         </ButtonLink>
       </Container>
     </header>
