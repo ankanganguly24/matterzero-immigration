@@ -4,6 +4,9 @@ const slugs = [
   "organize-before-o1a-consultation",
   "document-requests-applicants-can-follow",
   "build-a-clear-employment-timeline",
+  "immigration-document-checklist-follow-up-system",
+  "one-case-record-whatsapp-email-crm",
+  "immigration-case-file-readiness-review-checklist",
 ];
 const routes = [
   { path: "/", status: 200, schema: "FAQPage" },

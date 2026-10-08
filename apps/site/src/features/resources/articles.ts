@@ -50,4 +50,37 @@ export const articles: Article[] = [
     date: "2026-10-06",
     author,
   },
+  {
+    slug: "immigration-document-checklist-follow-up-system",
+    shortTitle: "Document follow-up system",
+    title: "An Immigration Document Checklist Applicants Can Complete",
+    description:
+      "Build a case-specific request list, assign an owner, track each document from requested to reviewed, and follow up without losing context across channels.",
+    category: "Document operations",
+    readTime: "5 min read",
+    date: "2026-10-08",
+    author,
+  },
+  {
+    slug: "one-case-record-whatsapp-email-crm",
+    shortTitle: "One case record",
+    title: "Keep WhatsApp, Email, and CRM Updates in One Case Record",
+    description:
+      "A practical same-day workflow for turning scattered applicant updates into a source-linked case ledger without pretending every CRM already integrates.",
+    category: "Case operations",
+    readTime: "5 min read",
+    date: "2026-10-08",
+    author,
+  },
+  {
+    slug: "immigration-case-file-readiness-review-checklist",
+    shortTitle: "File readiness review",
+    title: "Immigration Case File Readiness Review Checklist",
+    description:
+      "Help a reviewer see what is requested, received, incomplete, or in conflict—with a source for every important field and a clear human sign-off.",
+    category: "Review operations",
+    readTime: "5 min read",
+    date: "2026-10-08",
+    author,
+  },
 ];
