@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useState, type SubmitEvent } from "react";
+import { TextField } from "@/components/forms/text-field";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
 import { createClient } from "@/lib/supabase/client";
 import styles from "./auth.module.css";
@@ -11,7 +12,7 @@ export function MagicLinkForm() {
   const [error, setError] = useState("");
   const [pending, setPending] = useState(false);
 
-  async function requestLink(event: FormEvent<HTMLFormElement>) {
+  async function requestLink(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
     setError("");
 
@@ -32,11 +33,17 @@ export function MagicLinkForm() {
       });
 
       if (requestError) {
-        setError(
-          requestError.code === "over_email_send_rate_limit"
-            ? "Supabase’s test email limit has been reached. Wait up to an hour before requesting another link, then open the newest link once on the device running MatterZero."
-            : "We couldn’t send a sign-in link. Check the email and try again.",
-        );
+        if (requestError.code === "over_email_send_rate_limit") {
+          setError(
+            "Supabase’s test email limit has been reached. Wait up to an hour before requesting another link, then open the newest link once on the device running MatterZero.",
+          );
+        } else {
+          setError(
+            process.env.NODE_ENV === "development"
+              ? `We couldn’t send a sign-in link. ${requestError.message}`
+              : "We couldn’t send a sign-in link. Check the email and try again.",
+          );
+        }
       } else {
         setSent(true);
       }
@@ -64,9 +71,9 @@ export function MagicLinkForm() {
 
   return (
     <form className={styles.form} onSubmit={requestLink}>
-      <label htmlFor="staff-email">Work email</label>
-      <input
+      <TextField
         id="staff-email"
+        label="Work email"
         type="email"
         name="email"
         autoComplete="email"
@@ -74,7 +81,7 @@ export function MagicLinkForm() {
         spellCheck={false}
         placeholder="you@company.com"
         value={email}
-        onChange={(event) => setEmail(event.target.value)}
+        onValueChange={setEmail}
         required
       />
       {error ? (

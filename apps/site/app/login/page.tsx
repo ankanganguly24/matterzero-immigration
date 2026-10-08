@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { AuthLayout } from "@/features/auth/auth-layout";
 import { MagicLinkForm } from "@/features/auth/magic-link-form";
 import styles from "@/features/auth/auth.module.css";
 
@@ -17,7 +18,7 @@ export default async function LoginPage({
   const { error } = await searchParams;
 
   return (
-    <main id="main-content" className={styles.page}>
+    <AuthLayout>
       <section className={styles.card} aria-labelledby="auth-heading">
         <Link href="/" className={styles.brand} aria-label="MatterZero home">
           <span className="brand-mark" aria-hidden="true">
@@ -40,9 +41,6 @@ export default async function LoginPage({
         <MagicLinkForm />
         <p className={styles.footnote}>Access is currently by invitation only.</p>
       </section>
-      <p className={styles.legal}>
-        MatterZero organizes information for professional review. It does not provide legal advice.
-      </p>
-    </main>
+    </AuthLayout>
   );
 }

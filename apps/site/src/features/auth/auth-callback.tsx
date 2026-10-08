@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { AuthLayout } from "@/features/auth/auth-layout";
 import { createClient } from "@/lib/supabase/client";
 import styles from "./auth.module.css";
 
@@ -63,12 +64,12 @@ export function AuthCallback({ code }: { code?: string }) {
   }, [code]);
 
   return (
-    <main id="main-content" className={styles.page}>
+    <AuthLayout>
       <section className={styles.card} aria-live="polite">
         <p className={styles.eyebrow}>TEAM ACCESS</p>
         <h1>Completing sign in</h1>
         <p className={styles.intro}>{message}</p>
       </section>
-    </main>
+    </AuthLayout>
   );
 }

@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
+import { isMatterZeroAdmin } from "@/lib/admin/authorization";
 import { createClient } from "@/lib/supabase/server";
+import { AuthLayout } from "@/features/auth/auth-layout";
 import styles from "@/features/auth/auth.module.css";
 
 export const dynamic = "force-dynamic";
@@ -14,9 +16,10 @@ export default async function AuthCompletePage() {
   const supabase = await createClient();
   const { data, error } = await supabase.auth.getClaims();
   if (error || !data?.claims) redirect("/login");
+  if (isMatterZeroAdmin(data.claims.email)) redirect("/admin");
 
   return (
-    <main id="main-content" className={styles.page}>
+    <AuthLayout>
       <section className={`${styles.card} ${styles.complete}`} aria-labelledby="auth-heading">
         <span className={styles.successIcon} aria-hidden="true">
           ✓
@@ -32,6 +35,6 @@ export default async function AuthCompletePage() {
           </button>
         </form>
       </section>
-    </main>
+    </AuthLayout>
   );
 }

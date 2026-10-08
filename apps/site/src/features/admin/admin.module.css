@@ -1,0 +1,112 @@
+.card {
+  width: min(100%, 540px);
+  padding: clamp(1.5rem, 5vw, 2.5rem);
+  border: 1px solid rgba(28, 41, 37, 0.08);
+  border-radius: 1.5rem;
+  background: #fffefa;
+  box-shadow: 0 24px 72px rgba(28, 41, 37, 0.09);
+}
+
+.eyebrow {
+  margin: 0 0 0.55rem;
+  color: var(--color-forest);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+.card h1 {
+  margin: 0;
+  color: var(--color-ink);
+  font-size: clamp(2rem, 7vw, 2.8rem);
+  font-weight: 600;
+  letter-spacing: -0.045em;
+  line-height: 1.08;
+}
+
+.description {
+  margin: 0.9rem 0 1.5rem;
+  color: #57645d;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.form {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+}
+
+.form button,
+.card > button {
+  width: 100%;
+  margin-top: 0.25rem;
+}
+
+.form button:disabled,
+.card > button:disabled {
+  cursor: wait;
+  opacity: 0.7;
+}
+
+.note {
+  margin: 0.9rem 0 0;
+  color: #68766e;
+  font-size: 0.8rem;
+  line-height: 1.55;
+}
+
+.error,
+.success {
+  margin: 0;
+  padding: 0.75rem 0.85rem;
+  border: 1px solid #ecc8bb;
+  border-radius: 0.7rem;
+  background: #fff5f0;
+  color: #7c3523;
+  font-size: 0.84rem;
+  line-height: 1.5;
+}
+
+.success {
+  border-color: #cdddb0;
+  background: #f2f8e8;
+  color: #304d32;
+}
+
+.setup {
+  display: grid;
+  justify-items: start;
+  gap: 0.6rem;
+  margin-top: 1.25rem;
+}
+
+.qr {
+  width: min(100%, 240px);
+  height: auto;
+  padding: 0.5rem;
+  border: 1px solid #e2e8df;
+  border-radius: 0.8rem;
+  background: white;
+}
+
+.setup details {
+  width: 100%;
+  color: #57645d;
+  font-size: 0.85rem;
+}
+
+.setup summary {
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.secret {
+  overflow-wrap: anywhere;
+  padding: 0.7rem;
+  border-radius: 0.5rem;
+  background: #f3f4ef;
+  color: var(--color-ink);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.82rem;
+}
