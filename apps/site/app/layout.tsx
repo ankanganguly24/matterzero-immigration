@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
+import { PageTracker } from "@/features/analytics/page-tracker";
 import "@matterzero/design-tokens/theme.css";
 import "./globals.css";
 
@@ -68,6 +69,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <a href="#main-content" className="skip-link">
           Skip to content
         </a>
+        <PageTracker />
         {children}
       </body>
     </html>

@@ -45,6 +45,10 @@ pnpm build
 
 GitHub Actions runs these checks on pull requests and pushes to `main`.
 
+## Product analytics
+
+Optional PostHog analytics tracks a limited marketing and pilot-access funnel. It does not record form values or applicant data. See [analytics setup and event definitions](docs/analytics.md) before enabling it in Vercel.
+
 ## Staff authentication
 
 The first private-app slice is invite-only email sign-in, minimal pilot requests, and a single-admin review dashboard. Follow [the Supabase authentication setup](docs/auth-setup.md) to configure the project, email templates, and local environment variables. There is no team workspace or applicant data model yet.
