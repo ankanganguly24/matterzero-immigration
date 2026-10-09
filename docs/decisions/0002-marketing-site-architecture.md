@@ -24,4 +24,4 @@ Aim for a fast mobile experience with no layout shift. Keep fonts self-hosted, a
 
 ## Open deployment item
 
-The canonical production domain is not known. Set `NEXT_PUBLIC_SITE_URL` in hosting before deployment. Do not publish localhost or the CI `.invalid` origin as the canonical URL.
+The current production origin is `https://matterzero.vercel.app`. Set `NEXT_PUBLIC_SITE_URL` to that Vercel project domain until a custom domain is configured. Do not publish localhost or the CI `.invalid` origin as the canonical URL.

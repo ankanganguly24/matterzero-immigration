@@ -18,13 +18,8 @@ export function SiteHeader() {
           <Link href="/#teams">Who it helps</Link>
           <Link href="/resources">Field notes</Link>
         </nav>
-        <ButtonLink
-          href="https://www.linkedin.com/in/ankanganguly/"
-          target="_blank"
-          rel="noreferrer"
-          className="header-cta"
-        >
-          Discuss a pilot
+        <ButtonLink href="/request-pilot" className="header-cta">
+          Request a pilot
         </ButtonLink>
       </Container>
     </header>

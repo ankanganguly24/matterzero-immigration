@@ -30,9 +30,7 @@ export function HomePage({ ButtonLink, Container, SectionHeading }: HomePageProp
             <p className="eyebrow eyebrow--light">
               <span className="eyebrow-dot" /> For Indian immigration consultancies
             </p>
-            <h1>
-              Know what’s missing from every applicant file.
-            </h1>
+            <h1>Know what’s missing from every applicant file.</h1>
             <p className="hero__lede">
               MatterZero helps your team keep applicant details and documents together, spot gaps or
               mismatches, and see what needs follow-up.
@@ -292,13 +290,8 @@ export function HomePage({ ButtonLink, Container, SectionHeading }: HomePageProp
               workflows, and actual staff time saved. No oversized platform bundle. No made-up
               savings claims.
             </p>
-            <ButtonLink
-              href="https://www.linkedin.com/in/ankanganguly/"
-              variant="light"
-              target="_blank"
-              rel="noreferrer"
-            >
-              Discuss a pilot
+            <ButtonLink href="/request-pilot" variant="light">
+              Request a pilot
             </ButtonLink>
           </div>
           <div className="pricing-aside">

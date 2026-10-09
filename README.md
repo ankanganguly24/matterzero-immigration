@@ -33,7 +33,7 @@ cp .env.example apps/site/.env.local
 pnpm dev
 ```
 
-Set `NEXT_PUBLIC_SITE_URL` to the canonical public origin before production deployment. The default local value must not be used in production.
+Until a custom domain is configured, set `NEXT_PUBLIC_SITE_URL` to `https://matterzero.vercel.app` in Vercel Production. Marketing, sign-in, admin, and dashboard routes share this origin. Locally, use `http://localhost:3000`.
 
 ## Quality checks
 
@@ -47,7 +47,11 @@ GitHub Actions runs these checks on pull requests and pushes to `main`.
 
 ## Staff authentication
 
-The first private-app slice is invite-only email sign-in. Follow [the Supabase authentication setup](docs/auth-setup.md) to configure a project, email templates, and local environment variables. No dashboard or applicant records are included yet.
+The first private-app slice is invite-only email sign-in, minimal pilot requests, and a single-admin review dashboard. Follow [the Supabase authentication setup](docs/auth-setup.md) to configure the project, email templates, and local environment variables. There is no team workspace or applicant data model yet.
+
+## Database layer
+
+Server-side application data uses Drizzle ORM with Supabase Postgres. Supabase JS remains the Auth client and handles the public pilot-request insert under RLS. Keep `DATABASE_URL` server-only; use the documented one-time Drizzle baseline before generating and applying future schema migrations. This milestone has no case or applicant data model yet.
 
 ## Content and authorship
 
