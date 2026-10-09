@@ -26,10 +26,12 @@ export function PilotRequests() {
       if (!response.ok) throw new Error(result.error ?? "Pilot requests could not be loaded.");
       setRequests(result.requests ?? []);
       setError("");
+      return true;
     } catch (loadError) {
       setError(
         loadError instanceof Error ? loadError.message : "Pilot requests could not be loaded.",
       );
+      return false;
     } finally {
       setLoading(false);
     }
@@ -43,6 +45,7 @@ export function PilotRequests() {
   async function review(id: string, action: "approve" | "decline") {
     setPendingId(id);
     setError("");
+    let reviewError = "";
     try {
       const response = await fetch(`/api/admin/pilot-requests/${id}`, {
         method: "POST",
@@ -50,15 +53,21 @@ export function PilotRequests() {
         body: JSON.stringify({ action }),
       });
       const result = (await response.json()) as { error?: string };
-      if (!response.ok) throw new Error(result.error ?? "The request could not be reviewed.");
-      await load();
-    } catch (reviewError) {
-      setError(
-        reviewError instanceof Error ? reviewError.message : "The request could not be reviewed.",
-      );
-    } finally {
-      setPendingId("");
+      if (!response.ok) reviewError = result.error ?? "The request could not be reviewed.";
+    } catch (caughtError) {
+      reviewError =
+        caughtError instanceof Error ? caughtError.message : "The request could not be reviewed.";
     }
+
+    const refreshed = await load();
+    if (reviewError) {
+      setError(
+        refreshed
+          ? reviewError
+          : `${reviewError} The request list could not be refreshed; try reloading the page.`,
+      );
+    }
+    setPendingId("");
   }
 
   return (
@@ -68,7 +77,11 @@ export function PilotRequests() {
           {error}
         </p>
       ) : null}
-      {loading ? <p className={styles.note} role="status">Loading pilot requests…</p> : null}
+      {loading ? (
+        <p className={styles.note} role="status">
+          Loading pilot requests…
+        </p>
+      ) : null}
       {!loading && requests.length === 0 && !error ? (
         <p className={styles.note}>No pilot requests yet.</p>
       ) : null}
