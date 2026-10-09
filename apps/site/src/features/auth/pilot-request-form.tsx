@@ -2,6 +2,7 @@
 
 import { useState, type SubmitEvent } from "react";
 import { TextField } from "@/components/forms/text-field";
+import { captureEvent } from "@/lib/analytics/posthog";
 import styles from "./auth.module.css";
 
 export function PilotRequestForm() {
@@ -23,9 +24,13 @@ export function PilotRequestForm() {
         body: JSON.stringify({ email, organization }),
       });
       const result = (await response.json()) as { message?: string; error?: string };
-      if (!response.ok && response.status !== 409)
+      if (!response.ok && response.status !== 409) {
+        captureEvent("pilot_request_failed");
         setError(result.error ?? "Your request could not be sent.");
-      else {
+      } else {
+        captureEvent(
+          response.status === 409 ? "pilot_request_already_on_file" : "pilot_request_submitted",
+        );
         setAlreadyOnFile(response.status === 409);
         setMessage(
           result.message ?? "Your request is on file. The team will follow up after review.",
@@ -34,6 +39,7 @@ export function PilotRequestForm() {
         setOrganization("");
       }
     } catch {
+      captureEvent("pilot_request_failed");
       setError("Could not reach MatterZero. Check your connection and try again.");
     } finally {
       setPending(false);

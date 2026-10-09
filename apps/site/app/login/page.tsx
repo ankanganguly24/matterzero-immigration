@@ -39,7 +39,10 @@ export default async function LoginPage({
         ) : null}
         <MagicLinkForm />
         <p className={styles.footnote}>
-          Access is by invitation only. <Link href="/request-pilot">Request a pilot</Link>
+          Access is by invitation only.{" "}
+          <Link href="/request-pilot" data-analytics-event="pilot_from_sign_in_clicked">
+            Request a pilot
+          </Link>
         </p>
       </section>
     </AuthLayout>
