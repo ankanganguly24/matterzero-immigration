@@ -2,6 +2,7 @@ import { sql } from "drizzle-orm";
 import {
   check,
   index,
+  integer,
   pgPolicy,
   pgTable,
   text,
@@ -12,6 +13,20 @@ import {
 
 export const pilotRequestStatuses = ["pending", "approved", "declined"] as const;
 export type PilotRequestStatus = (typeof pilotRequestStatuses)[number];
+
+export const apiRateLimits = pgTable(
+  "api_rate_limits",
+  {
+    key: text("key").primaryKey(),
+    requestCount: integer("request_count").notNull(),
+    expiresAt: timestamp("expires_at", { withTimezone: true, mode: "date" }).notNull(),
+  },
+  (table) => [
+    check("api_rate_limits_key_length", sql`char_length(${table.key}) = 64`),
+    check("api_rate_limits_request_count_positive", sql`${table.requestCount} > 0`),
+    index("api_rate_limits_expires_at_idx").on(table.expiresAt),
+  ],
+).enableRLS();
 
 export const accessGrants = pgTable(
   "access_grants",

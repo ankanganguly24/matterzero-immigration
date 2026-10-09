@@ -2,12 +2,27 @@ import { NextResponse, type NextRequest } from "next/server";
 import { eq } from "drizzle-orm";
 import { getDb } from "@/lib/db";
 import { accessGrants } from "@/lib/db/schema";
+import { enforceRateLimit } from "@/lib/security/rate-limit";
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export async function POST(request: NextRequest) {
   if (request.headers.get("origin") !== request.nextUrl.origin) {
     return NextResponse.json({ error: "Request origin was rejected." }, { status: 403 });
+  }
+
+  try {
+    const throttled = await enforceRateLimit(request, {
+      scope: "auth-access-check",
+      limit: 20,
+      windowMs: 10 * 60 * 1000,
+    });
+    if (throttled) return throttled;
+  } catch {
+    return NextResponse.json(
+      { error: "Request throttling is temporarily unavailable. Please try again shortly." },
+      { status: 503, headers: { "Cache-Control": "no-store" } },
+    );
   }
 
   let body: unknown;

@@ -8,6 +8,7 @@ export function PilotRequestForm() {
   const [email, setEmail] = useState("");
   const [organization, setOrganization] = useState("");
   const [message, setMessage] = useState("");
+  const [alreadyOnFile, setAlreadyOnFile] = useState(false);
   const [error, setError] = useState("");
   const [pending, setPending] = useState(false);
 
@@ -22,9 +23,13 @@ export function PilotRequestForm() {
         body: JSON.stringify({ email, organization }),
       });
       const result = (await response.json()) as { message?: string; error?: string };
-      if (!response.ok) setError(result.error ?? "Your request could not be sent.");
+      if (!response.ok && response.status !== 409)
+        setError(result.error ?? "Your request could not be sent.");
       else {
-        setMessage(result.message ?? "Thanks. Your request has been received.");
+        setAlreadyOnFile(response.status === 409);
+        setMessage(
+          result.message ?? "Your request is on file. The team will follow up after review.",
+        );
         setEmail("");
         setOrganization("");
       }
@@ -41,7 +46,7 @@ export function PilotRequestForm() {
         <span className={styles.successIcon} aria-hidden="true">
           ✓
         </span>
-        <h2>Request received</h2>
+        <h2>{alreadyOnFile ? "Request already on file" : "Request received"}</h2>
         <p>{message}</p>
       </div>
     );

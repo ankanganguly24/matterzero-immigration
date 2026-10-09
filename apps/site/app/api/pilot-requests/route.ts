@@ -3,6 +3,7 @@ import { eq } from "drizzle-orm";
 import { createClient as createSupabaseClient } from "@supabase/supabase-js";
 import { getDb } from "@/lib/db";
 import { pilotRequests } from "@/lib/db/schema";
+import { enforceRateLimit } from "@/lib/security/rate-limit";
 import { getSupabaseConfig } from "@/lib/supabase/config";
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -10,6 +11,20 @@ const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 export async function POST(request: NextRequest) {
   if (request.headers.get("origin") !== request.nextUrl.origin) {
     return NextResponse.json({ error: "Request origin was rejected." }, { status: 403 });
+  }
+
+  try {
+    const throttled = await enforceRateLimit(request, {
+      scope: "pilot-request",
+      limit: 5,
+      windowMs: 60 * 60 * 1000,
+    });
+    if (throttled) return throttled;
+  } catch {
+    return NextResponse.json(
+      { error: "Request throttling is temporarily unavailable. Please try again shortly." },
+      { status: 503, headers: { "Cache-Control": "no-store" } },
+    );
   }
 
   let body: unknown;
@@ -50,7 +65,10 @@ export async function POST(request: NextRequest) {
       .limit(1);
     if (existingRequest) {
       return NextResponse.json(
-        { error: "A pilot request has already been submitted with this email. Contact MatterZero if you need to update it." },
+        {
+          message:
+            "Your request is already on file. The team will follow up after review; you don’t need to submit another.",
+        },
         { status: 409, headers: { "Cache-Control": "no-store" } },
       );
     }
@@ -62,13 +80,16 @@ export async function POST(request: NextRequest) {
     const { error } = await supabase.from("pilot_requests").insert({ email, organization });
     if (error?.code === "23505") {
       return NextResponse.json(
-        { error: "A pilot request has already been submitted with this email. Contact MatterZero if you need to update it." },
+        {
+          message:
+            "Your request is already on file. The team will follow up after review; you don’t need to submit another.",
+        },
         { status: 409, headers: { "Cache-Control": "no-store" } },
       );
     }
     if (error) throw error;
     return NextResponse.json(
-      { message: "Thanks. Your request has been received." },
+      { message: "Your request is on file. The team will follow up after review." },
       { status: 200, headers: { "Cache-Control": "no-store" } },
     );
   } catch {
