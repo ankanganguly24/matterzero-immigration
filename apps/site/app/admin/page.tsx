@@ -1,66 +1,48 @@
 import type { Metadata } from "next";
-import { notFound, redirect } from "next/navigation";
-import { InviteForm } from "@/features/admin/invite-form";
-import { AdminMfaGate } from "@/features/admin/admin-mfa-gate";
-import { isMatterZeroAdmin } from "@/lib/admin/authorization";
-import { createClient } from "@/lib/supabase/server";
-import { AuthLayout } from "@/features/auth/auth-layout";
+import Link from "next/link";
 import styles from "@/features/admin/admin.module.css";
 
-export const dynamic = "force-dynamic";
+export const metadata: Metadata = { title: "Overview", robots: { index: false, follow: false } };
 
-export const metadata: Metadata = {
-  title: "Admin access",
-  robots: { index: false, follow: false },
-};
-
-export default async function AdminPage() {
-  const supabase = await createClient();
-  const { data, error } = await supabase.auth.getClaims();
-  const claims = data?.claims;
-
-  if (error || !claims?.sub) redirect("/login");
-  if (!process.env.MATTERZERO_ADMIN_EMAIL) {
-    return (
-      <AuthLayout>
-        <section className={styles.card}>
-          <p className={styles.eyebrow}>ADMIN SETUP</p>
-          <h1>Admin access is not configured</h1>
-          <p className={styles.description}>
-            Add the server-only MATTERZERO_ADMIN_EMAIL setting to apps/site/.env.local, then restart
-            the dev server.
-          </p>
-        </section>
-      </AuthLayout>
-    );
-  }
-  if (!isMatterZeroAdmin(claims.email)) notFound();
-
-  const email = typeof claims.email === "string" ? claims.email : "admin";
-  const isVerifiedWithMfa = claims.aal === "aal2";
-
+export default function AdminPage() {
   return (
-    <AuthLayout>
-      {isVerifiedWithMfa ? (
-        <section className={styles.card} aria-labelledby="admin-heading">
-          <p className={styles.eyebrow}>MATTERZERO · ADMIN</p>
-          <h1 id="admin-heading">Invite a pilot teammate</h1>
-          <p className={styles.description}>
-            Send an invitation to someone on a pilot team. Only your allowlisted admin account with
-            verified authenticator MFA can send invitations.
-          </p>
-          {process.env.SUPABASE_SECRET_KEY ? (
-            <InviteForm />
-          ) : (
-            <p className={styles.error} role="alert">
-              Add the server-only SUPABASE_SECRET_KEY to apps/site/.env.local, then restart the dev
-              server. Never prefix this key with NEXT_PUBLIC_.
-            </p>
-          )}
-        </section>
-      ) : (
-        <AdminMfaGate email={email} />
-      )}
-    </AuthLayout>
+    <div className={styles.page}>
+      <div className={styles.pageHeading}>
+        <div>
+          <p className={styles.eyebrow}>ADMIN WORKSPACE</p>
+          <h1 className={styles.pageTitle}>Overview</h1>
+          <p className={styles.pageDescription}>A clear view of pilot access and the next action for your team.</p>
+        </div>
+        <Link className={styles.primaryLink} href="/admin/pilot">Open pilot workspace <span aria-hidden="true">→</span></Link>
+      </div>
+
+      <section className={styles.overviewGrid} aria-label="Workspace shortcuts">
+        <Link className={styles.overviewCard} href="/admin/pilot#requests">
+          <span className={styles.overviewIcon} aria-hidden="true">01</span>
+          <span className={styles.overviewCardBody}>
+            <span className={styles.overviewCardTitle}>Pilot requests</span>
+            <span className={styles.overviewCardDescription}>Review new teams and decide who is ready to join.</span>
+          </span>
+          <span className={styles.cardArrow} aria-hidden="true">↗</span>
+        </Link>
+        <Link className={styles.overviewCard} href="/admin/pilot#invite">
+          <span className={styles.overviewIcon} aria-hidden="true">02</span>
+          <span className={styles.overviewCardBody}>
+            <span className={styles.overviewCardTitle}>Invite a teammate</span>
+            <span className={styles.overviewCardDescription}>Send a secure sign-in link to an approved team member.</span>
+          </span>
+          <span className={styles.cardArrow} aria-hidden="true">↗</span>
+        </Link>
+      </section>
+
+      <section className={styles.overviewNote}>
+        <span className={styles.noteDot} aria-hidden="true" />
+        <div>
+          <h2>Pilot access</h2>
+          <p>Requests and invitations are managed together. Approving a request grants access and sends an invitation.</p>
+        </div>
+        <Link href="/admin/pilot">Go to Pilot <span aria-hidden="true">→</span></Link>
+      </section>
+    </div>
   );
 }

@@ -2,9 +2,6 @@ import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import "@matterzero/design-tokens/theme.css";
 import "./globals.css";
-import { SiteFooter } from "@/features/shell/site-footer";
-import { SiteHeader } from "@/features/shell/site-header";
-import { JsonLd } from "@/features/seo/json-ld";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 const sans = localFont({
@@ -65,29 +62,13 @@ export const metadata: Metadata = {
 export const viewport: Viewport = { themeColor: "#f8f7f2", width: "device-width", initialScale: 1 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  const organization = {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    name: "MatterZero",
-    url: siteUrl,
-    description: "Applicant readiness workflows for immigration teams.",
-    founder: {
-      "@type": "Person",
-      name: "Ankan Ganguly",
-      sameAs: "https://www.linkedin.com/in/ankanganguly/",
-    },
-  };
-
   return (
     <html lang="en">
       <body className={`${sans.variable} ${heading.variable}`}>
-        <JsonLd data={organization} />
         <a href="#main-content" className="skip-link">
           Skip to content
         </a>
-        <SiteHeader />
         {children}
-        <SiteFooter />
       </body>
     </html>
   );

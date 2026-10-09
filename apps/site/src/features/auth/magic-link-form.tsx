@@ -21,14 +21,39 @@ export function MagicLinkForm() {
       return;
     }
 
+    const siteUrl =
+      process.env.NEXT_PUBLIC_SITE_URL ||
+      (process.env.NODE_ENV === "development" ? window.location.origin : "");
+    if (!siteUrl) {
+      setError("The MatterZero site URL is not configured yet. Please try again later.");
+      return;
+    }
+
     setPending(true);
     try {
+      const accessResponse = await fetch("/api/auth/check-access", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: email.trim() }),
+      });
+      const accessResult: { code?: string; error?: string } = await accessResponse.json();
+      if (accessResponse.status === 403 && accessResult.code === "access_not_configured") {
+        setError(
+          "Access isn’t set up for this email yet. Ask your MatterZero admin to invite you, or request a pilot.",
+        );
+        return;
+      }
+      if (!accessResponse.ok) {
+        setError(accessResult.error || "We couldn’t verify access right now. Please try again shortly.");
+        return;
+      }
+
       const supabase = createClient();
       const { error: requestError } = await supabase.auth.signInWithOtp({
         email: email.trim(),
         options: {
           shouldCreateUser: false,
-          emailRedirectTo: `${window.location.origin}/auth/confirm`,
+          emailRedirectTo: new URL("/auth/confirm", siteUrl).toString(),
         },
       });
 
@@ -61,7 +86,7 @@ export function MagicLinkForm() {
           ✓
         </span>
         <h2>Check your inbox</h2>
-        <p>If that email belongs to an invited team member, a secure sign-in link is on its way.</p>
+        <p>A secure sign-in link is on its way. Check your inbox, including spam or junk.</p>
         <button className={styles.textButton} type="button" onClick={() => setSent(false)}>
           Use a different email
         </button>

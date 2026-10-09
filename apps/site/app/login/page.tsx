@@ -16,7 +16,6 @@ export default async function LoginPage({
   searchParams: Promise<{ error?: string }>;
 }) {
   const { error } = await searchParams;
-
   return (
     <AuthLayout>
       <section className={styles.card} aria-labelledby="auth-heading">
@@ -39,7 +38,9 @@ export default async function LoginPage({
           </p>
         ) : null}
         <MagicLinkForm />
-        <p className={styles.footnote}>Access is currently by invitation only.</p>
+        <p className={styles.footnote}>
+          Access is by invitation only. <Link href="/request-pilot">Request a pilot</Link>
+        </p>
       </section>
     </AuthLayout>
   );
