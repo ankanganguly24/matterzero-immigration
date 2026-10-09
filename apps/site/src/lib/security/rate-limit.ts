@@ -63,11 +63,12 @@ export async function enforceRateLimit(
       target: apiRateLimits.key,
       set: {
         requestCount: sql`case
-          when ${apiRateLimits.expiresAt} <= ${now} then 1
+          when ${apiRateLimits.expiresAt} <= now() then 1
           else least(${apiRateLimits.requestCount} + 1, ${limit + 1})
         end`,
         expiresAt: sql`case
-          when ${apiRateLimits.expiresAt} <= ${now} then ${expiresAt}
+          when ${apiRateLimits.expiresAt} <= now()
+            then now() + (${windowMs} * interval '1 millisecond')
           else ${apiRateLimits.expiresAt}
         end`,
       },
