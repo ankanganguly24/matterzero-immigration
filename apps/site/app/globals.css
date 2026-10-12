@@ -107,6 +107,9 @@ a {
 .brand-word span {
   color: var(--color-forest);
 }
+.mobile-menu {
+  display: none;
+}
 .main-nav {
   display: flex;
   align-items: center;
@@ -1443,26 +1446,74 @@ a {
   }
   .site-header__inner {
     min-height: 72px;
-    flex-wrap: wrap;
-    gap: 0.7rem 1rem;
+    flex-wrap: nowrap;
+    gap: 0.7rem;
     padding-block: 0.8rem;
   }
   .brand-word {
     font-size: 1rem;
   }
   .main-nav {
-    order: 3;
-    width: 100%;
-    justify-content: space-between;
-    gap: 0.6rem;
-    padding-top: 0.35rem;
-    font-size: 0.76rem;
+    display: none;
   }
   .header-cta {
     min-height: 38px;
     margin-left: auto;
     padding: 0.55rem 0.78rem;
     font-size: 0.72rem;
+  }
+  .mobile-menu {
+    display: block;
+    flex-shrink: 0;
+  }
+  .mobile-menu__trigger {
+    display: inline-flex;
+    width: 42px;
+    height: 42px;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: 1px solid #cfd7d0;
+    border-radius: var(--radius-pill);
+    background: transparent;
+    color: var(--color-forest-deep);
+    font: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .mobile-menu__icon {
+    font-size: 1.35rem;
+    line-height: 1;
+  }
+  .mobile-menu__panel {
+    position: absolute;
+    z-index: 20;
+    top: calc(100% + 0.25rem);
+    right: 1rem;
+    display: flex;
+    width: min(20rem, calc(100vw - 2rem));
+    flex-direction: column;
+    gap: 0.15rem;
+    padding: 0.65rem;
+    border: 1px solid #d5ddd6;
+    border-radius: var(--radius-card);
+    background: var(--color-paper);
+    box-shadow: var(--shadow-soft);
+  }
+  .mobile-menu__panel[hidden] {
+    display: none;
+  }
+  .mobile-menu__panel > a {
+    padding: 0.7rem 0.75rem;
+    border-radius: 0.55rem;
+    color: #4f5c56;
+    font-size: 0.92rem;
+    font-weight: 600;
+  }
+  .mobile-menu__panel > a:hover {
+    background: #eef2ed;
+    color: var(--color-forest);
   }
   .hero {
     padding-block: 4rem 4.8rem;
@@ -1652,8 +1703,17 @@ a {
   }
 }
 @media (max-width: 390px) {
-  .main-nav {
+  .brand-word {
+    font-size: 0.92rem;
+  }
+  .header-cta {
+    min-height: 36px;
+    padding: 0.48rem 0.65rem;
     font-size: 0.68rem;
+  }
+  .mobile-menu__trigger {
+    width: 40px;
+    height: 40px;
   }
   .preview-content {
     padding: 0.85rem;
