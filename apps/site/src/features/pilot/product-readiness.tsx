@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Container } from "@matterzero/ui";
-import styles from "./pilot-information.module.css";
+import styles from "./product-readiness.module.css";
 
 const readinessRows = [
   {
