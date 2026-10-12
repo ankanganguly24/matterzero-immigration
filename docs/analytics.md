@@ -12,29 +12,29 @@ The SDK loads after hydration. Ad blockers and browser privacy settings can prev
 
 ## Events
 
-| Event                           | When it fires                                                                   |
-| ------------------------------- | ------------------------------------------------------------------------------- |
-| `$pageview`                     | Public home, resources, request-pilot, and sign-in pages only                   |
-| `pilot_cta_header_clicked`      | Header pilot CTA                                                                |
-| `pilot_cta_pricing_clicked`     | Early-access section pilot CTA                                                  |
-| `pilot_discussion_hero_clicked` | Hero pilot discussion link                                                      |
-| `sign_in_header_clicked`        | Marketing header sign-in link                                                   |
-| `sign_in_from_pilot_clicked`    | Sign-in link on request-pilot page                                              |
-| `pilot_from_sign_in_clicked`    | Pilot link on sign-in page                                                      |
-| `pilot_request_submitted`       | A new pilot request is accepted                                                 |
-| `pilot_request_already_on_file` | A duplicate pilot request receives the existing-request confirmation            |
-| `pilot_request_failed`          | The request could not be completed                                              |
-| `sign_in_link_requested`        | Supabase accepts a magic-link request; this does not prove delivery or link use |
-| `sign_in_access_not_configured` | Server denies an email without an access grant                                  |
-| `sign_in_link_request_failed`   | Access check or magic-link request fails                                        |
-| `team_access_verified`          | A signed-in pilot user reaches the access-verified page                         |
+| Event                           | When it fires                                                                                  |
+| ------------------------------- | ---------------------------------------------------------------------------------------------- |
+| `$pageview`                     | Public home, resources, workflow-preview, data-handling, request-pilot, and sign-in pages only |
+| `pilot_cta_header_clicked`      | Header pilot CTA                                                                               |
+| `pilot_cta_pricing_clicked`     | Early-access section pilot CTA                                                                 |
+| `pilot_discussion_hero_clicked` | Hero pilot request link (event name retained for reporting continuity)                         |
+| `sign_in_header_clicked`        | Marketing header sign-in link                                                                  |
+| `sign_in_from_pilot_clicked`    | Sign-in link on request-pilot page                                                             |
+| `pilot_from_sign_in_clicked`    | Pilot link on sign-in page                                                                     |
+| `pilot_request_submitted`       | A new pilot request is accepted                                                                |
+| `pilot_request_already_on_file` | A duplicate pilot request receives the existing-request confirmation                           |
+| `pilot_request_failed`          | The request could not be completed                                                             |
+| `sign_in_link_requested`        | Supabase accepts a magic-link request; this does not prove delivery or link use                |
+| `sign_in_access_not_configured` | Server denies an email without an access grant                                                 |
+| `sign_in_link_request_failed`   | Access check or magic-link request fails                                                       |
+| `team_access_verified`          | A signed-in pilot user reaches the access-verified page                                        |
 
 Suggested funnels:
 
 - Home pageview → pilot CTA → request-pilot pageview → pilot request submitted.
 - Sign-in pageview → sign-in link requested → team access verified.
 
-The current product has no team dashboard, so there are no case or workspace usage events yet. Add those alongside the dashboard's actual actions. Opening a 
+The current product has no team dashboard, so there are no case or workspace usage events yet. Add those alongside the dashboard's actual actions. Opening a
 magic link on another browser or device may prevent PostHog from joining the earlier anonymous visit to the verified user.
 
 ## Data boundary

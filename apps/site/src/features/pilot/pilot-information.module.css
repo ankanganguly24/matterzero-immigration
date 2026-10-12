@@ -1,0 +1,121 @@
+.page {
+  width: min(100%, 960px);
+  margin: 0 auto;
+  padding: clamp(2rem, 6vw, 4rem) 1.25rem;
+}
+.page h1 {
+  max-width: 800px;
+  margin: 1rem 0;
+  font-size: clamp(2rem, 5vw, 3.4rem);
+  line-height: 1.1;
+  letter-spacing: -0.045em;
+}
+.intro {
+  max-width: 720px;
+  font-size: 1.05rem;
+}
+.note {
+  padding: 1rem 1.2rem;
+  border-left: 3px solid #77a367;
+  background: #eaf1e5;
+  border-radius: 0 0.65rem 0.65rem 0;
+  color: #44594b;
+}
+.section {
+  margin-top: 2.5rem;
+  scroll-margin-top: 6rem;
+}
+.section h2 {
+  font-size: 1.65rem;
+  letter-spacing: -0.035em;
+}
+.section p,
+.section li {
+  color: #35423b;
+  line-height: 1.75;
+}
+.section li {
+  margin-bottom: 0.65rem;
+}
+.steps {
+  display: grid;
+  gap: 1rem;
+  padding-left: 1.5rem;
+}
+.steps li {
+  padding-left: 0.5rem;
+}
+.steps h3 {
+  margin: 0 0 0.5rem;
+}
+.steps p {
+  margin: 0.5rem 0;
+}
+.tableScroll {
+  overflow-x: auto;
+}
+.tableScroll:focus-visible {
+  outline: 2px solid var(--color-forest);
+  outline-offset: 3px;
+}
+.table {
+  width: 100%;
+  min-width: 650px;
+  border-collapse: collapse;
+  text-align: left;
+}
+.table caption {
+  padding-bottom: 1rem;
+  color: #57645d;
+  text-align: left;
+  line-height: 1.65;
+}
+.table th,
+.table td {
+  padding: 1rem;
+  border-bottom: 1px solid #dfe4dc;
+  vertical-align: top;
+  line-height: 1.65;
+}
+.table thead {
+  background: #eaf1e5;
+}
+.table td {
+  color: #35423b;
+}
+.table tbody th {
+  width: 25%;
+}
+.table td:nth-child(2) {
+  width: 20%;
+}
+.badge {
+  display: inline-block;
+  color: var(--color-forest);
+  font-size: 0.75rem;
+  font-weight: 750;
+}
+.workflowSteps {
+  display: grid;
+  gap: 0;
+  margin: 1.2rem 0 2rem;
+  padding-left: 1.3rem;
+}
+.workflowSteps li {
+  padding: 0.75rem 0 1rem 0.45rem;
+  border-bottom: 1px solid #dfe4dc;
+}
+.workflowSteps h3 {
+  margin: 0 0 0.45rem;
+  color: var(--color-ink);
+  font-size: 1.15rem;
+  letter-spacing: -0.02em;
+}
+.workflowSteps p {
+  margin: 0.4rem 0;
+}
+@media (max-width: 700px) {
+  .page {
+    padding-inline: 1rem;
+  }
+}

@@ -1,13 +1,13 @@
 export const homeFaqs = [
   {
-    question: "What does MatterZero help an immigration team do?",
+    question: "What can we use today?",
     answer:
-      "MatterZero is being built to keep applicant details traceable across intake answers and documents. It organizes what arrived, records where a detail came from, and surfaces missing or conflicting information for staff review.",
+      "You can request a pilot, discuss fit, and sign in after an invitation. The applicant workspace is still being built. Intake, uploads, reminders, source comparison, and review queues are planned; the homepage screens are illustrative designs.",
   },
   {
     question: "Do we need to replace our CRM or case-management system?",
     answer:
-      "No replacement is the goal. MatterZero is designed to support the workflow your team already follows. The exact handoff and any system connection are confirmed during pilot scoping; a ready-made integration with every CRM is not promised.",
+      "We plan to support a focused intake and file-preparation workflow. Before a pilot, agree who enters information, which record is authoritative, and how the team hands information back to its existing system. No automatic CRM connection or export tool is released yet.",
   },
   {
     question: "Does MatterZero automatically read WhatsApp, email, or every channel?",
@@ -32,7 +32,7 @@ export const homeFaqs = [
   {
     question: "What does a pilot cost, and how is applicant data handled?",
     answer:
-      "There is no public rate yet. Pilot pricing and data-handling terms are discussed and agreed before work starts. MatterZero is in early access development; do not send applicant documents through this website or LinkedIn.",
+      "There is no public rate yet. Before starting, agree duration, case and user limits, total fee, setup and support, data handling, and export or exit arrangements. Today the site collects only pilot contact and access information; do not send applicant documents through this website or LinkedIn. The data-handling page explains current collection and access.",
   },
   {
     question: "Who is MatterZero for first?",

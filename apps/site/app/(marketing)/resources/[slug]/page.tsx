@@ -118,14 +118,9 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
               ← All field notes
             </Link>
             <span>Questions about your team’s intake workflow?</span>
-            <a
-              href="https://www.linkedin.com/in/ankanganguly/"
-              target="_blank"
-              rel="noreferrer"
-              className="text-link"
-            >
-              Talk with Ankan <span aria-hidden="true">↗</span>
-            </a>
+            <Link href="/request-pilot" className="text-link">
+              Request a pilot <span aria-hidden="true">→</span>
+            </Link>
           </footer>
         </Container>
       </article>

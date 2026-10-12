@@ -369,8 +369,8 @@ function DocumentChasingArticle() {
           how to keep WhatsApp, email, and CRM updates in one case record
         </Link>
         . MatterZero is being shaped around this kind of workflow;{" "}
-        <Link href="/#pilot">discuss a one-workflow pilot</Link> to compare it with your team’s
-        process.
+        <Link href="/request-pilot">discuss a one-workflow pilot</Link> to compare it with your
+        team’s process.
       </p>
       <p className="article-source">
         <strong>Official references:</strong>{" "}
@@ -513,8 +513,8 @@ function CaseLedgerArticle() {
         Before a pilot, write down the case identifier, fields being exchanged, update direction,
         conflict rule, retry owner, and source of truth. MatterZero’s early pilot is intended to
         scope one repeatable workflow and its handoff with a team;{" "}
-        <Link href="/#pilot">talk through a one-workflow pilot</Link> before expecting a connection
-        to a particular CRM.
+        <Link href="/request-pilot">talk through a one-workflow pilot</Link> before expecting a
+        connection to a particular CRM.
       </p>
       <p className="article-source">
         <strong>Official reference:</strong>{" "}
@@ -660,7 +660,7 @@ function ReadinessReviewArticle() {
           the document follow-up system
         </Link>
         . MatterZero is exploring these operational handoffs with early teams;{" "}
-        <Link href="/#pilot">scope a one-workflow pilot</Link> around the process you want to
+        <Link href="/request-pilot">scope a one-workflow pilot</Link> around the process you want to
         improve.
       </p>
       <p className="article-source">

@@ -57,6 +57,10 @@ The first private-app slice is invite-only email sign-in, minimal pilot requests
 
 Server-side application data uses Drizzle ORM with Supabase Postgres. Supabase JS remains the Auth client and handles the public pilot-request insert under RLS. Keep `DATABASE_URL` server-only; use the documented one-time Drizzle baseline before generating and applying future schema migrations. This milestone has no case or applicant data model yet.
 
+## Early-access buyer information
+
+The homepage labels the case workspace as planned. `/workflow-preview` contains a fictional student-file design walkthrough and a current-capabilities table, not a live applicant demo. `/data-handling` documents current contact/access collection, service providers, analytics, retention limitations, and prerequisites for real applicant records. All primary pilot CTAs lead to `/request-pilot`.
+
 ## Content and authorship
 
 Resources are attributed to Ankan Ganguly, with a factual product-builder bio and a link to his LinkedIn profile. Articles describe operational preparation and point readers to primary official sources for immigration rules. They are general information, not legal advice.

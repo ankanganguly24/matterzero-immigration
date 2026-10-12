@@ -1739,3 +1739,11 @@ a {
     animation-iteration-count: 1 !important;
   }
 }
+
+.preview-caption {
+  margin: 1.1rem 0 0;
+  color: #d0ddd6;
+  font-size: 0.75rem;
+  line-height: 1.6;
+  text-align: center;
+}

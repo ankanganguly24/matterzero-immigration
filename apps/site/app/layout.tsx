@@ -13,7 +13,7 @@ const sans = localFont({
 });
 const heading = localFont({
   src: "../node_modules/@fontsource-variable/manrope/files/manrope-latin-wght-normal.woff2",
-  display: "swap",
+  display: "optional",
   variable: "--font-heading",
   weight: "200 800",
 });

@@ -136,3 +136,32 @@
   font-size: 0.75rem;
   text-align: center;
 }
+
+.pilotForm {
+  margin-top: 1.25rem;
+}
+.pilotDetails {
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid #e9ece6;
+}
+.pilotDetails h2 {
+  font-size: 1.15rem;
+  margin: 0 0 0.75rem;
+}
+.pilotDetails p {
+  color: #57645d;
+  font-size: 0.86rem;
+  line-height: 1.65;
+}
+.pilotDetails summary {
+  color: var(--color-forest);
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 0.86rem;
+}
+.privacy a {
+  color: var(--color-forest);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
