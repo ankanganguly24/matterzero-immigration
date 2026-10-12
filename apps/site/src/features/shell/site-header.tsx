@@ -17,8 +17,15 @@ export function SiteHeader() {
           <Link href="/#how-it-works">How it works</Link>
           <Link href="/#teams">Who it helps</Link>
           <Link href="/resources">Field notes</Link>
+          <Link href="/login" data-analytics-event="sign_in_header_clicked">
+            Sign in
+          </Link>
         </nav>
-        <ButtonLink href="/request-pilot" className="header-cta">
+        <ButtonLink
+          href="/request-pilot"
+          className="header-cta"
+          data-analytics-event="pilot_cta_header_clicked"
+        >
           Request a pilot
         </ButtonLink>
       </Container>

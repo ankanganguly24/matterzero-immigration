@@ -7,6 +7,7 @@ import { getDb } from "@/lib/db";
 import { accessGrants } from "@/lib/db/schema";
 import { eq } from "drizzle-orm";
 import { AuthLayout } from "@/features/auth/auth-layout";
+import { TeamAccessTracker } from "@/features/analytics/team-access-tracker";
 import styles from "@/features/auth/auth.module.css";
 
 export const dynamic = "force-dynamic";
@@ -64,6 +65,7 @@ export default async function AuthCompletePage() {
 
   return (
     <AuthLayout>
+      <TeamAccessTracker userId={data.claims.sub} />
       <section className={`${styles.card} ${styles.complete}`} aria-labelledby="auth-heading">
         <span className={styles.successIcon} aria-hidden="true">
           ✓

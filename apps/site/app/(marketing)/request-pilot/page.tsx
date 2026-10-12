@@ -30,7 +30,9 @@ export default function RequestPilotPage() {
         </p>
         <PilotRequestForm />
         <p className={styles.footnote}>
-          <Link href="/login">Already invited? Sign in</Link>
+          <Link href="/login" data-analytics-event="sign_in_from_pilot_clicked">
+            Already invited? Sign in
+          </Link>
         </p>
       </section>
     </AuthLayout>

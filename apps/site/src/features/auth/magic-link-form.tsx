@@ -4,6 +4,7 @@ import { useState, type SubmitEvent } from "react";
 import { TextField } from "@/components/forms/text-field";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
 import { createClient } from "@/lib/supabase/client";
+import { captureEvent } from "@/lib/analytics/posthog";
 import styles from "./auth.module.css";
 
 export function MagicLinkForm() {
@@ -17,6 +18,7 @@ export function MagicLinkForm() {
     setError("");
 
     if (!isSupabaseConfigured()) {
+      captureEvent("sign_in_link_request_failed");
       setError("Sign-in is not configured yet. Please try again later.");
       return;
     }
@@ -25,6 +27,7 @@ export function MagicLinkForm() {
       process.env.NEXT_PUBLIC_SITE_URL ||
       (process.env.NODE_ENV === "development" ? window.location.origin : "");
     if (!siteUrl) {
+      captureEvent("sign_in_link_request_failed");
       setError("The MatterZero site URL is not configured yet. Please try again later.");
       return;
     }
@@ -38,13 +41,17 @@ export function MagicLinkForm() {
       });
       const accessResult: { code?: string; error?: string } = await accessResponse.json();
       if (accessResponse.status === 403 && accessResult.code === "access_not_configured") {
+        captureEvent("sign_in_access_not_configured");
         setError(
           "Access isn’t set up for this email yet. Ask your MatterZero admin to invite you, or request a pilot.",
         );
         return;
       }
       if (!accessResponse.ok) {
-        setError(accessResult.error || "We couldn’t verify access right now. Please try again shortly.");
+        captureEvent("sign_in_link_request_failed");
+        setError(
+          accessResult.error || "We couldn’t verify access right now. Please try again shortly.",
+        );
         return;
       }
 
@@ -58,6 +65,7 @@ export function MagicLinkForm() {
       });
 
       if (requestError) {
+        captureEvent("sign_in_link_request_failed");
         if (requestError.code === "over_email_send_rate_limit") {
           setError(
             "Supabase’s test email limit has been reached. Wait up to an hour before requesting another link, then open the newest link once on the device running MatterZero.",
@@ -70,9 +78,11 @@ export function MagicLinkForm() {
           );
         }
       } else {
+        captureEvent("sign_in_link_requested");
         setSent(true);
       }
     } catch {
+      captureEvent("sign_in_link_request_failed");
       setError("Sign-in is temporarily unavailable. Please try again shortly.");
     } finally {
       setPending(false);

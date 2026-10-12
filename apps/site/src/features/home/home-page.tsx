@@ -41,6 +41,7 @@ export function HomePage({ ButtonLink, Container, SectionHeading }: HomePageProp
                 variant="light"
                 target="_blank"
                 rel="noreferrer"
+                data-analytics-event="pilot_discussion_hero_clicked"
               >
                 Discuss a one-workflow pilot
               </ButtonLink>
@@ -290,7 +291,11 @@ export function HomePage({ ButtonLink, Container, SectionHeading }: HomePageProp
               workflows, and actual staff time saved. No oversized platform bundle. No made-up
               savings claims.
             </p>
-            <ButtonLink href="/request-pilot" variant="light">
+            <ButtonLink
+              href="/request-pilot"
+              variant="light"
+              data-analytics-event="pilot_cta_pricing_clicked"
+            >
               Request a pilot
             </ButtonLink>
           </div>
