@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Container, ButtonLink } from "@matterzero/ui";
+import { MobileNav } from "./mobile-nav";
 
 export function SiteHeader() {
   return (
@@ -28,6 +29,7 @@ export function SiteHeader() {
         >
           Request a pilot
         </ButtonLink>
+        <MobileNav />
       </Container>
     </header>
   );
