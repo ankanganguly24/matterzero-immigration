@@ -23,6 +23,7 @@ export function SiteFooter() {
               <Link href="/#how-it-works">How it works</Link>
               <Link href="/#teams">For immigration teams</Link>
               <Link href="/resources">Field notes</Link>
+              <Link href="/workflow-preview">Sample workflow & availability</Link>
             </div>
             <div>
               <span className="footer-label">Connect</span>
@@ -30,6 +31,8 @@ export function SiteFooter() {
                 Ankan on LinkedIn ↗
               </a>
               <Link href="/#faq">FAQs</Link>
+              <Link href="/data-handling">Data handling</Link>
+              <Link href="/request-pilot">Request a pilot</Link>
             </div>
           </div>
         </div>

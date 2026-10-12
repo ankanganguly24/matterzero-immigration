@@ -21,7 +21,14 @@ export const analyticsEvents = [
 export type AnalyticsEvent = (typeof analyticsEvents)[number];
 
 const allowedEvents = new Set<string>(["$pageview", "$identify", ...analyticsEvents]);
-const publicPaths = new Set(["/", "/login", "/request-pilot", "/resources"]);
+const publicPaths = new Set([
+  "/",
+  "/login",
+  "/request-pilot",
+  "/resources",
+  "/workflow-preview",
+  "/data-handling",
+]);
 const urlProperties = [
   "$current_url",
   "$initial_current_url",

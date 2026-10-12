@@ -54,11 +54,15 @@ export function PilotRequestForm() {
         </span>
         <h2>{alreadyOnFile ? "Request already on file" : "Request received"}</h2>
         <p>{message}</p>
+        <p>
+          This page confirms receipt. There is no automatic acknowledgement email; submitting again
+          is not needed.
+        </p>
       </div>
     );
 
   return (
-    <form className={styles.form} onSubmit={submit}>
+    <form className={`${styles.form} ${styles.pilotForm}`} onSubmit={submit}>
       <TextField
         id="pilot-request-email"
         label="Work email"

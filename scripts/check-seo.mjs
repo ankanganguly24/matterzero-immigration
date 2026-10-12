@@ -11,6 +11,8 @@ const slugs = [
 const routes = [
   { path: "/", status: 200, schema: "FAQPage" },
   { path: "/resources", status: 200, schema: "BreadcrumbList" },
+  { path: "/workflow-preview", status: 200 },
+  { path: "/data-handling", status: 200 },
   ...slugs.map((slug) => ({ path: `/resources/${slug}`, status: 200, schema: "BreadcrumbList" })),
   { path: "/this-page-does-not-exist", status: 404 },
 ];
@@ -121,6 +123,8 @@ assert(
   sitemap.includes(`${canonicalOrigin.replace(/\/$/, "")}/resources`),
   "Sitemap is missing the resources index",
 );
+for (const path of ["/workflow-preview", "/data-handling"])
+  assert(sitemap.includes(path), `Sitemap is missing ${path}`);
 for (const slug of slugs)
   assert(sitemap.includes(`/resources/${slug}`), `Sitemap is missing article ${slug}`);
 

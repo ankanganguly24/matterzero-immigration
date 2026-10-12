@@ -7,6 +7,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return [
     { url: siteUrl, changeFrequency: "monthly", priority: 1 },
     { url: `${siteUrl}/resources`, changeFrequency: "weekly", priority: 0.8 },
+    { url: `${siteUrl}/workflow-preview`, changeFrequency: "monthly", priority: 0.6 },
+    { url: `${siteUrl}/data-handling`, changeFrequency: "monthly", priority: 0.5 },
     ...articles.map(({ slug, date }) => ({
       url: `${siteUrl}/resources/${slug}`,
       lastModified: new Date(date),

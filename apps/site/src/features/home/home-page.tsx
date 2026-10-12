@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { ComponentType, HTMLAttributes, ReactNode } from "react";
 import { articles } from "@/features/resources/articles";
 import { homeFaqs } from "./home-content";
+import { ProductReadiness } from "@/features/pilot/product-readiness";
 
 type HomePageProps = {
   ButtonLink: ComponentType<{
@@ -32,22 +33,24 @@ export function HomePage({ ButtonLink, Container, SectionHeading }: HomePageProp
             </p>
             <h1>Know what’s missing from every applicant file.</h1>
             <p className="hero__lede">
-              MatterZero helps your team keep applicant details and documents together, spot gaps or
-              mismatches, and see what needs follow-up.
+              We’re building MatterZero to keep applicant details and documents together, spot gaps
+              or mismatches, and make the next follow-up clear.
             </p>
             <div className="button-row">
               <ButtonLink
-                href="https://www.linkedin.com/in/ankanganguly/"
+                href="/request-pilot"
                 variant="light"
-                target="_blank"
-                rel="noreferrer"
                 data-analytics-event="pilot_discussion_hero_clicked"
               >
-                Discuss a one-workflow pilot
+                Request a pilot
               </ButtonLink>
+              <Link href="/workflow-preview" className="hero__text-link">
+                Explore a sample workflow <span aria-hidden="true">→</span>
+              </Link>
             </div>
             <p className="hero__note">
-              Start with one workflow. Keep your current process. Staff make the decisions.
+              Early access development. Applicant workflows are planned; the preview is
+              illustrative.
             </p>
           </div>
           <ReadinessPreview />
@@ -66,14 +69,17 @@ export function HomePage({ ButtonLink, Container, SectionHeading }: HomePageProp
         </Container>
       </section>
 
+      <ProductReadiness />
+
       <section className="section section--intro" id="how-it-works">
         <Container>
           <SectionHeading
-            eyebrow="How teams use MatterZero"
+            eyebrow="The workflow we’re building"
             title="Four clear steps from first conversation to human review."
           >
-            Bring intake, document collection, and evidence review into one guided flow that fits
-            around the process your team already uses.
+            The proposed workflow brings intake, document collection, and evidence review together.
+            These case features are planned, and the information handoff must be agreed with your
+            team.
           </SectionHeading>
           <ol className="workflow-grid" aria-label="How to use MatterZero">
             <WorkflowCard
@@ -118,9 +124,9 @@ export function HomePage({ ButtonLink, Container, SectionHeading }: HomePageProp
               <em>A clearer view of what they say.</em>
             </h2>
             <p className="section-copy section-copy--light">
-              A passport, a CV, and a conversation can all describe the same person differently.
-              MatterZero keeps each source visible, flags the gap, and leaves the decision with your
-              team.
+              A passport, a CV, and a conversation can all describe the same person differently. The
+              proposed review view would keep each source visible, flag the gap, and leave the
+              decision with your team. This example uses fictional information.
             </p>
             <ButtonLink href="#human-review" variant="light">
               See the human review boundary
@@ -131,7 +137,7 @@ export function HomePage({ ButtonLink, Container, SectionHeading }: HomePageProp
             aria-label="Example of source-linked information for a reviewer"
           >
             <div className="evidence-card__top">
-              <span className="status-dot" /> <span>Timeline detail</span>
+              <span className="status-dot" /> <span>Illustrative example</span>
               <span className="review-tag">Needs review</span>
             </div>
             <h3>Employment start date</h3>
@@ -186,7 +192,8 @@ export function HomePage({ ButtonLink, Container, SectionHeading }: HomePageProp
               <span>02</span>
               <h3>Agree the scope up front</h3>
               <p>
-                Set the case volume, handoff, measures of value, and pilot price before starting.
+                Agree the duration, case and user limits, total fee, setup responsibilities,
+                support, and exit arrangements before starting.
               </p>
             </article>
             <article className="pilot-safeguard">
@@ -198,14 +205,15 @@ export function HomePage({ ButtonLink, Container, SectionHeading }: HomePageProp
               <span>04</span>
               <h3>Check system fit together</h3>
               <p>
-                Confirm how information will move before the pilot. No universal CRM connection is
-                assumed.
+                Confirm how information will move before the pilot. Automatic channel sync and CRM
+                integrations are not available today.
               </p>
             </article>
           </div>
           <p className="pilot-safeguards-note">
             MatterZero is in early access development. Pilot capabilities and data handling are
-            confirmed with each team before real applicant records are used.
+            confirmed with each team before real applicant records are used. Start the discussion
+            with fictional examples.
           </p>
         </Container>
       </section>
@@ -225,12 +233,13 @@ export function HomePage({ ButtonLink, Container, SectionHeading }: HomePageProp
               <span className="audience-number">PRIMARY / INDIA</span>
               <h3>For Indian immigration consultancies</h3>
               <p>
-                Keep multilingual intake, document requests, and counsellor handoffs moving without
-                asking staff to reconstruct every file from scattered messages.
+                We’re designing intake, document tracking, and counsellor handoffs around recurring
+                follow-up work. Validate the first workflow with us before assuming support for your
+                visa routes.
               </p>
               <ul>
-                <li>Applicant intake across languages</li>
-                <li>State-aware document requests</li>
+                <li>Intake structure shaped with your team</li>
+                <li>Track requested, received, and reviewed documents</li>
                 <li>Clear missing-item and review queues</li>
               </ul>
             </article>
@@ -238,8 +247,8 @@ export function HomePage({ ButtonLink, Container, SectionHeading }: HomePageProp
               <span className="audience-number">ALSO EXPLORING / U.S.</span>
               <h3>For immigration law teams</h3>
               <p>
-                Prepare a better-organized pre-matter file while keeping legal interpretation and
-                case strategy firmly with the attorney.
+                The proposed workflow would prepare a better-organized pre-matter file while keeping
+                legal interpretation and case strategy firmly with the attorney.
               </p>
               <ul>
                 <li>Source-linked applicant facts</li>
@@ -287,9 +296,9 @@ export function HomePage({ ButtonLink, Container, SectionHeading }: HomePageProp
               <em>Price the value together.</em>
             </h2>
             <p>
-              We’re speaking with early teams to shape a pilot around case volume, document
-              workflows, and actual staff time saved. No oversized platform bundle. No made-up
-              savings claims.
+              Before starting, we agree the total fee, case limit, setup responsibilities, and
+              success measures. Pricing depends on workflow scope, users, volume, and support; no
+              public rate or measured savings is available yet.
             </p>
             <ButtonLink
               href="/request-pilot"
@@ -309,9 +318,12 @@ export function HomePage({ ButtonLink, Container, SectionHeading }: HomePageProp
             <ul>
               <li>Start with one workflow</li>
               <li>Agree on a clear case limit</li>
-              <li>Review value before expanding</li>
+              <li>Agree duration, support, and an exit plan</li>
             </ul>
-            <small>Pricing is discussed with each pilot team.</small>
+            <small>
+              Compare staff minutes per file, follow-up touches, and time to review readiness
+              against your current process.
+            </small>
           </div>
         </Container>
       </section>
@@ -387,7 +399,7 @@ function ReadinessPreview() {
   return (
     <div
       className="readiness-preview"
-      role="img"
+      role="group"
       aria-label="Illustrative MatterZero case review screen showing intake progress, document checklist, and one item that needs human review"
     >
       <div className="preview-window">
@@ -399,7 +411,7 @@ function ReadinessPreview() {
           </div>
           <span>CASE OVERVIEW</span>
           <span className="preview-privacy">
-            <b /> PRIVATE WORKSPACE
+            <b /> DESIGN PREVIEW
           </span>
         </div>
         <div className="preview-content">
@@ -454,6 +466,9 @@ function ReadinessPreview() {
           </div>
         </div>
       </div>
+      <p className="preview-caption">
+        Illustrative design · fictional applicant · case workspace not released
+      </p>
       <div className="floating-note">
         <span className="floating-note__icon">↗</span>
         <span>
