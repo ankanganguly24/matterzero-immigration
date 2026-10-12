@@ -34,7 +34,8 @@ Suggested funnels:
 - Home pageview → pilot CTA → request-pilot pageview → pilot request submitted.
 - Sign-in pageview → sign-in link requested → team access verified.
 
-The current product has no team dashboard, so there are no case or workspace usage events yet. Add those alongside the dashboard's actual actions. Opening a magic link on another browser or device may prevent PostHog from joining the earlier anonymous visit to the verified user.
+The current product has no team dashboard, so there are no case or workspace usage events yet. Add those alongside the dashboard's actual actions. Opening a 
+magic link on another browser or device may prevent PostHog from joining the earlier anonymous visit to the verified user.
 
 ## Data boundary
 
