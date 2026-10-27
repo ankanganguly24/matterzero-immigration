@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { currentCapabilities, sampleWorkflow } from "@/features/pilot/readiness-content";
 import { PilotArticleLayout } from "@/features/pilot/pilot-article-layout";
 import styles from "@/features/pilot/pilot-information.module.css";
@@ -28,6 +29,11 @@ export default function WorkflowPreviewPage() {
       <p className="article-callout">
         All details are fictional. The example checklist is chosen for the scenario, not a visa
         requirement list or a claim of support for a particular immigration route.
+      </p>
+      <p>
+        Want to try the interactive concept?{" "}
+        <Link href="/dashboard/demo">Open the evidence workflow demo</Link>. It uses fictional data
+        and is not for real casework.
       </p>
       <h2 id="sample-heading">The proposed workflow</h2>
       <ol className={styles.workflowSteps}>

@@ -84,3 +84,32 @@ export const pilotRequests = pgTable(
     }),
   ],
 ).enableRLS();
+
+export const demoMatterApprovals = pgTable(
+  "demo_matter_approvals",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    matterId: text("matter_id").notNull(),
+    versionHash: text("version_hash").notNull(),
+    reviewerId: text("reviewer_id").notNull(),
+    reviewerEmail: text("reviewer_email").notNull(),
+    approvedAt: timestamp("approved_at", { withTimezone: true, mode: "date" })
+      .notNull()
+      .defaultNow(),
+  },
+  (table) => [
+    check("demo_matter_approvals_hash_length", sql`char_length(${table.versionHash}) = 64`),
+    check(
+      "demo_matter_approvals_reviewer_email_length",
+      sql`char_length(${table.reviewerEmail}) between 3 and 254`,
+    ),
+    uniqueIndex("demo_matter_approvals_matter_version_unique_idx").on(
+      table.matterId,
+      table.versionHash,
+    ),
+    index("demo_matter_approvals_matter_approved_at_idx").on(
+      table.matterId,
+      table.approvedAt.desc(),
+    ),
+  ],
+).enableRLS();

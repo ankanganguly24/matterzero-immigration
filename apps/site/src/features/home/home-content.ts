@@ -2,7 +2,7 @@ export const homeFaqs = [
   {
     question: "What can we use today?",
     answer:
-      "You can request a pilot, discuss fit, and sign in after an invitation. The applicant workspace is still being built. Intake, uploads, reminders, source comparison, and review queues are planned; the homepage screens are illustrative designs.",
+      "You can request a pilot, discuss fit, and sign in after an invitation. You can also explore an interactive demo built with fictional data to see intake, document collection, source-linked chronology, and review concepts. It is not a live case-management workspace; real applicant workflows, uploads, reminders, and channel integrations are still being developed.",
   },
   {
     question: "Do we need to replace our CRM or case-management system?",
