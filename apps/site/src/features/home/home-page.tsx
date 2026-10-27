@@ -49,8 +49,8 @@ export function HomePage({ ButtonLink, Container, SectionHeading }: HomePageProp
               </Link>
             </div>
             <p className="hero__note">
-              Early access development. Applicant workflows are planned; the preview is
-              illustrative.
+              Explore an interactive demo with fictional data. Real applicant workflows are still in
+              development.
             </p>
           </div>
           <ReadinessPreview />
@@ -467,7 +467,7 @@ function ReadinessPreview() {
         </div>
       </div>
       <p className="preview-caption">
-        Illustrative design · fictional applicant · case workspace not released
+        Interactive concept · fictional applicant · not for real casework
       </p>
       <div className="floating-note">
         <span className="floating-note__icon">↗</span>

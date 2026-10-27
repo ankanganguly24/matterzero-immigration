@@ -7,7 +7,7 @@ const readinessRows = [
     illustration: "access",
     title: "Request and discuss a pilot",
     detail:
-      "Pilot requests, admin review, invitations, and sign-in are available. The applicant workspace is still being built.",
+      "Pilot requests, admin review, invitations, and sign-in are available. Explore a separate interactive demo with fictional data.",
     href: "/request-pilot",
     action: "Request a pilot",
   },
@@ -15,9 +15,9 @@ const readinessRows = [
     illustration: "sample",
     title: "Explore a sample file",
     detail:
-      "A fictional student file explains the proposed workflow. Its screens are designs, not a live case tool.",
-    href: "/workflow-preview",
-    action: "Explore the sample workflow",
+      "Walk through an interactive fictional evidence workflow. No real applicant data or legal checklist is used.",
+    href: "/dashboard/demo",
+    action: "Open the evidence demo",
   },
   {
     illustration: "agreement",
