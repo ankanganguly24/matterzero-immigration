@@ -3,14 +3,14 @@
 import { useState, type ReactNode } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { WorkspaceContextMenu } from "./workspace-context-menu";
 import styles from "./workspace-shell.module.css";
 
 const navigation = [
-  { suffix: "", label: "Matter overview", icon: "▦" },
-  { suffix: "/matters", label: "Matters", icon: "▤" },
-  { suffix: "/collector", label: "Collector", icon: "⇣" },
-  { suffix: "/chronology", label: "Chronology", icon: "◷" },
-  { suffix: "/review", label: "Review queue", icon: "✓" },
+  { suffix: "", label: "Matter dashboard", icon: "▦" },
+  { suffix: "/sample", label: "Petition & Evidence Builder", icon: "▤" },
+  { suffix: "/rfe-defense", label: "RFE Defense Engine", icon: "↗" },
+  { suffix: "/employer-compliance", label: "Employer Compliance", icon: "▣" },
 ];
 
 export type WorkspaceSummary = {
@@ -20,19 +20,23 @@ export type WorkspaceSummary = {
   market: string;
   teamSize: string;
   primaryFocus: string;
+  practiceAreas?: string[];
+  officeLocation?: string;
+  deadlinePaddingDays?: number;
+  firmContext?: string;
 };
-
-function initials(email: string) {
-  return email.split("@")[0]?.slice(0, 2).toUpperCase() || "MZ";
-}
 
 export function WorkspaceShell({
   workspace,
+  workspaces,
   email,
+  role,
   children,
 }: {
   workspace: WorkspaceSummary;
+  workspaces: Pick<WorkspaceSummary, "id" | "name">[];
   email: string;
+  role: string;
   children: ReactNode;
 }) {
   const pathname = usePathname();
@@ -59,6 +63,13 @@ export function WorkspaceShell({
           <span>MatterZero</span>
         </Link>
         <span className={styles.mobileActive}>{active?.label ?? "Workspace"}</span>
+        <WorkspaceContextMenu
+          workspace={workspace}
+          workspaces={workspaces}
+          email={email}
+          role={role}
+          isSample={pathname.endsWith("/sample")}
+        />
       </header>
 
       {drawerOpen ? (
@@ -76,14 +87,9 @@ export function WorkspaceShell({
             <span className={styles.brandMark}>M</span>
             <span>MatterZero</span>
           </Link>
-          <Link className={styles.workspaceSelect} href="/dashboard" title="Switch workspace">
-            <small>WORKSPACE</small>
-            <strong>{workspace.name}</strong>
-            <span aria-hidden="true">⌄</span>
-          </Link>
         </div>
 
-        <p className={styles.navLabel}>OPERATIONS</p>
+        <p className={styles.navLabel}>WORKFLOWS</p>
         <nav className={styles.navigation} aria-label="Workspace navigation">
           {navigation.map((item) => {
             const href = `${base}${item.suffix}`;
@@ -106,31 +112,30 @@ export function WorkspaceShell({
         </nav>
 
         <div className={styles.sidebarFooter}>
-          <div className={styles.identity}>
-            <span className={styles.avatar}>{initials(email)}</span>
-            <span className={styles.identityText}>
-              <strong>{email.split("@")[0]?.replace(/[._-]+/g, " ") || "Team member"}</strong>
-              <small>{email}</small>
-            </span>
-          </div>
-          <form action="/auth/signout" method="post">
-            <button className={styles.signOut} type="submit">
-              <span aria-hidden="true">↪</span> Sign out
-            </button>
-          </form>
+          <span className={styles.sidebarNote}>Pilot workspace · no live case data yet</span>
         </div>
       </aside>
 
       <div className={styles.mainColumn}>
         <header className={styles.topbar}>
-          <div>
-            <span className={styles.breadcrumb}>Workspace</span>
+          <div className={styles.contextBreadcrumbs}>
+            <Link href={base}>MatterZero</Link>
             <span className={styles.separator}>/</span>
             <strong>{workspace.name}</strong>
+            {pathname.endsWith("/sample") ? (
+              <>
+                <span className={styles.separator}>/</span>
+                <span className={styles.sampleContext}>Ria Sen · fictional sample</span>
+              </>
+            ) : null}
           </div>
-          <span className={styles.accessBadge}>
-            <i /> Private workspace
-          </span>
+          <WorkspaceContextMenu
+            workspace={workspace}
+            workspaces={workspaces}
+            email={email}
+            role={role}
+            isSample={pathname.endsWith("/sample")}
+          />
         </header>
         <main id="main-content" className={styles.content}>
           {children}

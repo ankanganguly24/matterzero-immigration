@@ -4,7 +4,12 @@ import { AdminMfaGate } from "@/features/admin/admin-mfa-gate";
 import { AuthLayout } from "@/features/auth/auth-layout";
 import { WorkspaceShell } from "@/features/dashboard/workspace-shell";
 import styles from "@/features/dashboard/dashboard.module.css";
-import { getDashboardAccess, getWorkspaceForUser } from "@/lib/dashboard/access";
+import {
+  getDashboardAccess,
+  getUserWorkspaces,
+  getWorkspaceForUser,
+  getWorkspaceRoleForUser,
+} from "@/lib/dashboard/access";
 
 export const dynamic = "force-dynamic";
 
@@ -54,8 +59,30 @@ export default async function WorkspaceLayout({
     );
   }
   if (!workspace) notFound();
+
+  let role: string;
+  let workspaces = [{ id: workspace.id, name: workspace.name }];
+  try {
+    role = (await getWorkspaceRoleForUser(access.user, workspaceId)) ?? "";
+    workspaces = await getUserWorkspaces(access.user);
+  } catch {
+    return (
+      <main className={styles.accessError}>
+        <p className={styles.eyebrow}>WORKSPACE ACCESS</p>
+        <h1>We couldn’t load workspace settings.</h1>
+        <p>Check the workspace migration and database connection, then try again.</p>
+      </main>
+    );
+  }
+  if (!role) notFound();
+
   return (
-    <WorkspaceShell workspace={workspace} email={access.user.email}>
+    <WorkspaceShell
+      workspace={workspace}
+      workspaces={workspaces}
+      email={access.user.email}
+      role={role}
+    >
       {children}
     </WorkspaceShell>
   );

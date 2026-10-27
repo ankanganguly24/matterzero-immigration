@@ -73,3 +73,46 @@ export async function getWorkspaceForUser(user: DashboardUser, workspaceId: stri
 
   return userMembership ? workspace : null;
 }
+
+export async function getWorkspaceRoleForUser(
+  user: DashboardUser,
+  workspaceId: string,
+): Promise<"superadmin" | "owner" | "admin" | "member" | null> {
+  const workspace = await getWorkspaceForUser(user, workspaceId);
+  if (!workspace) return null;
+  if (user.isSuperAdmin) return "superadmin";
+
+  const [membership] = await getDb()
+    .select({ role: workspaceMembers.role })
+    .from(workspaceMembers)
+    .where(
+      and(eq(workspaceMembers.workspaceId, workspaceId), eq(workspaceMembers.userId, user.userId)),
+    )
+    .limit(1);
+
+  return membership?.role ?? null;
+}
+
+export async function getUserWorkspaces(user: DashboardUser) {
+  const db = getDb();
+  const fields = {
+    id: workspaces.id,
+    name: workspaces.name,
+    organizationType: workspaces.organizationType,
+    market: workspaces.market,
+    teamSize: workspaces.teamSize,
+    primaryFocus: workspaces.primaryFocus,
+  };
+
+  if (user.isSuperAdmin) {
+    return db.select(fields).from(workspaces).orderBy(workspaces.createdAt).limit(100);
+  }
+
+  return db
+    .select(fields)
+    .from(workspaces)
+    .innerJoin(workspaceMembers, eq(workspaceMembers.workspaceId, workspaces.id))
+    .where(eq(workspaceMembers.userId, user.userId))
+    .orderBy(workspaces.createdAt)
+    .limit(100);
+}

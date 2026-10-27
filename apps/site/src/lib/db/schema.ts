@@ -3,6 +3,7 @@ import {
   check,
   index,
   integer,
+  jsonb,
   pgPolicy,
   pgTable,
   primaryKey,
@@ -129,6 +130,13 @@ export const workspaces = pgTable(
     market: text("market", { enum: workspaceMarkets }).notNull(),
     teamSize: text("team_size", { enum: workspaceTeamSizes }).notNull(),
     primaryFocus: text("primary_focus", { enum: workspaceFocuses }).notNull(),
+    practiceAreas: text("practice_areas")
+      .array()
+      .notNull()
+      .default(sql`'{}'::text[]`),
+    officeLocation: text("office_location").notNull().default(""),
+    deadlinePaddingDays: integer("deadline_padding_days").notNull().default(14),
+    firmContext: text("firm_context").notNull().default(""),
     createdBy: uuid("created_by").notNull(),
     createdAt: timestamp("created_at", { withTimezone: true, mode: "date" }).notNull().defaultNow(),
   },
@@ -144,7 +152,49 @@ export const workspaces = pgTable(
       "workspaces_primary_focus_check",
       sql`${table.primaryFocus} in ('business', 'student', 'family', 'other')`,
     ),
+    check("workspaces_practice_areas_count", sql`cardinality(${table.practiceAreas}) <= 12`),
+    check("workspaces_office_location_length", sql`char_length(${table.officeLocation}) <= 160`),
+    check("workspaces_deadline_padding_range", sql`${table.deadlinePaddingDays} between 0 and 90`),
+    check("workspaces_firm_context_length", sql`char_length(${table.firmContext}) <= 4000`),
     index("workspaces_created_by_idx").on(table.createdBy),
+  ],
+).enableRLS();
+
+export const workspaceAuditEvents = pgTable(
+  "workspace_audit_events",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    workspaceId: uuid("workspace_id")
+      .notNull()
+      .references(() => workspaces.id, { onDelete: "cascade" }),
+    actorUserId: uuid("actor_user_id"),
+    actorEmail: text("actor_email").notNull(),
+    eventType: text("event_type").notNull(),
+    changedFields: text("changed_fields")
+      .array()
+      .notNull()
+      .default(sql`'{}'::text[]`),
+    metadata: jsonb("metadata")
+      .$type<Record<string, string>>()
+      .notNull()
+      .default(sql`'{}'::jsonb`),
+    occurredAt: timestamp("occurred_at", { withTimezone: true, mode: "date" })
+      .notNull()
+      .defaultNow(),
+  },
+  (table) => [
+    check(
+      "workspace_audit_events_type_check",
+      sql`${table.eventType} in ('workspace.profile_updated', 'workspace.context_updated')`,
+    ),
+    check(
+      "workspace_audit_events_actor_email_length",
+      sql`char_length(${table.actorEmail}) between 3 and 254`,
+    ),
+    index("workspace_audit_events_workspace_occurred_idx").on(
+      table.workspaceId,
+      table.occurredAt.desc(),
+    ),
   ],
 ).enableRLS();
 
