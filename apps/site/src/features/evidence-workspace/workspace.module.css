@@ -7,6 +7,9 @@
 .workspaceMain {
   min-height: 100vh;
 }
+.sampleWorkspace {
+  min-width: 0;
+}
 .workspace {
   display: grid;
   min-height: 100vh;

@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import { demoMatter, sources, timeline, type SourceCitation, type SourceId } from "./demo-fixture";
 import styles from "./workspace.module.css";
 
@@ -16,7 +15,13 @@ const tabs: { id: WorkspaceTab; label: string; number?: string }[] = [
   { id: "employer", label: "Employer concept" },
 ];
 
-export function EvidenceWorkspace({ versionHash }: { versionHash: string }) {
+export function EvidenceWorkspace({
+  versionHash,
+  canApprove,
+}: {
+  versionHash: string;
+  canApprove: boolean;
+}) {
   const [activeTab, setActiveTab] = useState<WorkspaceTab>("intake");
   const [selectedCitation, setSelectedCitation] = useState<SourceCitation>(
     timeline[0].citations[0],
@@ -35,6 +40,7 @@ export function EvidenceWorkspace({ versionHash }: { versionHash: string }) {
   }
 
   useEffect(() => {
+    if (!canApprove) return;
     let active = true;
     void fetch(`/api/demo/approvals?matterId=${encodeURIComponent(demoMatter.id)}`, {
       cache: "no-store",
@@ -50,7 +56,7 @@ export function EvidenceWorkspace({ versionHash }: { versionHash: string }) {
     return () => {
       active = false;
     };
-  }, []);
+  }, [canApprove]);
 
   async function approveVersion() {
     setApprovalState("saving");
@@ -98,166 +104,105 @@ export function EvidenceWorkspace({ versionHash }: { versionHash: string }) {
   }
 
   return (
-    <div className={styles.workspace}>
-      <aside className={styles.sidebar} aria-label="MatterZero workspace navigation">
-        <Link className={styles.brand} href="/" aria-label="MatterZero home">
-          <span className={styles.brandMark}>M</span>
-          <span>MatterZero</span>
-        </Link>
-        <div className={styles.workspaceSwitcher}>
-          <span className={styles.switcherLabel}>DEMO WORKSPACE</span>
-          <strong>Evidence review</strong>
-          <span className={styles.switcherCaret}>⌄</span>
-        </div>
-        <p className={styles.navLabel}>WORKSPACE</p>
-        <button
-          className={`${styles.navItem} ${activeTab === "intake" ? styles.navActive : ""}`}
-          onClick={() => setActiveTab("intake")}
-        >
-          <span aria-hidden="true">▦</span> Matter overview
-        </button>
-        <button
-          className={`${styles.navItem} ${activeTab === "collector" ? styles.navActive : ""}`}
-          onClick={() => setActiveTab("collector")}
-        >
-          <span aria-hidden="true">⇣</span> Collector <span className={styles.navCount}>2</span>
-        </button>
-        <button
-          className={`${styles.navItem} ${activeTab === "chronology" ? styles.navActive : ""}`}
-          onClick={() => setActiveTab("chronology")}
-        >
-          <span aria-hidden="true">◷</span> Chronology
-        </button>
-        <button
-          className={`${styles.navItem} ${activeTab === "review" ? styles.navActive : ""}`}
-          onClick={() => setActiveTab("review")}
-        >
-          <span aria-hidden="true">✓</span> Review queue
-        </button>
-        <div className={styles.sidebarBottom}>
-          <span className={styles.avatar}>DR</span>
-          <span>
-            <strong>Demo reviewer</strong>
-            <small>Sample account</small>
-          </span>
-          <span className={styles.more}>···</span>
-        </div>
-      </aside>
-
-      <section className={styles.contentShell}>
-        <header className={styles.topbar}>
-          <div className={styles.breadcrumb}>
-            Matters <span>/</span> <strong>{demoMatter.title}</strong>
-          </div>
-          <div className={styles.topbarRight}>
-            <span className={styles.demoPill}>
-              <i /> FICTIONAL DEMO
-            </span>
-            <button className={styles.helpButton} aria-label="Help">
-              ?
-            </button>
-            <span className={styles.avatar}>DR</span>
-          </div>
-        </header>
-
-        <div className={styles.pageContent}>
-          <div className={styles.pageIntro}>
-            <div>
-              <p className={styles.kicker}>
-                {demoMatter.id.toUpperCase()} <span>·</span> SAMPLE DATA
-              </p>
-              <h1>{demoMatter.title}</h1>
-              <p className={styles.subhead}>
-                {demoMatter.caseType} · a source-led evidence workflow for an immigration team.
-              </p>
-            </div>
-            <button className={styles.outlineButton} onClick={() => setActiveTab("review")}>
-              Review status <span aria-hidden="true">↗</span>
-            </button>
-          </div>
-
-          <div className={styles.disclaimer}>
-            <span aria-hidden="true">ⓘ</span>
-            <p>
-              <strong>Fictional case for product demonstration.</strong> This workspace contains
-              sample documents and facts. It is not a live case file, legal checklist, or
-              immigration advice.
+    <section className={styles.sampleWorkspace} aria-label="Fictional workflow sample">
+      <div className={styles.pageContent}>
+        <div className={styles.pageIntro}>
+          <div>
+            <p className={styles.kicker}>
+              FICTIONAL SAMPLE <span>·</span> NO LIVE CASE DATA
+            </p>
+            <h1>{demoMatter.title}</h1>
+            <p className={styles.subhead}>
+              {demoMatter.caseType} · a source-led evidence workflow for an immigration team.
             </p>
           </div>
-
-          <nav className={styles.workflowNav} aria-label="Demo workflow">
-            {tabs.map((tab) => (
-              <button
-                key={tab.id}
-                className={`${styles.workflowTab} ${activeTab === tab.id ? styles.workflowTabActive : ""} ${!tab.number ? styles.conceptTab : ""}`}
-                onClick={() => setActiveTab(tab.id)}
-                aria-current={activeTab === tab.id ? "step" : undefined}
-              >
-                {tab.number && <span>{tab.number}</span>}
-                {tab.label}
-                {!tab.number && <small>CONCEPT</small>}
-              </button>
-            ))}
-          </nav>
-
-          {activeTab === "intake" && <IntakeView onSelectSource={selectSource} />}
-          {activeTab === "collector" && (
-            <CollectorView
-              received={received}
-              onReceive={() => setReceived(true)}
-              onSelectSource={selectSource}
-            />
-          )}
-          {activeTab === "chronology" && (
-            <ChronologyView
-              selectedCitation={selectedCitation}
-              onSelectCitation={setSelectedCitation}
-            />
-          )}
-          {activeTab === "review" && (
-            <ReviewView
-              versionHash={versionHash}
-              approvalState={approvalState}
-              onApprove={approveVersion}
-              onExport={requestExport}
-            />
-          )}
-          {activeTab === "rfe" && (
-            <ConceptView
-              title="RFE response preparation"
-              label="CONCEPT PREVIEW"
-              description="Extract the concerns stated in a sample notice and surface linked evidence for counsel to assess."
-              steps={[
-                "Notice text and printed deadline",
-                "Candidate evidence with source links",
-                "Counsel review of strategy and response",
-              ]}
-            />
-          )}
-          {activeTab === "employer" && (
-            <ConceptView
-              title="Employer record organization"
-              label="CONCEPT PREVIEW"
-              description="Organize employer records and firm-defined review items for H-1B and PERM workflows."
-              steps={[
-                "Employer file checklist",
-                "Source-backed dates and records",
-                "Reviewer-controlled audit packet",
-              ]}
-            />
-          )}
-          {message && (
-            <p className={styles.liveMessage} role="status">
-              {message}
-            </p>
-          )}
-          <footer className={styles.workspaceFooter}>
-            MatterZero organizes source material for professional review. Legal interpretation and
-            case decisions remain with the responsible professional.
-          </footer>
+          <button className={styles.outlineButton} onClick={() => setActiveTab("review")}>
+            Review status <span aria-hidden="true">↗</span>
+          </button>
         </div>
-      </section>
-    </div>
+
+        <div className={styles.disclaimer}>
+          <span aria-hidden="true">ⓘ</span>
+          <p>
+            <strong>Fictional case for product demonstration.</strong> This workspace contains
+            sample documents and facts. It is not a live case file, legal checklist, or immigration
+            advice.
+          </p>
+        </div>
+
+        <nav className={styles.workflowNav} aria-label="Sample matter workflow steps">
+          {tabs.map((tab) => (
+            <button
+              key={tab.id}
+              className={`${styles.workflowTab} ${activeTab === tab.id ? styles.workflowTabActive : ""} ${!tab.number ? styles.conceptTab : ""}`}
+              onClick={() => setActiveTab(tab.id)}
+              aria-current={activeTab === tab.id ? "step" : undefined}
+            >
+              {tab.number && <span>{tab.number}</span>}
+              {tab.label}
+              {!tab.number && <small>CONCEPT</small>}
+            </button>
+          ))}
+        </nav>
+
+        {activeTab === "intake" && <IntakeView onSelectSource={selectSource} />}
+        {activeTab === "collector" && (
+          <CollectorView
+            received={received}
+            onReceive={() => setReceived(true)}
+            onSelectSource={selectSource}
+          />
+        )}
+        {activeTab === "chronology" && (
+          <ChronologyView
+            selectedCitation={selectedCitation}
+            onSelectCitation={setSelectedCitation}
+          />
+        )}
+        {activeTab === "review" && (
+          <ReviewView
+            versionHash={versionHash}
+            canApprove={canApprove}
+            approvalState={approvalState}
+            onApprove={approveVersion}
+            onExport={requestExport}
+          />
+        )}
+        {activeTab === "rfe" && (
+          <ConceptView
+            title="RFE response preparation"
+            label="CONCEPT PREVIEW"
+            description="Extract the concerns stated in a sample notice and surface linked evidence for counsel to assess."
+            steps={[
+              "Notice text and printed deadline",
+              "Candidate evidence with source links",
+              "Counsel review of strategy and response",
+            ]}
+          />
+        )}
+        {activeTab === "employer" && (
+          <ConceptView
+            title="Employer record organization"
+            label="CONCEPT PREVIEW"
+            description="Organize employer records and firm-defined review items for H-1B and PERM workflows."
+            steps={[
+              "Employer file checklist",
+              "Source-backed dates and records",
+              "Reviewer-controlled audit packet",
+            ]}
+          />
+        )}
+        {message && (
+          <p className={styles.liveMessage} role="status">
+            {message}
+          </p>
+        )}
+        <footer className={styles.workspaceFooter}>
+          MatterZero organizes source material for professional review. Legal interpretation and
+          case decisions remain with the responsible professional.
+        </footer>
+      </div>
+    </section>
   );
 }
 
@@ -548,11 +493,13 @@ function SourcePanel({ citation }: { citation: SourceCitation }) {
 
 function ReviewView({
   versionHash,
+  canApprove,
   approvalState,
   onApprove,
   onExport,
 }: {
   versionHash: string;
+  canApprove: boolean;
   approvalState: "idle" | "saving" | "approved" | "error";
   onApprove: () => void;
   onExport: () => void;
@@ -563,7 +510,11 @@ function ReviewView({
         <PanelHeading
           eyebrow="REVIEW GATE"
           title="Approve a specific sample version"
-          note="Approval binds to a server-computed snapshot hash and requires the configured admin account with MFA."
+          note={
+            canApprove
+              ? "Approval binds to a server-computed sample snapshot and requires verified superadmin MFA."
+              : "This sample review is view-only. Approval and export are restricted to the superadmin account."
+          }
         />
         <div className={styles.approvalCard}>
           <div className={styles.approvalTop}>
@@ -594,22 +545,24 @@ function ReviewView({
               {versionHash.slice(0, 20)}…{versionHash.slice(-8)}
             </code>
           </div>
-          <div className={styles.approvalActions}>
-            <button
-              className={styles.primaryAction}
-              disabled={approvalState === "saving" || approvalState === "approved"}
-              onClick={onApprove}
-            >
-              {approvalState === "saving"
-                ? "Recording approval…"
-                : approvalState === "approved"
-                  ? "Version approved"
-                  : "Approve sample version"}
-            </button>
-            <button className={styles.secondaryAction} onClick={onExport}>
-              Download approved export
-            </button>
-          </div>
+          {canApprove ? (
+            <div className={styles.approvalActions}>
+              <button
+                className={styles.primaryAction}
+                disabled={approvalState === "saving" || approvalState === "approved"}
+                onClick={onApprove}
+              >
+                {approvalState === "saving"
+                  ? "Recording approval…"
+                  : approvalState === "approved"
+                    ? "Version approved"
+                    : "Approve sample version"}
+              </button>
+              <button className={styles.secondaryAction} onClick={onExport}>
+                Download approved export
+              </button>
+            </div>
+          ) : null}
         </div>
         <div className={styles.reviewBoundary}>
           <span>ⓘ</span>

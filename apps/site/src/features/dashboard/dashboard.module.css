@@ -1,0 +1,254 @@
+.dashboardFrame {
+  min-height: 100vh;
+  background: #f5f6f2;
+  color: var(--color-ink);
+}
+
+.landing {
+  min-height: 100vh;
+  background: #f5f6f2;
+  color: var(--color-ink);
+}
+
+.landingHeader {
+  display: flex;
+  min-height: 68px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 clamp(1rem, 4vw, 3rem);
+  border-bottom: 1px solid var(--color-line);
+  background: #fff;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  color: var(--color-ink);
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  text-decoration: none;
+}
+
+.brandMark {
+  display: grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  border-radius: 9px 9px 9px 3px;
+  background: var(--color-forest);
+  color: var(--color-lime);
+  font-size: 0.75rem;
+  transform: rotate(-5deg);
+}
+
+.userMenu {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: var(--color-ink-soft);
+  font-size: 0.82rem;
+}
+
+.userMenu form {
+  margin: 0;
+}
+
+.userMenu button {
+  padding: 0.45rem 0.7rem;
+  border: 1px solid var(--color-line);
+  border-radius: 0.55rem;
+  background: #fff;
+  color: var(--color-ink);
+  font: inherit;
+  cursor: pointer;
+}
+
+.landingContent {
+  width: min(100% - 2rem, 760px);
+  margin: 0 auto;
+  padding: clamp(2.5rem, 6vw, 4.5rem) 0 5rem;
+}
+
+.eyebrow,
+.cardEyebrow {
+  margin: 0;
+  color: #748078;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+.landingContent > h1,
+.accessError h1 {
+  margin: 0.65rem 0 0;
+  font-family: var(--font-heading), sans-serif;
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  letter-spacing: -0.055em;
+}
+
+.lede,
+.accessError > p:last-child {
+  max-width: 44rem;
+  margin: 0.8rem 0 0;
+  color: var(--color-ink-soft);
+  font-size: 0.98rem;
+  line-height: 1.65;
+}
+
+.setupCard {
+  margin-top: 2rem;
+  padding: clamp(1.2rem, 4vw, 2rem);
+  border: 1px solid var(--color-line);
+  border-radius: 1.1rem;
+  background: #fff;
+  box-shadow: 0 12px 38px rgba(24, 49, 40, 0.045);
+}
+
+.cardHeading {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.9rem;
+}
+
+.stepNumber {
+  display: grid;
+  width: 36px;
+  height: 36px;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: 50%;
+  background: #eef4e9;
+  color: var(--color-forest);
+  font-size: 0.7rem;
+  font-weight: 800;
+}
+
+.cardHeading h2,
+.sectionHeading h2 {
+  margin: 0.35rem 0 0;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 1.3rem;
+  letter-spacing: -0.035em;
+}
+
+.cardHeading p:last-child {
+  margin: 0.4rem 0 0;
+  color: var(--color-ink-soft);
+  font-size: 0.83rem;
+  line-height: 1.5;
+}
+
+.workspacesSection {
+  margin-top: 2.6rem;
+}
+
+.sectionHeading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.9rem;
+}
+
+.sectionHeading > span {
+  color: var(--color-ink-soft);
+  font-size: 0.76rem;
+}
+
+.workspaceList {
+  display: grid;
+  gap: 0.7rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.workspaceCard {
+  display: flex;
+  min-height: 76px;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--color-line);
+  border-radius: 0.85rem;
+  background: #fff;
+  color: inherit;
+  text-decoration: none;
+  transition:
+    border-color 120ms ease,
+    transform 120ms ease;
+}
+
+.workspaceCard:hover {
+  border-color: #a8b9a9;
+  transform: translateY(-1px);
+}
+
+.workspaceIcon {
+  display: grid;
+  width: 38px;
+  height: 38px;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: 0.7rem;
+  background: #edf3e9;
+  color: var(--color-forest);
+  font-weight: 800;
+}
+
+.workspaceDetails {
+  min-width: 0;
+  flex: 1;
+}
+
+.workspaceDetails strong,
+.workspaceDetails small {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.workspaceDetails strong {
+  font-size: 0.9rem;
+}
+
+.workspaceDetails small {
+  margin-top: 0.2rem;
+  color: var(--color-ink-soft);
+  font-size: 0.73rem;
+  text-transform: capitalize;
+}
+
+.workspaceArrow {
+  color: var(--color-forest);
+}
+
+.accessError {
+  min-height: 60vh;
+  display: grid;
+  align-content: center;
+  justify-items: start;
+  width: min(100% - 2rem, 680px);
+  margin: 0 auto;
+}
+
+@media (max-width: 520px) {
+  .landingHeader {
+    min-height: 60px;
+    padding-inline: 1rem;
+  }
+
+  .userMenu {
+    gap: 0.55rem;
+  }
+
+  .userMenu > span {
+    max-width: 8rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}

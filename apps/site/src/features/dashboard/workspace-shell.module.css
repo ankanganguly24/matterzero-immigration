@@ -1,0 +1,547 @@
+.app {
+  display: grid;
+  min-height: 100vh;
+  grid-template-columns: 248px minmax(0, 1fr);
+  background: #f5f6f2;
+  color: var(--color-ink);
+}
+
+.sidebar {
+  position: sticky;
+  top: 0;
+  display: flex;
+  height: 100vh;
+  flex-direction: column;
+  padding: 1.3rem 0.9rem 1rem;
+  border-right: 1px solid var(--color-line);
+  background: #fff;
+}
+
+.sidebarHeader {
+  display: grid;
+  gap: 1.6rem;
+}
+
+.brand {
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  gap: 0.65rem;
+  color: var(--color-ink);
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: -0.045em;
+  text-decoration: none;
+}
+
+.brandMark {
+  display: grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  border-radius: 9px 9px 9px 3px;
+  background: var(--color-forest);
+  color: var(--color-lime);
+  font-size: 0.75rem;
+  transform: rotate(-5deg);
+}
+
+.workspaceSelect {
+  position: relative;
+  display: grid;
+  gap: 0.35rem;
+  padding: 0.8rem 2rem 0.8rem 0.75rem;
+  border: 1px solid #e5e9e2;
+  border-radius: 0.72rem;
+  color: inherit;
+  text-decoration: none;
+}
+
+.workspaceSelect small,
+.navLabel {
+  color: #89948d;
+  font-size: 0.6rem;
+  font-weight: 800;
+  letter-spacing: 0.11em;
+}
+
+.workspaceSelect strong {
+  overflow: hidden;
+  font-size: 0.82rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.workspaceSelect > span {
+  position: absolute;
+  top: 50%;
+  right: 0.8rem;
+  color: #76847b;
+  transform: translateY(-50%);
+}
+
+.navLabel {
+  margin: 2rem 0.75rem 0.7rem;
+}
+
+.navigation {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.navLink,
+.navActive {
+  display: flex;
+  min-height: 42px;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.55rem 0.75rem;
+  border-radius: 0.6rem;
+  color: #617067;
+  font-size: 0.82rem;
+  text-decoration: none;
+}
+
+.navLink > span:first-child,
+.navActive > span:first-child {
+  width: 18px;
+  color: #75847a;
+  text-align: center;
+}
+
+.navLink:hover,
+.navActive {
+  background: #edf3e9;
+  color: #214b37;
+}
+
+.navActive {
+  font-weight: 700;
+}
+
+.sidebarFooter {
+  display: grid;
+  gap: 0.8rem;
+  margin-top: auto;
+  padding-top: 0.9rem;
+  border-top: 1px solid #e9ece8;
+}
+
+.identity {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.avatar {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 1px solid #dce4da;
+  border-radius: 50%;
+  background: #edf3e9;
+  color: #345b43;
+  font-size: 0.65rem;
+  font-weight: 800;
+}
+
+.identityText {
+  min-width: 0;
+}
+
+.identityText strong,
+.identityText small {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.identityText strong {
+  color: var(--color-ink);
+  font-size: 0.73rem;
+  text-transform: capitalize;
+}
+
+.identityText small {
+  margin-top: 0.15rem;
+  color: #849087;
+  font-size: 0.63rem;
+}
+
+.signOut {
+  display: flex;
+  min-height: 36px;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0 0.55rem;
+  border: 0;
+  background: transparent;
+  color: #647168;
+  font: inherit;
+  font-size: 0.77rem;
+  cursor: pointer;
+}
+
+.mainColumn {
+  min-width: 0;
+}
+
+.topbar {
+  position: sticky;
+  z-index: 2;
+  top: 0;
+  display: flex;
+  min-height: 64px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0 2.4rem;
+  border-bottom: 1px solid #e5e9e3;
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(12px);
+  font-size: 0.77rem;
+}
+
+.breadcrumb {
+  color: #89948d;
+}
+
+.separator {
+  padding: 0 0.55rem;
+  color: #c2c9c2;
+}
+
+.topbar strong {
+  color: #394940;
+}
+
+.accessBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 0.65rem;
+  border: 1px solid #e2e9de;
+  border-radius: 999px;
+  background: #f7faf4;
+  color: #506448;
+  font-size: 0.66rem;
+}
+
+.accessBadge i {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #6e9c4f;
+}
+
+.content {
+  width: min(100%, 1440px);
+  margin: 0 auto;
+  padding: clamp(1.3rem, 3.5vw, 2.8rem);
+}
+
+.contextMenu {
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.contextTrigger {
+  display: inline-flex;
+  min-height: 40px;
+  max-width: min(280px, 36vw);
+  align-items: center;
+  gap: 0.38rem;
+  padding: 0.4rem 0.48rem;
+  border: 1px solid #e2e8e0;
+  border-radius: 0.7rem;
+  background: #fff;
+  color: #33443a;
+  font: inherit;
+  cursor: pointer;
+  list-style: none;
+}
+
+.contextTrigger::-webkit-details-marker {
+  display: none;
+}
+
+.contextIcon {
+  color: #41654b;
+  font-size: 0.9rem;
+}
+
+.contextOrgName {
+  overflow: hidden;
+  font-size: 0.74rem;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.contextChevron {
+  color: #758278;
+  font-size: 0.8rem;
+}
+
+.contextPanel {
+  position: absolute;
+  z-index: 10;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  display: grid;
+  width: min(340px, calc(100vw - 2rem));
+  max-height: min(80vh, 620px);
+  gap: 0;
+  overflow-y: auto;
+  border: 1px solid #e0e6df;
+  border-radius: 0.9rem;
+  background: #fff;
+  box-shadow: 0 18px 45px rgba(23, 38, 29, 0.16);
+}
+
+.contextIdentity,
+.contextSection,
+.contextActions {
+  display: grid;
+  gap: 0.45rem;
+  padding: 0.9rem 1rem;
+  border-bottom: 1px solid #edf0ec;
+}
+
+.contextIdentity small,
+.contextSection > small {
+  color: #818d84;
+  font-size: 0.59rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+}
+
+.contextIdentity strong {
+  overflow-wrap: anywhere;
+  color: #26372d;
+  font-size: 0.78rem;
+}
+
+.contextIdentity span,
+.contextMatter,
+.contextMatterMuted {
+  color: #69776d;
+  font-size: 0.7rem;
+}
+
+.contextCurrent,
+.contextLink,
+.contextSecondaryLink,
+.contextActions > a {
+  display: flex;
+  min-height: 34px;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.35rem 0.45rem;
+  border-radius: 0.45rem;
+  color: #48594e;
+  font-size: 0.73rem;
+  text-decoration: none;
+}
+
+.contextCurrent {
+  background: #f0f5ec;
+  color: #31553a;
+  font-weight: 700;
+}
+
+.contextLink:hover,
+.contextSecondaryLink:hover,
+.contextActions > a:hover {
+  background: #f5f7f3;
+}
+
+.contextSecondaryLink {
+  color: #57734f;
+  font-weight: 700;
+}
+
+.contextActions {
+  gap: 0.1rem;
+  border-bottom: 1px solid #edf0ec;
+}
+
+.contextActions > small {
+  padding: 0.05rem 0.45rem 0.25rem;
+  color: #818d84;
+  font-size: 0.59rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+}
+
+.contextSignOut {
+  padding: 0.55rem 1rem 0.7rem;
+}
+
+.contextSignOut form {
+  margin: 0;
+}
+
+.contextSignOut button {
+  min-height: 34px;
+  padding: 0.35rem 0.45rem;
+  border: 0;
+  border-radius: 0.45rem;
+  background: transparent;
+  color: #8a4b40;
+  font: inherit;
+  font-size: 0.73rem;
+  text-align: left;
+  cursor: pointer;
+}
+
+.contextSignOut button:hover {
+  background: #fbf3f1;
+}
+
+.contextBreadcrumbs {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  overflow: hidden;
+  color: #89948d;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.contextBreadcrumbs a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.sampleContext {
+  color: #537147;
+  font-weight: 700;
+}
+
+.noMatterContext {
+  color: #89948d;
+}
+
+.sidebarNote {
+  color: #818c83;
+  font-size: 0.65rem;
+  line-height: 1.5;
+}
+
+.mobileHeader,
+.menuButton,
+.backdrop {
+  display: none;
+}
+
+@media (max-width: 760px) {
+  .app {
+    display: block;
+  }
+
+  .mobileHeader {
+    position: sticky;
+    z-index: 5;
+    top: 0;
+    display: flex;
+    min-height: 58px;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0 1rem;
+    border-bottom: 1px solid var(--color-line);
+    background: #fff;
+  }
+
+  .mobileHeader .brand {
+    font-size: 0.88rem;
+  }
+
+  .mobileHeader .brandMark {
+    width: 27px;
+    height: 27px;
+  }
+
+  .menuButton {
+    display: grid;
+    width: 34px;
+    height: 34px;
+    place-items: center;
+    border: 1px solid var(--color-line);
+    border-radius: 0.55rem;
+    background: #fff;
+    color: var(--color-ink);
+    font-size: 1.1rem;
+  }
+
+  .mobileActive {
+    overflow: hidden;
+    margin-left: auto;
+    color: #68756c;
+    font-size: 0.74rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .mobileHeader .contextTrigger {
+    width: 36px;
+    min-width: 36px;
+    justify-content: center;
+    padding: 0;
+  }
+
+  .mobileHeader .contextOrgName,
+  .mobileHeader .contextChevron {
+    display: none;
+  }
+
+  .mobileHeader .contextPanel {
+    position: fixed;
+    top: 64px;
+    right: 0.65rem;
+  }
+
+  .sidebar {
+    position: fixed;
+    z-index: 7;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: min(84vw, 300px);
+    height: 100dvh;
+    box-shadow: 20px 0 48px rgba(19, 35, 28, 0.12);
+    transform: translateX(-105%);
+    transition: transform 180ms ease;
+  }
+
+  .sidebarOpen {
+    transform: translateX(0);
+  }
+
+  .backdrop {
+    position: fixed;
+    z-index: 6;
+    inset: 0;
+    display: block;
+    border: 0;
+    background: rgba(16, 30, 23, 0.28);
+  }
+
+  .topbar {
+    display: none;
+  }
+
+  .content {
+    padding: 1.2rem 1rem 2.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sidebar {
+    transition: none;
+  }
+}
