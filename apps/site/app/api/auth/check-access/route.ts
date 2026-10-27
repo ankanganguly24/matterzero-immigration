@@ -3,6 +3,7 @@ import { eq } from "drizzle-orm";
 import { getDb } from "@/lib/db";
 import { accessGrants } from "@/lib/db/schema";
 import { enforceRateLimit } from "@/lib/security/rate-limit";
+import { isMatterZeroAdmin } from "@/lib/admin/authorization";
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -38,6 +39,10 @@ export async function POST(request: NextRequest) {
       : "";
   if (email.length > 254 || !emailPattern.test(email)) {
     return NextResponse.json({ error: "Enter a valid email address." }, { status: 400 });
+  }
+
+  if (isMatterZeroAdmin(email)) {
+    return NextResponse.json({ allowed: true }, { headers: { "Cache-Control": "no-store" } });
   }
 
   try {

@@ -16,8 +16,8 @@ const readinessRows = [
     title: "Explore a sample file",
     detail:
       "Walk through an interactive fictional evidence workflow. No real applicant data or legal checklist is used.",
-    href: "/dashboard/demo",
-    action: "Open the evidence demo",
+    href: "/workflow-preview",
+    action: "View sample workflow",
   },
   {
     illustration: "agreement",

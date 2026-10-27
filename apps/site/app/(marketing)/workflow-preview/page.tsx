@@ -31,9 +31,9 @@ export default function WorkflowPreviewPage() {
         requirement list or a claim of support for a particular immigration route.
       </p>
       <p>
-        Want to try the interactive concept?{" "}
-        <Link href="/dashboard/demo">Open the evidence workflow demo</Link>. It uses fictional data
-        and is not for real casework.
+        Have team access? Sign in to open the interactive sample inside your private workspace.{" "}
+        <Link href="/login">Sign in</Link>. The sample uses fictional data and is not for real
+        casework.
       </p>
       <h2 id="sample-heading">The proposed workflow</h2>
       <ol className={styles.workflowSteps}>
