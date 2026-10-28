@@ -1141,6 +1141,109 @@
 .reviewBoundary strong {
   color: #53614f;
 }
+.emptyMatterGrid {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.9fr) minmax(300px, 1.35fr) minmax(220px, 0.9fr);
+  align-items: stretch;
+  gap: 0.9rem;
+}
+.emptyMatterPanel {
+  min-width: 0;
+  padding: 1.1rem;
+  border: 1px solid #e4e9e2;
+  border-radius: 0.75rem;
+  background: #fff;
+}
+.emptyMatterEyebrow {
+  margin: 0 0 0.45rem;
+  color: #839087;
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+}
+.emptyMatterPanel h2 {
+  margin: 0;
+  color: #27352c;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 1rem;
+  letter-spacing: -0.025em;
+}
+.awaitingIngestion {
+  display: inline-flex;
+  margin-top: 0.8rem;
+  padding: 0.38rem 0.55rem;
+  border: 1px solid #eadfcf;
+  border-radius: 999px;
+  background: #faf6ee;
+  color: #866d48;
+  font-size: 0.68rem;
+  font-weight: 700;
+}
+.emptyMatterDivider {
+  height: 1px;
+  margin: 1rem 0;
+  background: #edf0ec;
+}
+.emptyMatterCopy {
+  margin: 0.75rem 0 0;
+  color: #748077;
+  font-size: 0.78rem;
+  line-height: 1.6;
+}
+.documentPlaceholder {
+  display: grid;
+  min-height: 248px;
+  align-content: center;
+  justify-items: center;
+  gap: 0.65rem;
+  margin-top: 0.85rem;
+  padding: 1.25rem;
+  border: 1px dashed #cbd8c7;
+  border-radius: 0.65rem;
+  background: #fafbf8;
+  text-align: center;
+}
+.documentPlaceholder > span {
+  display: grid;
+  width: 2.5rem;
+  height: 2.5rem;
+  place-items: center;
+  border: 1px solid #e2e9df;
+  border-radius: 0.7rem;
+  background: #fff;
+  color: #66805e;
+  font-size: 1.3rem;
+}
+.documentPlaceholder strong {
+  color: #47564a;
+  font-size: 0.84rem;
+}
+.documentPlaceholder p {
+  max-width: 270px;
+  margin: 0;
+  color: #828d84;
+  font-size: 0.74rem;
+  line-height: 1.55;
+}
+.emptyDocumentCount {
+  display: flex;
+  align-items: baseline;
+  gap: 0.55rem;
+  margin: 1.25rem 0 0;
+  padding-bottom: 0.8rem;
+  border-bottom: 1px solid #edf0ec;
+}
+.emptyDocumentCount strong {
+  color: #2f4938;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 2.3rem;
+  letter-spacing: -0.06em;
+}
+.emptyDocumentCount span {
+  color: #637168;
+  font-size: 0.75rem;
+  font-weight: 650;
+}
 .liveMessage {
   margin: 0.8rem 0 0;
   padding: 0.65rem 0.8rem;
@@ -1330,7 +1433,8 @@
     padding-inline: 1.5rem;
   }
   .viewGrid,
-  .chronologyLayout {
+  .chronologyLayout,
+  .emptyMatterGrid {
     grid-template-columns: minmax(0, 1fr);
   }
   .sourcePanel {
