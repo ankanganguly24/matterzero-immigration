@@ -17,13 +17,11 @@ export function WorkspaceContextMenu({
   workspaces,
   email,
   role,
-  isSample,
 }: {
   workspace: WorkspaceSummary;
   workspaces: Pick<WorkspaceSummary, "id" | "name">[];
   email: string;
   role: string;
-  isSample: boolean;
 }) {
   const base = `/dashboard/${workspace.id}`;
   const menuRef = useRef<HTMLDetailsElement>(null);
@@ -75,16 +73,6 @@ export function WorkspaceContextMenu({
             Manage workspaces
           </Link>
         </section>
-
-        {isSample ? (
-          <section className={styles.contextSection}>
-            <small>OPEN SAMPLE</small>
-            <span className={styles.contextMatter}>Ria Sen · fictional sample</span>
-            <Link className={styles.contextSecondaryLink} href={`${base}/sample`}>
-              Open sample workflow
-            </Link>
-          </section>
-        ) : null}
 
         <nav className={styles.contextActions} aria-label="Organization and account settings">
           <small>WORKSPACE SETTINGS</small>
