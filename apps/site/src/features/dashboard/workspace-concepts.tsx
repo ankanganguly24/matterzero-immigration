@@ -44,7 +44,7 @@ export function WorkspaceConcept({
           <h1>{concept.title}</h1>
           <p>{concept.description}</p>
         </div>
-        <span className={styles.privateTag}>Concept preview</span>
+        <span className={styles.privateTag}>Preview · Coming soon</span>
       </div>
 
       <section className={styles.emptyState} aria-labelledby="concept-state-heading">
