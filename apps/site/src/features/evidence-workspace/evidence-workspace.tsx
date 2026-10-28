@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useWorkspaceMatterContext } from "@/features/dashboard/workspace-matter-context";
 import { demoMatter, sources, timeline, type SourceCitation, type SourceId } from "./demo-fixture";
 import styles from "./workspace.module.css";
 
@@ -25,7 +26,7 @@ export function EvidenceWorkspace({
     timeline[0].citations[0],
   );
   const [received, setReceived] = useState(false);
-  const [sampleDataIncluded, setSampleDataIncluded] = useState(true);
+  const { sampleDataIncluded, setSampleDataIncluded } = useWorkspaceMatterContext();
   const [approvalState, setApprovalState] = useState<"idle" | "saving" | "approved" | "error">(
     "idle",
   );
@@ -113,18 +114,23 @@ export function EvidenceWorkspace({
   }
 
   return (
-    <section className={styles.sampleWorkspace} aria-label="Fictional workflow sample">
+    <section
+      className={styles.sampleWorkspace}
+      aria-label={sampleDataIncluded ? "Fictional workflow sample" : "Empty matter"}
+    >
       <div className={styles.pageContent}>
         <div className={styles.pageIntro}>
           <div>
             <p className={styles.kicker}>
-              {sampleDataIncluded ? "FICTIONAL SAMPLE · NO LIVE CASE DATA" : "SAMPLE WORKSPACE"}
+              {sampleDataIncluded
+                ? "FICTIONAL SAMPLE · NO LIVE CASE DATA"
+                : "LIVE WORKSPACE · EMPTY MATTER"}
             </p>
-            <h1>{sampleDataIncluded ? demoMatter.title : "Sample data removed"}</h1>
+            <h1>{sampleDataIncluded ? demoMatter.title : "Empty matter"}</h1>
             <p className={styles.subhead}>
               {sampleDataIncluded
                 ? `${demoMatter.caseType} · a source-led evidence workflow for an immigration team.`
-                : "The fictional applicant, documents, and workflow details are hidden from this view."}
+                : "This matter has no documents or source-linked facts yet."}
             </p>
           </div>
           <div className={styles.pageActions}>
@@ -197,16 +203,7 @@ export function EvidenceWorkspace({
             )}
           </>
         ) : (
-          <section className={styles.sampleCleared} aria-live="polite">
-            <span aria-hidden="true">✓</span>
-            <div>
-              <h2>Sample data removed from this view</h2>
-              <p>
-                Fictional applicant details, documents, and workflow examples are hidden. Restore
-                the sample any time to explore the demonstration again.
-              </p>
-            </div>
-          </section>
+          <EmptyMatterWorkspace />
         )}
         {message && (
           <p className={styles.liveMessage} role="status">
@@ -218,6 +215,45 @@ export function EvidenceWorkspace({
           case decisions remain with the responsible professional.
         </footer>
       </div>
+    </section>
+  );
+}
+
+function EmptyMatterWorkspace() {
+  return (
+    <section className={styles.emptyMatterGrid} aria-label="Empty matter workspace">
+      <section className={styles.emptyMatterPanel} aria-labelledby="criteria-heading">
+        <p className={styles.emptyMatterEyebrow}>REVIEW FRAMEWORK</p>
+        <h2 id="criteria-heading">Statutory prongs</h2>
+        <span className={styles.awaitingIngestion}>Awaiting Document Ingestion</span>
+        <div className={styles.emptyMatterDivider} />
+        <p className={styles.emptyMatterCopy}>
+          No evidence or claims are attached. Reviewer criteria will be mapped here after documents
+          are available.
+        </p>
+      </section>
+
+      <section className={styles.emptyMatterPanel} aria-labelledby="documents-heading">
+        <p className={styles.emptyMatterEyebrow}>DOCUMENTS</p>
+        <h2 id="documents-heading">Document canvas</h2>
+        <div className={styles.documentPlaceholder} aria-disabled="true">
+          <span aria-hidden="true">＋</span>
+          <strong>Document ingestion will appear here</strong>
+          <p>PDF upload, text extraction, and source highlights are planned for a later phase.</p>
+        </div>
+      </section>
+
+      <aside className={styles.emptyMatterPanel} aria-labelledby="gap-auditor-heading">
+        <p className={styles.emptyMatterEyebrow}>REVIEW SUPPORT</p>
+        <h2 id="gap-auditor-heading">Gap Auditor</h2>
+        <p className={styles.emptyDocumentCount}>
+          <strong>0</strong>
+          <span>Documents Ingested</span>
+        </p>
+        <p className={styles.emptyMatterCopy}>
+          Document ingestion and evidence coverage are not active yet.
+        </p>
+      </aside>
     </section>
   );
 }
