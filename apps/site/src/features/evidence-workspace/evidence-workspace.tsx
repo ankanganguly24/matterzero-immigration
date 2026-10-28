@@ -4,15 +4,13 @@ import { useEffect, useState } from "react";
 import { demoMatter, sources, timeline, type SourceCitation, type SourceId } from "./demo-fixture";
 import styles from "./workspace.module.css";
 
-type WorkspaceTab = "intake" | "collector" | "chronology" | "review" | "rfe" | "employer";
+type WorkspaceTab = "intake" | "collector" | "chronology" | "review";
 
 const tabs: { id: WorkspaceTab; label: string; number?: string }[] = [
   { id: "intake", label: "Intake", number: "01" },
   { id: "collector", label: "Collector", number: "02" },
   { id: "chronology", label: "Chronology", number: "03" },
   { id: "review", label: "Review", number: "04" },
-  { id: "rfe", label: "RFE concept" },
-  { id: "employer", label: "Employer concept" },
 ];
 
 export function EvidenceWorkspace({
@@ -166,30 +164,6 @@ export function EvidenceWorkspace({
             approvalState={approvalState}
             onApprove={approveVersion}
             onExport={requestExport}
-          />
-        )}
-        {activeTab === "rfe" && (
-          <ConceptView
-            title="RFE response preparation"
-            label="CONCEPT PREVIEW"
-            description="Extract the concerns stated in a sample notice and surface linked evidence for counsel to assess."
-            steps={[
-              "Notice text and printed deadline",
-              "Candidate evidence with source links",
-              "Counsel review of strategy and response",
-            ]}
-          />
-        )}
-        {activeTab === "employer" && (
-          <ConceptView
-            title="Employer record organization"
-            label="CONCEPT PREVIEW"
-            description="Organize employer records and firm-defined review items for H-1B and PERM workflows."
-            steps={[
-              "Employer file checklist",
-              "Source-backed dates and records",
-              "Reviewer-controlled audit packet",
-            ]}
           />
         )}
         {message && (
@@ -596,36 +570,6 @@ function ReviewView({
         </div>
       </aside>
     </div>
-  );
-}
-
-function ConceptView({
-  title,
-  label,
-  description,
-  steps,
-}: {
-  title: string;
-  label: string;
-  description: string;
-  steps: string[];
-}) {
-  return (
-    <section className={styles.conceptPanel}>
-      <div className={styles.conceptMark}>MZ</div>
-      <p className={styles.kicker}>{label}</p>
-      <h2>{title}</h2>
-      <p>{description}</p>
-      <ol>
-        {steps.map((step, index) => (
-          <li key={step}>
-            <span>0{index + 1}</span>
-            {step}
-          </li>
-        ))}
-      </ol>
-      <div className={styles.conceptNotice}>Concept preview · Not available as a live workflow</div>
-    </section>
   );
 }
 
