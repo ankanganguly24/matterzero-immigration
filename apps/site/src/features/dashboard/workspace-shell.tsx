@@ -90,7 +90,6 @@ export function WorkspaceShell({
             workspaces={workspaces}
             email={email}
             role={role}
-            isSample={showFictionalContext}
           />
         </header>
 
@@ -163,7 +162,6 @@ export function WorkspaceShell({
               workspaces={workspaces}
               email={email}
               role={role}
-              isSample={showFictionalContext}
             />
           </header>
           <main id="main-content" className={styles.content}>
