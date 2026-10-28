@@ -2,6 +2,45 @@ import Link from "next/link";
 import styles from "./workspace-pages.module.css";
 import type { WorkspaceSummary } from "./workspace-shell";
 
+type MetricState =
+  { status: "loading" } | { status: "error" } | { status: "loaded"; count: number };
+
+const overviewMetrics: { label: string; state: MetricState }[] = [
+  { label: "Open Matters", state: { status: "loaded", count: 0 } },
+  { label: "Evidence Requests", state: { status: "loaded", count: 0 } },
+  { label: "Items to Review", state: { status: "loaded", count: 0 } },
+  { label: "Ready for Handoff", state: { status: "loaded", count: 0 } },
+];
+
+function MetricCard({ label, state }: { label: string; state: MetricState }) {
+  const isLoading = state.status === "loading";
+  const value = state.status === "loaded" ? state.count : state.status === "error" ? "--" : null;
+
+  return (
+    <article
+      className={`${styles.metricCard} ${isLoading ? styles.metricLoading : ""} ${state.status === "error" ? styles.metricError : ""}`}
+      aria-label={`${label}: ${isLoading ? "loading" : value}`}
+      aria-busy={isLoading}
+    >
+      <span>{label}</span>
+      {isLoading ? (
+        <span className={styles.metricSkeleton} aria-hidden="true" />
+      ) : (
+        <strong>{value}</strong>
+      )}
+      <small>
+        {state.status === "loaded"
+          ? state.count === 0
+            ? "No live records yet"
+            : "Across this workspace"
+          : state.status === "error"
+            ? "Could not load metric"
+            : "Loading metric"}
+      </small>
+    </article>
+  );
+}
+
 export function WorkspaceOverview({ workspace }: { workspace: WorkspaceSummary }) {
   const sections = [
     { href: "matters", label: "Matters", description: "Applicant records and case progress." },
@@ -22,17 +61,8 @@ export function WorkspaceOverview({ workspace }: { workspace: WorkspaceSummary }
       </div>
 
       <section className={styles.metrics} aria-label="Matter overview">
-        {[
-          ["0", "Open matters"],
-          ["0", "Evidence requests"],
-          ["0", "Items to review"],
-          ["0", "Ready for handoff"],
-        ].map(([value, label]) => (
-          <article className={styles.metricCard} key={label}>
-            <span>{label}</span>
-            <strong>{value}</strong>
-            <small>No live case records yet</small>
-          </article>
+        {overviewMetrics.map(({ label, state }) => (
+          <MetricCard key={label} label={label} state={state} />
         ))}
       </section>
 

@@ -233,6 +233,13 @@
   gap: 1.5rem;
   margin-bottom: 1.35rem;
 }
+.pageActions {
+  display: flex;
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.55rem;
+}
 .kicker {
   margin: 0 0 0.5rem;
   color: #78867c;
@@ -280,9 +287,28 @@
   border-color: #aab9a6;
   background: #fbfcfa;
 }
+.clearSampleButton {
+  display: inline-flex;
+  min-height: 37px;
+  align-items: center;
+  justify-content: center;
+  padding: 0.52rem 0.8rem;
+  border: 1px solid #e4d4cf;
+  border-radius: 0.52rem;
+  background: #fff;
+  color: #8c5145;
+  font: inherit;
+  font-size: 0.76rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+.clearSampleButton:hover {
+  border-color: #d2b1a8;
+  background: #fff8f6;
+}
 .disclaimer {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 0.7rem;
   margin: 0 0 1.2rem;
   padding: 0.75rem 0.9rem;
@@ -292,13 +318,14 @@
   color: #64725f;
 }
 .disclaimer > span {
-  padding-top: 0.05rem;
+  flex: 0 0 auto;
   color: #7a9863;
-  font-size: 0.85rem;
+  font-size: 1.05rem;
+  line-height: 1;
 }
 .disclaimer p {
   margin: 0;
-  font-size: 0.69rem;
+  font-size: 0.78rem;
   line-height: 1.55;
 }
 .disclaimer strong {
@@ -1205,6 +1232,167 @@
   font-size: 0.57rem;
   line-height: 1.55;
 }
+.sampleCleared {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  padding: 1.25rem;
+  border: 1px solid #e4e9e2;
+  border-radius: 0.75rem;
+  background: #fff;
+}
+.sampleCleared > span {
+  display: grid;
+  width: 2rem;
+  height: 2rem;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: 50%;
+  background: #edf3e9;
+  color: #426b48;
+  font-size: 1rem;
+}
+.sampleCleared h2 {
+  margin: 0;
+  color: #27352c;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 1.1rem;
+}
+.sampleCleared p {
+  margin: 0.35rem 0 0;
+  color: #68766c;
+  font-size: 0.82rem;
+  line-height: 1.55;
+}
+
+/* Keep sample facts and source messages comfortably readable at demo scale. */
+.kicker {
+  font-size: 0.68rem;
+}
+.workflowTab {
+  font-size: 0.78rem;
+}
+.panelHeading > p {
+  font-size: 0.62rem;
+}
+.panelHeading > span {
+  font-size: 0.75rem;
+}
+.personCard strong {
+  font-size: 0.86rem;
+}
+.personCard small,
+.checklistRow small {
+  font-size: 0.7rem;
+}
+.reviewBadge {
+  font-size: 0.64rem;
+}
+.factList dt,
+.factList dd {
+  font-size: 0.77rem;
+  line-height: 1.5;
+}
+.sourceTag,
+.inlineSource {
+  font-size: 0.69rem;
+}
+.noteCard p {
+  font-size: 0.78rem;
+}
+.checklistRow strong {
+  font-size: 0.78rem;
+}
+.panelFootnote,
+.requestHeader small,
+.scopeItem small {
+  font-size: 0.7rem;
+}
+.requestHeader strong {
+  font-size: 0.86rem;
+}
+.requestMeta span {
+  font-size: 0.67rem;
+}
+.requestMeta b {
+  font-size: 0.72rem;
+}
+.primaryAction,
+.secondaryAction,
+.outlineButton {
+  font-size: 0.78rem;
+}
+.activityList h3 {
+  font-size: 0.78rem;
+}
+.activityList p,
+.scopeItem strong {
+  font-size: 0.74rem;
+}
+.activityList time {
+  font-size: 0.68rem;
+}
+.sampleCallout {
+  font-size: 0.7rem;
+}
+.timelineTop time {
+  font-size: 0.73rem;
+}
+.timelineTop .reviewBadge {
+  font-size: 0.62rem;
+}
+.timelineBody > strong {
+  font-size: 0.86rem;
+}
+.timelineQuote {
+  color: #4f5f53;
+  font-size: 0.82rem;
+  line-height: 1.65;
+}
+.timelineSource {
+  font-size: 0.7rem;
+}
+.sourceFileIcon {
+  font-size: 0.58rem;
+}
+.sourceHeader strong {
+  font-size: 0.78rem;
+}
+.sourceHeader small {
+  font-size: 0.68rem;
+}
+.documentPage {
+  width: min(100%, 340px);
+  min-height: 320px;
+}
+.docLetterhead,
+.boundingBoxLabel {
+  font-size: 0.58rem;
+}
+.docLine,
+.docSignature {
+  font-size: 0.74rem;
+}
+.docHighlight {
+  font-size: 0.78rem;
+  line-height: 1.7;
+}
+.sourceDetail strong {
+  font-size: 0.72rem;
+}
+.sourceDetail small,
+.sourceExplanation {
+  font-size: 0.7rem;
+}
+.samplePageNote {
+  font-size: 0.65rem;
+}
+.liveMessage {
+  font-size: 0.78rem;
+}
+.workspaceFooter {
+  font-size: 0.7rem;
+}
 @media (max-width: 1080px) {
   .workspace {
     grid-template-columns: 205px minmax(0, 1fr);
@@ -1268,6 +1456,12 @@
     flex-direction: column;
     gap: 0.75rem;
   }
+  .pageActions {
+    width: 100%;
+  }
+  .pageActions > button {
+    min-height: 40px;
+  }
   .outlineButton {
     min-height: 34px;
   }
@@ -1304,6 +1498,13 @@
   .approvalActions {
     flex-direction: column;
     align-items: stretch;
+  }
+  .disclaimer {
+    gap: 0.6rem;
+    padding: 0.75rem;
+  }
+  .sampleCleared {
+    padding: 1rem;
   }
 }
 @media (max-width: 390px) {
