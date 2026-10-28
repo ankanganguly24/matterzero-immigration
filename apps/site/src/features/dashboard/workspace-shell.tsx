@@ -42,6 +42,7 @@ export function WorkspaceShell({
   const pathname = usePathname();
   const [drawerOpen, setDrawerOpen] = useState(false);
   const base = `/dashboard/${workspace.id}`;
+  const isSample = pathname === `${base}/sample` || pathname.startsWith(`${base}/sample/`);
   const active = navigation.find((item) =>
     item.suffix ? pathname.startsWith(`${base}${item.suffix}`) : pathname === base,
   );
@@ -62,13 +63,17 @@ export function WorkspaceShell({
           <span className={styles.brandMark}>M</span>
           <span>MatterZero</span>
         </Link>
-        <span className={styles.mobileActive}>{active?.label ?? "Workspace"}</span>
+        {isSample ? (
+          <span className={styles.mobileSampleBadge}>Fictional Sample Context</span>
+        ) : (
+          <span className={styles.mobileActive}>{active?.label ?? "Workspace"}</span>
+        )}
         <WorkspaceContextMenu
           workspace={workspace}
           workspaces={workspaces}
           email={email}
           role={role}
-          isSample={pathname.endsWith("/sample")}
+          isSample={isSample}
         />
       </header>
 
@@ -119,13 +124,14 @@ export function WorkspaceShell({
       <div className={styles.mainColumn}>
         <header className={styles.topbar}>
           <div className={styles.contextBreadcrumbs}>
-            <Link href={base}>MatterZero</Link>
+            <Link href={base}>Workspace</Link>
             <span className={styles.separator}>/</span>
             <strong>{workspace.name}</strong>
-            {pathname.endsWith("/sample") ? (
+            {isSample ? (
               <>
                 <span className={styles.separator}>/</span>
-                <span className={styles.sampleContext}>Ria Sen · fictional sample</span>
+                <span className={styles.sampleContext}>Pevatron (O-1A)</span>
+                <span className={styles.sampleBadge}>Fictional Sample Context</span>
               </>
             ) : null}
           </div>
@@ -134,7 +140,7 @@ export function WorkspaceShell({
             workspaces={workspaces}
             email={email}
             role={role}
-            isSample={pathname.endsWith("/sample")}
+            isSample={isSample}
           />
         </header>
         <main id="main-content" className={styles.content}>

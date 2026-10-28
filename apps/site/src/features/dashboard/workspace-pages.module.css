@@ -83,6 +83,30 @@
   font-size: 0.67rem;
 }
 
+.metricLoading > small {
+  color: #8b968e;
+}
+
+.metricSkeleton {
+  display: block;
+  width: 3.1rem;
+  height: 2rem;
+  border-radius: 0.38rem;
+  background: linear-gradient(90deg, #eef1ec 25%, #f7f8f5 50%, #eef1ec 75%);
+  background-size: 200% 100%;
+  animation: metric-shimmer 1.35s ease-in-out infinite;
+}
+
+.metricError > strong {
+  color: #8b5d50;
+}
+
+@keyframes metric-shimmer {
+  to {
+    background-position: -200% 0;
+  }
+}
+
 .contentGrid {
   display: grid;
   grid-template-columns: minmax(0, 1.5fr) minmax(250px, 0.8fr);
@@ -287,5 +311,11 @@
 
   .metricCard > span {
     font-size: 0.68rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .metricSkeleton {
+    animation: none;
   }
 }

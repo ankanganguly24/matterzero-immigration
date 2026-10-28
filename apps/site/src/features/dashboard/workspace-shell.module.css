@@ -423,6 +423,25 @@
   font-weight: 700;
 }
 
+.sampleBadge,
+.mobileSampleBadge {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+  padding: 0.32rem 0.58rem;
+  border: 1px solid #d5e3ce;
+  border-radius: 999px;
+  background: #f0f6eb;
+  color: #3c653e;
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.015em;
+}
+
+.contextBreadcrumbs .sampleBadge {
+  margin-left: 0.5rem;
+}
+
 .noMatterContext {
   color: #89948d;
 }
@@ -483,6 +502,16 @@
     margin-left: auto;
     color: #68756c;
     font-size: 0.74rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .mobileSampleBadge {
+    overflow: hidden;
+    max-width: min(42vw, calc(100vw - 250px));
+    margin-left: auto;
+    padding: 0.3rem 0.48rem;
+    font-size: 0.58rem;
     text-overflow: ellipsis;
     white-space: nowrap;
   }

@@ -25,10 +25,21 @@ export function EvidenceWorkspace({
     timeline[0].citations[0],
   );
   const [received, setReceived] = useState(false);
+  const [sampleDataIncluded, setSampleDataIncluded] = useState(true);
   const [approvalState, setApprovalState] = useState<"idle" | "saving" | "approved" | "error">(
     "idle",
   );
   const [message, setMessage] = useState("");
+
+  function toggleSampleData() {
+    if (sampleDataIncluded) {
+      setReceived(false);
+      setActiveTab("intake");
+      setSelectedCitation(timeline[0].citations[0]);
+      setMessage("");
+    }
+    setSampleDataIncluded(!sampleDataIncluded);
+  }
 
   function selectSource(source: SourceId) {
     const citation = timeline
@@ -107,64 +118,95 @@ export function EvidenceWorkspace({
         <div className={styles.pageIntro}>
           <div>
             <p className={styles.kicker}>
-              FICTIONAL SAMPLE <span>·</span> NO LIVE CASE DATA
+              {sampleDataIncluded ? "FICTIONAL SAMPLE · NO LIVE CASE DATA" : "SAMPLE WORKSPACE"}
             </p>
-            <h1>{demoMatter.title}</h1>
+            <h1>{sampleDataIncluded ? demoMatter.title : "Sample data removed"}</h1>
             <p className={styles.subhead}>
-              {demoMatter.caseType} · a source-led evidence workflow for an immigration team.
+              {sampleDataIncluded
+                ? `${demoMatter.caseType} · a source-led evidence workflow for an immigration team.`
+                : "The fictional applicant, documents, and workflow details are hidden from this view."}
             </p>
           </div>
-          <button className={styles.outlineButton} onClick={() => setActiveTab("review")}>
-            Review status <span aria-hidden="true">↗</span>
-          </button>
-        </div>
-
-        <div className={styles.disclaimer}>
-          <span aria-hidden="true">ⓘ</span>
-          <p>
-            <strong>Fictional case for product demonstration.</strong> This workspace contains
-            sample documents and facts. It is not a live case file, legal checklist, or immigration
-            advice.
-          </p>
-        </div>
-
-        <nav className={styles.workflowNav} aria-label="Sample matter workflow steps">
-          {tabs.map((tab) => (
+          <div className={styles.pageActions}>
+            {sampleDataIncluded ? (
+              <button
+                className={styles.outlineButton}
+                onClick={() => setActiveTab("review")}
+                type="button"
+              >
+                Review status <span aria-hidden="true">↗</span>
+              </button>
+            ) : null}
             <button
-              key={tab.id}
-              className={`${styles.workflowTab} ${activeTab === tab.id ? styles.workflowTabActive : ""} ${!tab.number ? styles.conceptTab : ""}`}
-              onClick={() => setActiveTab(tab.id)}
-              aria-current={activeTab === tab.id ? "step" : undefined}
+              className={sampleDataIncluded ? styles.clearSampleButton : styles.outlineButton}
+              onClick={toggleSampleData}
+              type="button"
             >
-              {tab.number && <span>{tab.number}</span>}
-              {tab.label}
-              {!tab.number && <small>CONCEPT</small>}
+              {sampleDataIncluded ? "Remove all sample data" : "Restore sample data"}
             </button>
-          ))}
-        </nav>
+          </div>
+        </div>
 
-        {activeTab === "intake" && <IntakeView onSelectSource={selectSource} />}
-        {activeTab === "collector" && (
-          <CollectorView
-            received={received}
-            onReceive={() => setReceived(true)}
-            onSelectSource={selectSource}
-          />
-        )}
-        {activeTab === "chronology" && (
-          <ChronologyView
-            selectedCitation={selectedCitation}
-            onSelectCitation={setSelectedCitation}
-          />
-        )}
-        {activeTab === "review" && (
-          <ReviewView
-            versionHash={versionHash}
-            canApprove={canApprove}
-            approvalState={approvalState}
-            onApprove={approveVersion}
-            onExport={requestExport}
-          />
+        {sampleDataIncluded ? (
+          <>
+            <div className={styles.disclaimer}>
+              <span aria-hidden="true">ⓘ</span>
+              <p>
+                <strong>Fictional case for product demonstration.</strong> This workspace contains
+                sample documents and facts. It is not a live case file, legal checklist, or
+                immigration advice.
+              </p>
+            </div>
+
+            <nav className={styles.workflowNav} aria-label="Sample matter workflow steps">
+              {tabs.map((tab) => (
+                <button
+                  key={tab.id}
+                  className={`${styles.workflowTab} ${activeTab === tab.id ? styles.workflowTabActive : ""}`}
+                  onClick={() => setActiveTab(tab.id)}
+                  aria-current={activeTab === tab.id ? "step" : undefined}
+                >
+                  <span>{tab.number}</span>
+                  {tab.label}
+                </button>
+              ))}
+            </nav>
+
+            {activeTab === "intake" && <IntakeView onSelectSource={selectSource} />}
+            {activeTab === "collector" && (
+              <CollectorView
+                received={received}
+                onReceive={() => setReceived(true)}
+                onSelectSource={selectSource}
+              />
+            )}
+            {activeTab === "chronology" && (
+              <ChronologyView
+                selectedCitation={selectedCitation}
+                onSelectCitation={setSelectedCitation}
+              />
+            )}
+            {activeTab === "review" && (
+              <ReviewView
+                versionHash={versionHash}
+                canApprove={canApprove}
+                approvalState={approvalState}
+                onApprove={approveVersion}
+                onExport={requestExport}
+              />
+            )}
+          </>
+        ) : (
+          <section className={styles.sampleCleared} aria-live="polite">
+            <span aria-hidden="true">✓</span>
+            <div>
+              <h2>Sample data removed from this view</h2>
+              <p>
+                Fictional applicant details, documents, and workflow examples are hidden. Restore
+                the sample any time to explore the demonstration again.
+              </p>
+            </div>
+          </section>
         )}
         {message && (
           <p className={styles.liveMessage} role="status">
