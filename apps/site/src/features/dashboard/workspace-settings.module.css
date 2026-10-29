@@ -116,7 +116,6 @@
 }
 
 .form input,
-.form select,
 .form textarea {
   width: 100%;
   min-height: 44px;
@@ -127,15 +126,6 @@
   color: #24342a;
   font: inherit;
   font-size: 0.82rem;
-}
-
-.form select {
-  appearance: none;
-  padding-right: 3rem;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none'%3E%3Cpath d='m3 6 5 5 5-5' stroke='%2324342a' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 1.35rem center;
-  background-size: 1rem;
 }
 
 .form textarea {
@@ -154,7 +144,7 @@
 .form input:disabled,
 .form select:disabled,
 .form textarea:disabled {
-  background: #f6f7f4;
+  background-color: #f6f7f4;
   color: #68746b;
 }
 

@@ -1,7 +1,9 @@
 "use client";
 
-import { useMemo, useRef, useState, type FormEvent } from "react";
+import { useCallback, useEffect, useRef, useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
+import { SelectControl } from "@/components/forms/select-control";
+import { Pagination } from "@/components/navigation/pagination";
 import { VoiceIntakePreview } from "./voice-intake-preview";
 import styles from "./matter-hub.module.css";
 
@@ -428,32 +430,60 @@ function MatterImportDialog({
 export function MatterHub({
   workspaceId,
   matters,
+  totalWorkspaceCount,
+  totalCount,
+  page,
+  pageSize,
+  assignees,
+  query,
   canManage,
   initialCreateOpen = false,
   initialImportOpen = false,
 }: {
   workspaceId: string;
   matters: MatterListItem[];
+  totalWorkspaceCount: number;
+  totalCount: number;
+  page: number;
+  pageSize: number;
+  assignees: { userId: string; email: string }[];
+  query: { search: string; status: string; assignedTo: string; sort: string };
   canManage: boolean;
   initialCreateOpen?: boolean;
   initialImportOpen?: boolean;
 }) {
   const router = useRouter();
-  const [search, setSearch] = useState("");
-  const [status, setStatus] = useState("all");
+  const [search, setSearch] = useState(query.search);
   const [createOpen, setCreateOpen] = useState(initialCreateOpen);
   const [importOpen, setImportOpen] = useState(initialImportOpen);
-  const filtered = useMemo(() => {
-    const query = search.trim().toLowerCase();
-    return matters.filter((matter) => {
-      const matchesText =
-        !query ||
-        `${matter.firstName} ${matter.lastName} ${matter.email} ${matter.petitionType}`
-          .toLowerCase()
-          .includes(query);
-      return matchesText && (status === "all" || matter.status === status);
-    });
-  }, [matters, search, status]);
+
+  const mattersHref = useCallback(
+    (overrides: Partial<typeof query> & { page?: number } = {}) => {
+      const params = new URLSearchParams();
+      const nextQuery = { ...query, ...overrides };
+      if (nextQuery.search) params.set("q", nextQuery.search);
+      if (nextQuery.status !== "all") params.set("status", nextQuery.status);
+      if (nextQuery.assignedTo !== "all") params.set("assigned", nextQuery.assignedTo);
+      if (nextQuery.sort !== "updated_desc") params.set("sort", nextQuery.sort);
+      const nextPage = overrides.page ?? 1;
+      if (nextPage > 1) params.set("page", String(nextPage));
+      const queryString = params.toString();
+      return `/dashboard/${workspaceId}/matters${queryString ? `?${queryString}` : ""}`;
+    },
+    [workspaceId, query],
+  );
+
+  useEffect(() => {
+    if (search === query.search) return;
+    const timer = window.setTimeout(() => {
+      router.replace(mattersHref({ search: search.trim().slice(0, 120) }), { scroll: false });
+    }, 300);
+    return () => window.clearTimeout(timer);
+  }, [search, query.search, mattersHref, router]);
+
+  function changeFilter(overrides: Partial<typeof query>) {
+    router.push(mattersHref({ search: search.trim(), ...overrides }), { scroll: false });
+  }
 
   return (
     <div className={styles.page}>
@@ -464,7 +494,7 @@ export function MatterHub({
           <p>Find and route applicant work across this workspace.</p>
         </div>
         <span className={styles.countTag}>
-          {matters.length} {matters.length === 1 ? "matter" : "matters"}
+          {totalWorkspaceCount} {totalWorkspaceCount === 1 ? "matter" : "matters"}
         </span>
       </header>
       <section className={styles.voiceBanner}>
@@ -510,22 +540,57 @@ export function MatterHub({
               aria-label="Search matters"
               value={search}
               onChange={(event) => setSearch(event.currentTarget.value)}
-              placeholder="Search name, email, or petition"
+              placeholder="Search name, email, petition, or assignee"
             />
           </label>
-          <label className={styles.statusFilter}>
-            Status
-            <select value={status} onChange={(event) => setStatus(event.currentTarget.value)}>
+          <div className={styles.statusFilter}>
+            <SelectControl
+              density="compact"
+              aria-label="Filter matters by status"
+              value={query.status}
+              onChange={(event) => changeFilter({ status: event.currentTarget.value })}
+            >
               <option value="all">All statuses</option>
               {Object.entries(statusLabels).map(([value, label]) => (
                 <option key={value} value={value}>
                   {label}
                 </option>
               ))}
-            </select>
-          </label>
+            </SelectControl>
+          </div>
+          <div className={styles.statusFilter}>
+            <SelectControl
+              density="compact"
+              aria-label="Filter matters by assignee"
+              value={query.assignedTo}
+              onChange={(event) => changeFilter({ assignedTo: event.currentTarget.value })}
+            >
+              <option value="all">Anyone</option>
+              <option value="unassigned">Unassigned</option>
+              {assignees.map((assignee) => (
+                <option key={assignee.userId} value={assignee.userId}>
+                  {assignee.email}
+                </option>
+              ))}
+            </SelectControl>
+          </div>
+          <div className={styles.statusFilter}>
+            <SelectControl
+              density="compact"
+              aria-label="Sort matters"
+              value={query.sort}
+              onChange={(event) => changeFilter({ sort: event.currentTarget.value })}
+            >
+              <option value="updated_desc">Recently updated</option>
+              <option value="name_asc">Applicant name A–Z</option>
+              <option value="name_desc">Applicant name Z–A</option>
+              <option value="petition_asc">Petition type</option>
+              <option value="status_asc">Status</option>
+              <option value="attorney_asc">Assigned attorney</option>
+            </SelectControl>
+          </div>
         </div>
-        {filtered.length ? (
+        {matters.length ? (
           <div className={styles.tableWrap}>
             <table className={styles.matterTable}>
               <thead>
@@ -539,7 +604,7 @@ export function MatterHub({
                 </tr>
               </thead>
               <tbody>
-                {filtered.map((matter) => (
+                {matters.map((matter) => (
                   <tr
                     key={matter.id}
                     className={styles.clickableRow}
@@ -591,13 +656,13 @@ export function MatterHub({
         ) : (
           <div className={styles.emptyTable}>
             <span>▤</span>
-            <h3>{matters.length ? "No matching matters" : "No matters yet"}</h3>
+            <h3>{totalWorkspaceCount ? "No matching matters" : "No matters yet"}</h3>
             <p>
-              {matters.length
-                ? "Try another search or status filter."
+              {totalWorkspaceCount
+                ? "Try changing the search, status, or assignee filters."
                 : "Create a matter or import a CSV to begin organizing workspace records."}
             </p>
-            {!matters.length && canManage ? (
+            {!totalWorkspaceCount && canManage ? (
               <button
                 type="button"
                 className={styles.secondaryButton}
@@ -608,6 +673,14 @@ export function MatterHub({
             ) : null}
           </div>
         )}
+        <Pagination
+          currentPage={page}
+          pageSize={pageSize}
+          totalCount={totalCount}
+          itemLabel={totalCount === totalWorkspaceCount ? "matters" : "matching matters"}
+          ariaLabel="Matter list pages"
+          hrefForPage={(targetPage) => mattersHref({ page: targetPage })}
+        />
       </section>
       {createOpen ? (
         <MatterCreateDialog workspaceId={workspaceId} onClose={() => setCreateOpen(false)} />
