@@ -1,115 +1,240 @@
 import Link from "next/link";
+import type { MatterStatus } from "@/lib/db/schema";
+import { WorkspaceIcon } from "./workspace-icon";
 import styles from "./workspace-pages.module.css";
 import type { WorkspaceSummary } from "./workspace-shell";
 
-type MetricState =
-  { status: "loading" } | { status: "error" } | { status: "loaded"; count: number };
+type OverviewData = {
+  counts: Record<MatterStatus, number>;
+  recentMatters: {
+    id: string;
+    firstName: string;
+    lastName: string;
+    petitionType: string;
+    status: MatterStatus;
+    updatedAt: string;
+  }[];
+};
 
-const overviewMetrics: { label: string; state: MetricState }[] = [
-  { label: "Open Matters", state: { status: "loaded", count: 0 } },
-  { label: "Evidence Requests", state: { status: "loaded", count: 0 } },
-  { label: "Items to Review", state: { status: "loaded", count: 0 } },
-  { label: "Ready for Handoff", state: { status: "loaded", count: 0 } },
-];
+const statusLabels: Record<MatterStatus, string> = {
+  intake: "Intake",
+  parsing: "Parsing",
+  conflict_flagged: "Needs review",
+  ready_for_export: "Ready for export",
+};
 
-function MetricCard({ label, state }: { label: string; state: MetricState }) {
-  const isLoading = state.status === "loading";
-  const value = state.status === "loaded" ? state.count : state.status === "error" ? "--" : null;
-
+function MetricCard({
+  label,
+  count,
+  caption,
+  icon,
+  tone,
+}: {
+  label: string;
+  count: number | null;
+  caption: string;
+  icon: "matters" | "file" | "overview" | "arrow";
+  tone: "forest" | "blue" | "amber" | "lime";
+}) {
   return (
-    <article
-      className={`${styles.metricCard} ${isLoading ? styles.metricLoading : ""} ${state.status === "error" ? styles.metricError : ""}`}
-      aria-label={`${label}: ${isLoading ? "loading" : value}`}
-      aria-busy={isLoading}
-    >
-      <span>{label}</span>
-      {isLoading ? (
-        <span className={styles.metricSkeleton} aria-hidden="true" />
-      ) : (
-        <strong>{value}</strong>
-      )}
-      <small>
-        {state.status === "loaded"
-          ? state.count === 0
-            ? "No live records yet"
-            : "Across this workspace"
-          : state.status === "error"
-            ? "Could not load metric"
-            : "Loading metric"}
-      </small>
+    <article className={`${styles.metricCard} ${styles[`metric_${tone}`]}`}>
+      <div className={styles.metricTop}>
+        <span>{label}</span>
+        <span className={styles.metricIcon}>
+          <WorkspaceIcon name={icon} size={18} />
+        </span>
+      </div>
+      <strong>{count === null ? "—" : count}</strong>
+      <small>{count === null ? "Unable to load this workspace metric" : caption}</small>
     </article>
   );
 }
 
-export function WorkspaceOverview({ workspace }: { workspace: WorkspaceSummary }) {
-  const sections = [
-    { href: "matters", label: "Matters", description: "Applicant records and case progress." },
-    { href: "collector", label: "Collector", description: "Requested and received evidence." },
-    { href: "chronology", label: "Chronology", description: "Facts linked back to their sources." },
-    { href: "review", label: "Review queue", description: "Conflicts and items needing a person." },
+export function WorkspaceOverview({
+  workspace,
+  overviewData,
+}: {
+  workspace: WorkspaceSummary;
+  overviewData: OverviewData | null;
+}) {
+  const counts = overviewData?.counts;
+  const openCount = counts
+    ? Object.values(counts).reduce((total, value) => total + value, 0)
+    : null;
+  const metrics = [
+    {
+      label: "Open matters",
+      count: openCount,
+      caption: openCount === 0 ? "No live matters yet" : "Across this workspace",
+      icon: "matters" as const,
+      tone: "forest" as const,
+    },
+    {
+      label: "In intake",
+      count: counts?.intake ?? null,
+      caption: "Records awaiting casework",
+      icon: "file" as const,
+      tone: "blue" as const,
+    },
+    {
+      label: "Needs review",
+      count: counts ? counts.conflict_flagged : null,
+      caption: "Flagged for a person to review",
+      icon: "overview" as const,
+      tone: "amber" as const,
+    },
+    {
+      label: "Ready for export",
+      count: counts?.ready_for_export ?? null,
+      caption: "Matter records in this state",
+      icon: "arrow" as const,
+      tone: "lime" as const,
+    },
   ];
 
   return (
     <div className={styles.page}>
-      <div className={styles.pageHeader}>
-        <div>
+      <section className={styles.overviewHero}>
+        <div className={styles.heroCopy}>
           <p className={styles.eyebrow}>WORKSPACE OVERVIEW</p>
-          <h1>Matter overview</h1>
-          <p>See the state of your team’s immigration work in one place.</p>
+          <h1>Good work starts with a clear matter record.</h1>
+          <p>
+            Welcome to <strong>{workspace.name}</strong>. Track active matters, see what needs
+            attention, and move new work into the right place.
+          </p>
         </div>
-        <span className={styles.privateTag}>Private workspace</span>
-      </div>
+        <div className={styles.heroActions}>
+          <Link
+            href={`/dashboard/${workspace.id}/matters?create=1`}
+            className={styles.primaryAction}
+          >
+            <span>+ Add a matter</span>
+          </Link>
+          <Link
+            href={`/dashboard/${workspace.id}/matters?import=1`}
+            className={styles.secondaryAction}
+          >
+            <WorkspaceIcon name="ingestion" size={17} />
+            <span>Import from CSV</span>
+          </Link>
+        </div>
+        <div className={styles.heroDecoration} aria-hidden="true">
+          <div className={styles.heroDocument}>
+            <span />
+            <span />
+            <span />
+            <i />
+          </div>
+          <div className={styles.heroCheck}>✓</div>
+        </div>
+      </section>
 
-      <section className={styles.metrics} aria-label="Matter overview">
-        {overviewMetrics.map(({ label, state }) => (
-          <MetricCard key={label} label={label} state={state} />
+      <section className={styles.metrics} aria-label="Workspace matter metrics">
+        {metrics.map((metric) => (
+          <MetricCard key={metric.label} {...metric} />
         ))}
       </section>
 
-      <div className={styles.contentGrid}>
-        <section className={styles.sectionCard} aria-labelledby="operations-heading">
+      <div className={styles.overviewGrid}>
+        <section className={styles.recentCard} aria-labelledby="recent-heading">
           <div className={styles.sectionHead}>
             <div>
-              <p className={styles.eyebrow}>OPERATIONS</p>
-              <h2 id="operations-heading">Your team’s workflow</h2>
+              <p className={styles.eyebrow}>WORKSPACE ACTIVITY</p>
+              <h2 id="recent-heading">Recent matters</h2>
             </div>
-            <span className={styles.emptyCount}>0 active</span>
+            <Link href={`/dashboard/${workspace.id}/matters`} className={styles.textAction}>
+              View all <WorkspaceIcon name="arrow" size={15} />
+            </Link>
           </div>
-          <div className={styles.sectionLinks}>
-            {sections.map((section, index) => (
-              <Link
-                href={`/dashboard/${workspace.id}/${section.href}`}
-                className={styles.sectionLink}
-                key={section.href}
-              >
-                <span className={styles.sectionIndex}>0{index + 1}</span>
-                <span className={styles.sectionCopy}>
-                  <strong>{section.label}</strong>
-                  <small>{section.description}</small>
-                </span>
-                <span aria-hidden="true">→</span>
-              </Link>
-            ))}
-          </div>
+          {!overviewData ? (
+            <div className={styles.recentEmpty}>
+              <span className={styles.emptySymbol}>!</span>
+              <strong>Workspace activity is unavailable</strong>
+              <p>Refresh this page in a moment. Your matter records have not been changed.</p>
+            </div>
+          ) : overviewData.recentMatters.length === 0 ? (
+            <div className={styles.recentEmpty}>
+              <span className={styles.emptySymbol}>
+                <WorkspaceIcon name="matters" size={21} />
+              </span>
+              <strong>Your workspace is ready for its first matter</strong>
+              <p>Create a single matter or import a reviewed CSV list to get started.</p>
+              <div className={styles.emptyActions}>
+                <Link
+                  href={`/dashboard/${workspace.id}/matters?create=1`}
+                  className={styles.primaryAction}
+                >
+                  Create first matter
+                </Link>
+                <Link
+                  href={`/dashboard/${workspace.id}/matters?import=1`}
+                  className={styles.textAction}
+                >
+                  Import multiple <WorkspaceIcon name="arrow" size={15} />
+                </Link>
+              </div>
+            </div>
+          ) : (
+            <div className={styles.recentList}>
+              {overviewData.recentMatters.map((matter) => (
+                <Link
+                  href={`/dashboard/${workspace.id}/matters`}
+                  className={styles.recentRow}
+                  key={matter.id}
+                >
+                  <span className={styles.applicantMark} aria-hidden="true">
+                    {matter.firstName.charAt(0)}
+                    {matter.lastName.charAt(0)}
+                  </span>
+                  <span className={styles.applicantInfo}>
+                    <strong>
+                      {matter.firstName} {matter.lastName}
+                    </strong>
+                    <small>{matter.petitionType} petition</small>
+                  </span>
+                  <span className={`${styles.statusPill} ${styles[`status_${matter.status}`]}`}>
+                    {statusLabels[matter.status]}
+                  </span>
+                  <span className={styles.rowDate}>
+                    {new Intl.DateTimeFormat("en", { month: "short", day: "numeric" }).format(
+                      new Date(matter.updatedAt),
+                    )}
+                  </span>
+                </Link>
+              ))}
+            </div>
+          )}
         </section>
 
-        <aside className={styles.sampleCard}>
-          <span className={styles.sampleBadge}>FICTIONAL SAMPLE</span>
-          <h2>Explore the evidence workflow</h2>
-          <p>
-            Walk through an example intake, evidence request, source-linked chronology, and review.
-            The sample is separate from your workspace records.
+        <aside className={styles.overviewAside}>
+          <section className={styles.sampleCard}>
+            <div className={styles.sampleArt} aria-hidden="true">
+              <span className={styles.sampleArtSheet}>
+                <i />
+                <i />
+                <i />
+                <b>O-1A</b>
+              </span>
+              <span className={styles.sampleArtPin}>✓</span>
+            </div>
+            <span className={styles.sampleBadge}>FICTIONAL WALKTHROUGH</span>
+            <h2>See the workflow in action</h2>
+            <p>
+              Explore a fictional petition with example intake, evidence, chronology, and review.
+            </p>
+            <Link href={`/dashboard/${workspace.id}/sample`} className={styles.sampleAction}>
+              Open sample case <WorkspaceIcon name="arrow" size={16} />
+            </Link>
+          </section>
+          <p className={styles.privacyNote}>
+            <span aria-hidden="true">◈</span>
+            <span>
+              <strong>Keep applicant data out for now</strong>
+              Document ingestion and evidence review are still in development.
+            </span>
           </p>
-          <Link href={`/dashboard/${workspace.id}/sample`} className={styles.sampleLink}>
-            Open sample workflow <span aria-hidden="true">↗</span>
-          </Link>
         </aside>
       </div>
-
-      <p className={styles.disclaimer}>
-        This workspace is ready for setup, but real applicant case management is still being built.
-        Don’t upload applicant documents or enter sensitive case details yet.
-      </p>
     </div>
   );
 }
