@@ -5,14 +5,13 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { WorkspaceContextMenu } from "./workspace-context-menu";
 import { WorkspaceMatterContext } from "./workspace-matter-context";
+import { WorkspaceIcon } from "./workspace-icon";
 import styles from "./workspace-shell.module.css";
 
 const navigation = [
-  { suffix: "", label: "Matter dashboard", icon: "▦" },
-  { suffix: "/sample", label: "Petition & Evidence Builder", icon: "▤" },
-  { suffix: "/rfe-defense", label: "RFE Defense Engine", icon: "↗" },
-  { suffix: "/employer-compliance", label: "Employer Compliance", icon: "▣" },
-];
+  { suffix: "", label: "Overview", icon: "overview" },
+  { suffix: "/matters", label: "Matters", icon: "matters" },
+] as const;
 
 export type WorkspaceSummary = {
   id: string;
@@ -57,9 +56,14 @@ export function WorkspaceShell({
     setSampleOverride({ pathname, included });
   };
   const showFictionalContext = isSampleRoute && sampleDataIncluded;
-  const active = navigation.find((item) =>
-    item.suffix ? pathname.startsWith(`${base}${item.suffix}`) : pathname === base,
-  );
+  const isNavigationActive = (suffix: string) =>
+    suffix
+      ? pathname === `${base}${suffix}` || pathname.startsWith(`${base}${suffix}/`)
+      : pathname === base || isSampleRoute;
+  const active = navigation.find((item) => isNavigationActive(item.suffix));
+  const mobileActiveLabel = pathname.startsWith(`${base}/settings`)
+    ? "Settings"
+    : (active?.label ?? "Workspace");
 
   return (
     <WorkspaceMatterContext.Provider value={{ sampleDataIncluded, setSampleDataIncluded }}>
@@ -75,7 +79,9 @@ export function WorkspaceShell({
             {drawerOpen ? "×" : "☰"}
           </button>
           <Link href={base} className={styles.brand}>
-            <span className={styles.brandMark}>M</span>
+            <span className={styles.brandMark}>
+              <WorkspaceIcon name="overview" size={14} />
+            </span>
             <span>MatterZero</span>
           </Link>
           {isSampleRoute ? (
@@ -83,7 +89,7 @@ export function WorkspaceShell({
               {showFictionalContext ? "Fictional Sample Context" : "Live Workspace · Empty Matter"}
             </span>
           ) : (
-            <span className={styles.mobileActive}>{active?.label ?? "Workspace"}</span>
+            <span className={styles.mobileActive}>{mobileActiveLabel}</span>
           )}
           <WorkspaceContextMenu
             workspace={workspace}
@@ -105,18 +111,18 @@ export function WorkspaceShell({
         <aside className={`${styles.sidebar} ${drawerOpen ? styles.sidebarOpen : ""}`}>
           <div className={styles.sidebarHeader}>
             <Link href={base} className={styles.brand} aria-label="MatterZero workspace overview">
-              <span className={styles.brandMark}>M</span>
+              <span className={styles.brandMark}>
+                <WorkspaceIcon name="overview" size={15} />
+              </span>
               <span>MatterZero</span>
             </Link>
           </div>
 
-          <p className={styles.navLabel}>WORKFLOWS</p>
+          <p className={styles.navLabel}>WORKSPACE</p>
           <nav className={styles.navigation} aria-label="Workspace navigation">
             {navigation.map((item) => {
               const href = `${base}${item.suffix}`;
-              const selected = item.suffix
-                ? pathname === href || pathname.startsWith(`${href}/`)
-                : pathname === base;
+              const selected = isNavigationActive(item.suffix);
               return (
                 <Link
                   key={item.label}
@@ -125,7 +131,9 @@ export function WorkspaceShell({
                   aria-current={selected ? "page" : undefined}
                   onClick={() => setDrawerOpen(false)}
                 >
-                  <span aria-hidden="true">{item.icon}</span>
+                  <span className={styles.navIcon}>
+                    <WorkspaceIcon name={item.icon} />
+                  </span>
                   {item.label}
                 </Link>
               );
@@ -133,7 +141,7 @@ export function WorkspaceShell({
           </nav>
 
           <div className={styles.sidebarFooter}>
-            <span className={styles.sidebarNote}>Pilot workspace · no live case data yet</span>
+            <span className={styles.sidebarNote}>Matter records are scoped to this workspace</span>
           </div>
         </aside>
 

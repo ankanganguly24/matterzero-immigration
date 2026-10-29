@@ -1,6 +1,8 @@
 import { sql } from "drizzle-orm";
 import {
+  boolean,
   check,
+  foreignKey,
   index,
   integer,
   jsonb,
@@ -204,7 +206,7 @@ export const workspaceMembers = pgTable(
     workspaceId: uuid("workspace_id").notNull(),
     userId: uuid("user_id").notNull(),
     email: text("email").notNull(),
-    role: text("role", { enum: ["owner", "admin", "member"] })
+    role: text("role", { enum: ["owner", "admin", "attorney", "paralegal", "member"] })
       .notNull()
       .default("owner"),
     joinedAt: timestamp("joined_at", { withTimezone: true, mode: "date" }).notNull().defaultNow(),
@@ -213,8 +215,234 @@ export const workspaceMembers = pgTable(
     primaryKey({ columns: [table.workspaceId, table.userId] }),
     check("workspace_members_email_normalized", sql`${table.email} = lower(btrim(${table.email}))`),
     check("workspace_members_email_length", sql`char_length(${table.email}) between 3 and 254`),
-    check("workspace_members_role_check", sql`${table.role} in ('owner', 'admin', 'member')`),
+    check(
+      "workspace_members_role_check",
+      sql`${table.role} in ('owner', 'admin', 'attorney', 'paralegal', 'member')`,
+    ),
     index("workspace_members_user_id_idx").on(table.userId),
     index("workspace_members_email_idx").on(table.email),
+  ],
+).enableRLS();
+
+export const matterStatuses = [
+  "intake",
+  "parsing",
+  "conflict_flagged",
+  "ready_for_export",
+] as const;
+export type MatterStatus = (typeof matterStatuses)[number];
+
+export const importBatchStatuses = ["pending", "completed"] as const;
+export type ImportBatchStatus = (typeof importBatchStatuses)[number];
+
+export const importRowActions = ["create", "skip", "invalid"] as const;
+export type ImportRowAction = (typeof importRowActions)[number];
+
+export const importBatches = pgTable(
+  "import_batches",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    workspaceId: uuid("workspace_id")
+      .notNull()
+      .references(() => workspaces.id, { onDelete: "cascade" }),
+    createdBy: uuid("created_by").notNull(),
+    status: text("status", { enum: importBatchStatuses }).notNull().default("pending"),
+    totalRows: integer("total_rows").notNull(),
+    result: jsonb("result").$type<{ count: number; matterIds: string[] } | null>(),
+    createdAt: timestamp("created_at", { withTimezone: true, mode: "date" }).notNull().defaultNow(),
+    expiresAt: timestamp("expires_at", { withTimezone: true, mode: "date" }).notNull(),
+    completedAt: timestamp("completed_at", { withTimezone: true, mode: "date" }),
+  },
+  (table) => [
+    check("import_batches_total_rows_check", sql`${table.totalRows} between 1 and 500`),
+    check("import_batches_status_check", sql`${table.status} in ('pending', 'completed')`),
+    index("import_batches_workspace_expiry_idx").on(table.workspaceId, table.expiresAt),
+    pgPolicy("Workspace importers can read import batches", {
+      for: "select",
+      to: ["authenticated"],
+      using: sql`exists (
+        select 1 from public.workspace_members as member
+        where member.workspace_id = ${table.workspaceId}
+          and member.user_id = (select auth.uid())
+          and member.role in ('owner', 'admin', 'attorney')
+      ) and ${table.status} = 'pending' and ${table.expiresAt} > now()`,
+    }),
+    pgPolicy("Workspace importers can create import batches", {
+      for: "insert",
+      to: ["authenticated"],
+      withCheck: sql`${table.createdBy} = (select auth.uid())
+        and ${table.status} = 'pending'
+        and exists (
+          select 1 from public.workspace_members as member
+          where member.workspace_id = ${table.workspaceId}
+            and member.user_id = (select auth.uid())
+            and member.role in ('owner', 'admin', 'attorney')
+        )`,
+    }),
+    pgPolicy("Workspace importers can update import batches", {
+      for: "update",
+      to: ["authenticated"],
+      using: sql`exists (
+        select 1 from public.workspace_members as member
+        where member.workspace_id = ${table.workspaceId}
+          and member.user_id = (select auth.uid())
+          and member.role in ('owner', 'admin', 'attorney')
+      )`,
+      withCheck: sql`exists (
+        select 1 from public.workspace_members as member
+        where member.workspace_id = ${table.workspaceId}
+          and member.user_id = (select auth.uid())
+          and member.role in ('owner', 'admin', 'attorney')
+      )`,
+    }),
+  ],
+).enableRLS();
+
+export const importBatchRows = pgTable(
+  "import_batch_rows",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    batchId: uuid("batch_id")
+      .notNull()
+      .references(() => importBatches.id, { onDelete: "cascade" }),
+    rowNumber: integer("row_number").notNull(),
+    rawData: jsonb("raw_data").$type<Record<string, string>>().notNull(),
+    errors: text("errors")
+      .array()
+      .notNull()
+      .default(sql`'{}'::text[]`),
+    isDuplicate: boolean("is_duplicate").notNull().default(false),
+    action: text("action", { enum: importRowActions }).notNull(),
+  },
+  (table) => [
+    uniqueIndex("import_batch_rows_batch_row_unique_idx").on(table.batchId, table.rowNumber),
+    index("import_batch_rows_batch_idx").on(table.batchId),
+    check("import_batch_rows_row_number_check", sql`${table.rowNumber} between 2 and 501`),
+    check("import_batch_rows_action_check", sql`${table.action} in ('create', 'skip', 'invalid')`),
+    check(
+      "import_batch_rows_validation_state_check",
+      sql`(cardinality(${table.errors}) > 0 and ${table.action} = 'invalid')
+        or (cardinality(${table.errors}) = 0 and ${table.action} in ('create', 'skip'))`,
+    ),
+    pgPolicy("Workspace importers can read staged rows", {
+      for: "select",
+      to: ["authenticated"],
+      using: sql`exists (
+        select 1 from public.import_batches as batch
+        join public.workspace_members as member on member.workspace_id = batch.workspace_id
+        where batch.id = ${table.batchId}
+          and batch.status = 'pending'
+          and batch.expires_at > now()
+          and member.user_id = (select auth.uid())
+          and member.role in ('owner', 'admin', 'attorney')
+      )`,
+    }),
+    pgPolicy("Workspace importers can create staged rows", {
+      for: "insert",
+      to: ["authenticated"],
+      withCheck: sql`exists (
+        select 1 from public.import_batches as batch
+        join public.workspace_members as member on member.workspace_id = batch.workspace_id
+        where batch.id = ${table.batchId}
+          and batch.status = 'pending'
+          and batch.expires_at > now()
+          and member.user_id = (select auth.uid())
+          and member.role in ('owner', 'admin', 'attorney')
+      )`,
+    }),
+    pgPolicy("Workspace importers can update staged rows", {
+      for: "update",
+      to: ["authenticated"],
+      using: sql`exists (
+        select 1 from public.import_batches as batch
+        join public.workspace_members as member on member.workspace_id = batch.workspace_id
+        where batch.id = ${table.batchId}
+          and batch.status = 'pending'
+          and batch.expires_at > now()
+          and member.user_id = (select auth.uid())
+          and member.role in ('owner', 'admin', 'attorney')
+      )`,
+      withCheck: sql`exists (
+        select 1 from public.import_batches as batch
+        join public.workspace_members as member on member.workspace_id = batch.workspace_id
+        where batch.id = ${table.batchId}
+          and batch.status = 'pending'
+          and batch.expires_at > now()
+          and member.user_id = (select auth.uid())
+          and member.role in ('owner', 'admin', 'attorney')
+      )`,
+    }),
+  ],
+).enableRLS();
+
+export const matters = pgTable(
+  "matters",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    workspaceId: uuid("workspace_id")
+      .notNull()
+      .references(() => workspaces.id, { onDelete: "cascade" }),
+    firstName: text("first_name").notNull(),
+    lastName: text("last_name").notNull(),
+    email: text("email").notNull(),
+    petitionType: text("petition_type").notNull(),
+    sponsorEmployer: text("sponsor_employer").notNull().default(""),
+    fieldOfEndeavor: text("field_of_endeavor").notNull().default(""),
+    status: text("status", { enum: matterStatuses }).notNull().default("intake"),
+    assignedAttorneyUserId: uuid("assigned_attorney_user_id"),
+    importBatchRowId: uuid("import_batch_row_id"),
+    createdBy: uuid("created_by").notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true, mode: "date" }).notNull().defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true, mode: "date" }).notNull().defaultNow(),
+  },
+  (table) => [
+    foreignKey({
+      name: "matters_import_batch_row_fk",
+      columns: [table.importBatchRowId],
+      foreignColumns: [importBatchRows.id],
+    }).onDelete("set null"),
+    uniqueIndex("matters_import_batch_row_unique_idx").on(table.importBatchRowId),
+    index("matters_workspace_updated_idx").on(table.workspaceId, table.updatedAt.desc()),
+    index("matters_workspace_status_idx").on(table.workspaceId, table.status),
+    check(
+      "matters_first_name_length",
+      sql`char_length(btrim(${table.firstName})) between 1 and 100`,
+    ),
+    check("matters_last_name_length", sql`char_length(btrim(${table.lastName})) between 1 and 100`),
+    check("matters_email_normalized", sql`${table.email} = lower(btrim(${table.email}))`),
+    check("matters_email_length", sql`char_length(${table.email}) between 3 and 254`),
+    check(
+      "matters_petition_type_length",
+      sql`char_length(btrim(${table.petitionType})) between 1 and 40`,
+    ),
+    check("matters_sponsor_employer_length", sql`char_length(${table.sponsorEmployer}) <= 160`),
+    check("matters_field_of_endeavor_length", sql`char_length(${table.fieldOfEndeavor}) <= 240`),
+    check(
+      "matters_status_check",
+      sql`${table.status} in ('intake', 'parsing', 'conflict_flagged', 'ready_for_export')`,
+    ),
+    pgPolicy("Workspace staff can read matters", {
+      for: "select",
+      to: ["authenticated"],
+      using: sql`exists (
+        select 1 from public.workspace_members as member
+        where member.workspace_id = ${table.workspaceId}
+          and member.user_id = (select auth.uid())
+          and member.role in ('owner', 'admin', 'attorney', 'paralegal')
+      )`,
+    }),
+    pgPolicy("Workspace attorneys can create matters", {
+      for: "insert",
+      to: ["authenticated"],
+      withCheck: sql`${table.status} = 'intake'
+        and ${table.assignedAttorneyUserId} is null
+        and ${table.createdBy} = (select auth.uid())
+        and exists (
+        select 1 from public.workspace_members as member
+        where member.workspace_id = ${table.workspaceId}
+          and member.user_id = (select auth.uid())
+          and member.role in ('owner', 'admin', 'attorney')
+      )`,
+    }),
   ],
 ).enableRLS();

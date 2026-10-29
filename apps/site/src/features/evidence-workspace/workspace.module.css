@@ -240,6 +240,16 @@
   align-items: center;
   gap: 0.55rem;
 }
+.liveMatterStatus {
+  padding: 0.4rem 0.65rem;
+  border: 1px solid #d8e4d4;
+  border-radius: 999px;
+  background: #f2f7ef;
+  color: #4d694e;
+  font-size: 0.67rem;
+  font-weight: 750;
+  text-transform: capitalize;
+}
 .kicker {
   margin: 0 0 0.5rem;
   color: #78867c;
@@ -1167,6 +1177,41 @@
   font-family: var(--font-heading), sans-serif;
   font-size: 1rem;
   letter-spacing: -0.025em;
+}
+.liveMatterIdentity {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  margin-top: 0.85rem;
+  padding: 0.65rem;
+  border: 1px solid #edf0ea;
+  border-radius: 0.65rem;
+  background: #fafbf9;
+}
+.liveMatterIdentity > span {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: 50%;
+  background: #eaf1e5;
+  color: #466247;
+  font-size: 0.65rem;
+  font-weight: 800;
+}
+.liveMatterIdentity strong,
+.liveMatterIdentity small {
+  display: block;
+}
+.liveMatterIdentity strong {
+  color: #35443a;
+  font-size: 0.72rem;
+}
+.liveMatterIdentity small {
+  margin-top: 0.15rem;
+  color: #7e8a80;
+  font-size: 0.6rem;
 }
 .awaitingIngestion {
   display: inline-flex;

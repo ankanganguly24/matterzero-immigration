@@ -17,9 +17,17 @@ const tabs: { id: WorkspaceTab; label: string; number?: string }[] = [
 export function EvidenceWorkspace({
   versionHash,
   canApprove,
+  matter,
 }: {
-  versionHash: string;
+  versionHash?: string;
   canApprove: boolean;
+  matter?: {
+    id: string;
+    firstName: string;
+    lastName: string;
+    petitionType: string;
+    status: string;
+  };
 }) {
   const [activeTab, setActiveTab] = useState<WorkspaceTab>("intake");
   const [selectedCitation, setSelectedCitation] = useState<SourceCitation>(
@@ -27,6 +35,7 @@ export function EvidenceWorkspace({
   );
   const [received, setReceived] = useState(false);
   const { sampleDataIncluded, setSampleDataIncluded } = useWorkspaceMatterContext();
+  const isLiveMatter = matter !== undefined;
   const [approvalState, setApprovalState] = useState<"idle" | "saving" | "approved" | "error">(
     "idle",
   );
@@ -116,7 +125,13 @@ export function EvidenceWorkspace({
   return (
     <section
       className={styles.sampleWorkspace}
-      aria-label={sampleDataIncluded ? "Fictional workflow sample" : "Empty matter"}
+      aria-label={
+        sampleDataIncluded
+          ? "Fictional workflow sample"
+          : isLiveMatter
+            ? `Matter command center for ${matter.firstName} ${matter.lastName}`
+            : "Empty matter"
+      }
     >
       <div className={styles.pageContent}>
         <div className={styles.pageIntro}>
@@ -124,13 +139,23 @@ export function EvidenceWorkspace({
             <p className={styles.kicker}>
               {sampleDataIncluded
                 ? "FICTIONAL SAMPLE · NO LIVE CASE DATA"
-                : "LIVE WORKSPACE · EMPTY MATTER"}
+                : isLiveMatter
+                  ? "LIVE MATTER · WORKSPACE RECORD"
+                  : "LIVE WORKSPACE · EMPTY MATTER"}
             </p>
-            <h1>{sampleDataIncluded ? demoMatter.title : "Empty matter"}</h1>
+            <h1>
+              {sampleDataIncluded
+                ? demoMatter.title
+                : isLiveMatter
+                  ? `${matter.firstName} ${matter.lastName}`
+                  : "Empty matter"}
+            </h1>
             <p className={styles.subhead}>
               {sampleDataIncluded
                 ? `${demoMatter.caseType} · a source-led evidence workflow for an immigration team.`
-                : "This matter has no documents or source-linked facts yet."}
+                : isLiveMatter
+                  ? `${matter.petitionType} · ${matter.status.replaceAll("_", " ")} · no documents or source-linked facts yet.`
+                  : "This matter has no documents or source-linked facts yet."}
             </p>
           </div>
           <div className={styles.pageActions}>
@@ -143,13 +168,17 @@ export function EvidenceWorkspace({
                 Review status <span aria-hidden="true">↗</span>
               </button>
             ) : null}
-            <button
-              className={sampleDataIncluded ? styles.clearSampleButton : styles.outlineButton}
-              onClick={toggleSampleData}
-              type="button"
-            >
-              {sampleDataIncluded ? "Remove all sample data" : "Restore sample data"}
-            </button>
+            {isLiveMatter ? (
+              <span className={styles.liveMatterStatus}>{matter.status.replaceAll("_", " ")}</span>
+            ) : (
+              <button
+                className={sampleDataIncluded ? styles.clearSampleButton : styles.outlineButton}
+                onClick={toggleSampleData}
+                type="button"
+              >
+                {sampleDataIncluded ? "Remove all sample data" : "Restore sample data"}
+              </button>
+            )}
           </div>
         </div>
 
@@ -194,7 +223,7 @@ export function EvidenceWorkspace({
             )}
             {activeTab === "review" && (
               <ReviewView
-                versionHash={versionHash}
+                versionHash={versionHash ?? ""}
                 canApprove={canApprove}
                 approvalState={approvalState}
                 onApprove={approveVersion}
@@ -203,7 +232,7 @@ export function EvidenceWorkspace({
             )}
           </>
         ) : (
-          <EmptyMatterWorkspace />
+          <EmptyMatterWorkspace matter={matter} />
         )}
         {message && (
           <p className={styles.liveMessage} role="status">
@@ -219,12 +248,35 @@ export function EvidenceWorkspace({
   );
 }
 
-function EmptyMatterWorkspace() {
+function EmptyMatterWorkspace({
+  matter,
+}: {
+  matter?: { firstName: string; lastName: string; petitionType: string };
+}) {
   return (
-    <section className={styles.emptyMatterGrid} aria-label="Empty matter workspace">
+    <section
+      className={styles.emptyMatterGrid}
+      aria-label={matter ? "Matter command center" : "Empty matter workspace"}
+    >
       <section className={styles.emptyMatterPanel} aria-labelledby="criteria-heading">
-        <p className={styles.emptyMatterEyebrow}>REVIEW FRAMEWORK</p>
-        <h2 id="criteria-heading">Statutory prongs</h2>
+        <p className={styles.emptyMatterEyebrow}>
+          {matter ? "MATTER AT A GLANCE" : "REVIEW FRAMEWORK"}
+        </p>
+        <h2 id="criteria-heading">{matter ? "Applicant" : "Statutory prongs"}</h2>
+        {matter ? (
+          <div className={styles.liveMatterIdentity}>
+            <span>
+              {matter.firstName.charAt(0)}
+              {matter.lastName.charAt(0)}
+            </span>
+            <div>
+              <strong>
+                {matter.firstName} {matter.lastName}
+              </strong>
+              <small>{matter.petitionType} petition</small>
+            </div>
+          </div>
+        ) : null}
         <span className={styles.awaitingIngestion}>Awaiting Document Ingestion</span>
         <div className={styles.emptyMatterDivider} />
         <p className={styles.emptyMatterCopy}>
@@ -234,8 +286,8 @@ function EmptyMatterWorkspace() {
       </section>
 
       <section className={styles.emptyMatterPanel} aria-labelledby="documents-heading">
-        <p className={styles.emptyMatterEyebrow}>DOCUMENTS</p>
-        <h2 id="documents-heading">Document canvas</h2>
+        <p className={styles.emptyMatterEyebrow}>01 · INTAKE</p>
+        <h2 id="documents-heading">Matter workspace</h2>
         <div className={styles.documentPlaceholder} aria-disabled="true">
           <span aria-hidden="true">＋</span>
           <strong>Document ingestion will appear here</strong>

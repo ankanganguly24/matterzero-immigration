@@ -16,6 +16,8 @@ export type DashboardAccess =
   | { ok: true; user: DashboardUser }
   | { ok: false; reason: "unauthenticated" | "not_granted" | "unavailable" };
 
+export type WorkspaceRole = "owner" | "admin" | "attorney" | "paralegal" | "member";
+
 export async function getDashboardAccess(): Promise<DashboardAccess> {
   const supabase = await createClient();
   const { data, error } = await supabase.auth.getClaims();
@@ -77,7 +79,7 @@ export async function getWorkspaceForUser(user: DashboardUser, workspaceId: stri
 export async function getWorkspaceRoleForUser(
   user: DashboardUser,
   workspaceId: string,
-): Promise<"superadmin" | "owner" | "admin" | "member" | null> {
+): Promise<"superadmin" | WorkspaceRole | null> {
   const workspace = await getWorkspaceForUser(user, workspaceId);
   if (!workspace) return null;
   if (user.isSuperAdmin) return "superadmin";
@@ -88,6 +90,20 @@ export async function getWorkspaceRoleForUser(
     .where(
       and(eq(workspaceMembers.workspaceId, workspaceId), eq(workspaceMembers.userId, user.userId)),
     )
+    .limit(1);
+
+  return membership?.role ?? null;
+}
+
+/** Returns only a real workspace membership; platform superadmin status is not a tenant role. */
+export async function getWorkspaceMembershipRole(
+  userId: string,
+  workspaceId: string,
+): Promise<WorkspaceRole | null> {
+  const [membership] = await getDb()
+    .select({ role: workspaceMembers.role })
+    .from(workspaceMembers)
+    .where(and(eq(workspaceMembers.workspaceId, workspaceId), eq(workspaceMembers.userId, userId)))
     .limit(1);
 
   return membership?.role ?? null;
