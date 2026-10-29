@@ -3,6 +3,7 @@
 import { useState, type FormEvent } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { SelectControl } from "@/components/forms/select-control";
 import type { WorkspaceSummary } from "./workspace-shell";
 import styles from "./workspace-settings.module.css";
 
@@ -163,7 +164,7 @@ export function WorkspaceSettings({
             <div className={styles.fieldGrid}>
               <label>
                 Organization type
-                <select
+                <SelectControl
                   value={organizationType}
                   onChange={(event) => setOrganizationType(event.target.value)}
                   disabled={!canManage}
@@ -172,11 +173,11 @@ export function WorkspaceSettings({
                   <option value="law_firm">Law firm</option>
                   <option value="in_house">In-house immigration team</option>
                   <option value="other">Other</option>
-                </select>
+                </SelectControl>
               </label>
               <label>
                 Primary market
-                <select
+                <SelectControl
                   value={market}
                   onChange={(event) => setMarket(event.target.value)}
                   disabled={!canManage}
@@ -184,11 +185,11 @@ export function WorkspaceSettings({
                   <option value="india">India</option>
                   <option value="united_states">United States</option>
                   <option value="other">Other / multiple markets</option>
-                </select>
+                </SelectControl>
               </label>
               <label>
                 Team size
-                <select
+                <SelectControl
                   value={teamSize}
                   onChange={(event) => setTeamSize(event.target.value)}
                   disabled={!canManage}
@@ -197,11 +198,11 @@ export function WorkspaceSettings({
                   <option value="2-5">2–5 people</option>
                   <option value="6-15">6–15 people</option>
                   <option value="16+">16 or more people</option>
-                </select>
+                </SelectControl>
               </label>
               <label>
                 Main workflow
-                <select
+                <SelectControl
                   value={primaryFocus}
                   onChange={(event) => setPrimaryFocus(event.target.value)}
                   disabled={!canManage}
@@ -210,7 +211,7 @@ export function WorkspaceSettings({
                   <option value="student">Student immigration</option>
                   <option value="family">Family immigration</option>
                   <option value="other">Other / mixed workflows</option>
-                </select>
+                </SelectControl>
               </label>
             </div>
             <label>

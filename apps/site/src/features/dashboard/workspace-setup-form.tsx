@@ -2,6 +2,7 @@
 
 import { useState, type SubmitEvent } from "react";
 import { useRouter } from "next/navigation";
+import { SelectControl } from "@/components/forms/select-control";
 import styles from "./workspace-setup.module.css";
 
 const fields = [
@@ -101,7 +102,13 @@ export function WorkspaceSetupForm() {
         {fields.map((field) => (
           <div className={styles.field} key={field.name}>
             <label htmlFor={`workspace-${field.name}`}>{field.label}</label>
-            <select id={`workspace-${field.name}`} name={field.name} required defaultValue="">
+            <SelectControl
+              density="spacious"
+              id={`workspace-${field.name}`}
+              name={field.name}
+              required
+              defaultValue=""
+            >
               <option value="" disabled>
                 Choose an option
               </option>
@@ -110,7 +117,7 @@ export function WorkspaceSetupForm() {
                   {label}
                 </option>
               ))}
-            </select>
+            </SelectControl>
           </div>
         ))}
       </div>

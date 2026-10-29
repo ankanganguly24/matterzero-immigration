@@ -404,6 +404,44 @@ export const matters = pgTable(
     uniqueIndex("matters_import_batch_row_unique_idx").on(table.importBatchRowId),
     index("matters_workspace_updated_idx").on(table.workspaceId, table.updatedAt.desc()),
     index("matters_workspace_status_idx").on(table.workspaceId, table.status),
+    index("matters_workspace_name_order_idx").on(
+      table.workspaceId,
+      table.lastName,
+      table.firstName,
+      table.id,
+    ),
+    index("matters_workspace_status_updated_idx").on(
+      table.workspaceId,
+      table.status,
+      table.updatedAt.desc(),
+      table.id.desc(),
+    ),
+    index("matters_workspace_petition_order_idx").on(
+      table.workspaceId,
+      table.petitionType,
+      table.lastName,
+      table.id,
+    ),
+    index("matters_workspace_assignee_order_idx").on(
+      table.workspaceId,
+      table.assignedAttorneyUserId,
+      table.updatedAt.desc(),
+      table.id.desc(),
+    ),
+    index("matters_workspace_updated_page_idx").on(
+      table.workspaceId,
+      table.updatedAt.desc(),
+      table.id.desc(),
+    ),
+    index("matters_full_name_trgm_idx").using(
+      "gin",
+      sql`(${table.firstName} || ' ' || ${table.lastName}) extensions.gin_trgm_ops`,
+    ),
+    index("matters_email_trgm_idx").using("gin", sql`${table.email} extensions.gin_trgm_ops`),
+    index("matters_petition_trgm_idx").using(
+      "gin",
+      sql`${table.petitionType} extensions.gin_trgm_ops`,
+    ),
     check(
       "matters_first_name_length",
       sql`char_length(btrim(${table.firstName})) between 1 and 100`,
